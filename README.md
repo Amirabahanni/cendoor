@@ -15,7 +15,7 @@ Brand: the wordmark `cendoor` (no icon next to it); `public/logo.svg` (a chat bu
 | **Edit text and photos by hand** | Studio > *Edit text & photos*: name, tagline, announcement bar, hero text, About, footer, contact links and three photo slots. Free. |
 | **Advanced AI design (paid tier)** | With `ANTHROPIC_API_KEY`, requests the generator cannot express are handled by Claude, which can write a bespoke page (HTML + CSS + palette + fonts) through a sanitising contract. This uses AI credits: 10 on the trial, 0 on Solo, 100 a month on Growth. Basic customisation above never uses credits. |
 | **Automation** | Customer chat in Arabic/French/English/Darija with voice; order creation; **AI confirmation agent** (quick-form orders wait for the customer to reply YES to the AI's WhatsApp message); delivery updates with tracking link; failed-delivery recovery; reviews; cash reconciliation. |
-| **Announcements** | Studio ("send a message to customers who haven't ordered in 2 months") or Customers > Campaigns. Audience segments, drafts in 3 languages, preview, explicit confirmation, STOP opt-out, daily limit. Without a WhatsApp connection every message is queued with a one-tap link. |
+| **Announcements** | Studio ("send a message to customers who haven't ordered in 2 months") or Customers > Campaigns. **Targeting**: combine city, product or category bought, total spent, number of orders, last order date, order channel and delivery reliability; save audiences; personalise with {name}, {city}, {last_product}; every campaign gets a tracked link and a results line (visits, orders, revenue). Drafts in 3 languages, preview, explicit confirmation, STOP opt-out, daily limit. Without a WhatsApp connection every message is queued with a one-tap link. |
 | **Cendoor Shield / Copilot** | Cross-seller delivery signal (anonymous counters) and advice from the seller's own orders (best carrier per city, stock run-out, best post). |
 | **Free trial** | New shops get 14 days; paid plans are Solo (149 MAD/month) and Growth (299 MAD/month). |
 
@@ -40,7 +40,7 @@ npm start
 Demo logins (password `demo1234`): `demo@cendoor.com` (owner), `manager@`, `operator@`, `viewer@cendoor.com`. First start seeds a fictional boutique with a generated site.
 
 ```bash
-npm test      # 85 checks: chat engine, orders, generated sites, sanitiser security, photos, credits, campaigns, confirmation agent
+npm test      # 96 checks: chat engine, orders, generated sites, sanitiser security, photos, credits, campaigns, confirmation agent
 ```
 
 See `DEPLOY.md` for the full step-by-step guide (GitHub, then Render, and why Vercel does not fit).

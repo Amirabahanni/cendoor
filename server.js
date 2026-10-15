@@ -524,23 +524,29 @@ app.put('/api/site/content', auth.auth('studio'), (req, res) => {
 });
 
 // Campaigns: announcements and mass messages (always previewed, opted-out customers excluded, daily limit)
-const segArg = q => ({ segment: broadcast.SEGMENTS.includes(q.segment) ? q.segment : 'all', arg: str(q.arg, 40) });
+// Targeting arrives either as a preset ({segment,arg}) or as a filter object ({targeting})
+const targetOf = b => (b.targeting && typeof b.targeting === 'object' ? broadcast.normalize(b.targeting) : broadcast.normalize(broadcast.SEGMENTS.includes(b.segment) ? b.segment : 'all', str(b.arg, 40)));
 app.get('/api/campaigns', auth.auth(), (req, res) => {
-  const counts = Object.fromEntries(broadcast.SEGMENTS.filter(s => s !== 'city').map(s => [s, broadcast.audience(req.shopId, s).count]));
-  res.json({ history: broadcast.history(req.shopId), counts, excluded: broadcast.audience(req.shopId, 'all').excluded, purposes: broadcast.PURPOSES, whatsapp: whatsapp.configured(), maxPerDay: broadcast.MAX_PER_DAY, cities: nlp.CITY_NAMES.filter(c => all('SELECT 1 FROM customers WHERE shop_id=? AND city=? LIMIT 1', req.shopId, c).length) });
+  const counts = Object.fromEntries(broadcast.SEGMENTS.filter(s => s !== 'city').map(s => [s, broadcast.audience(req.shopId, s).total]));
+  res.json({ history: broadcast.history(req.shopId), counts, excluded: broadcast.audience(req.shopId, 'all').excluded, purposes: broadcast.PURPOSES, whatsapp: whatsapp.configured(), maxPerDay: broadcast.MAX_PER_DAY, options: broadcast.options(req.shopId) });
 });
 app.post('/api/campaigns/draft', auth.auth('studio'), (req, res) => {
   const shop = get('SELECT * FROM shops WHERE id=?', req.shopId); const lang = ['en', 'fr', 'ar'].includes(req.body.lang) ? req.body.lang : (shop.lang === 'dar' ? 'fr' : shop.lang);
   const purpose = broadcast.PURPOSES.includes(req.body.purpose) ? req.body.purpose : 'promo';
-  res.json({ text: broadcast.draft(shop, purpose, lang, `${req.protocol}://${req.get('host')}/s/${shop.slug}`) });
+  res.json({ text: broadcast.draft(shop, purpose, lang) });
 });
-app.post('/api/campaigns/preview', auth.auth('studio'), (req, res) => { const a = broadcast.audience(req.shopId, segArg(req.body).segment, segArg(req.body).arg); res.json({ count: a.count, excluded: a.excluded, sample: a.rows.slice(0, 3).map(c => c.name) }); });
+app.post('/api/campaigns/preview', auth.auth('studio'), (req, res) => {
+  const t = targetOf(req.body); const a = broadcast.audience(req.shopId, t); const lang = ['en', 'fr', 'ar'].includes(req.body.lang) ? req.body.lang : 'en';
+  res.json({ count: a.count, total: a.total, excluded: a.excluded, targeting: t, summary: broadcast.describe(req.shopId, t, lang), sample: a.rows.slice(0, 3).map(c => ({ name: c.name, city: c.city, last_product: c.last_product })) });
+});
 app.post('/api/campaigns/send', auth.auth('studio'), (req, res) => {
   if (limited('campaign:' + req.shopId, 5, 3600000)) return res.status(429).json({ error: 'slow_down' });
-  const r = broadcast.send(req.shopId, { ...segArg(req.body), text: req.body.text, createdBy: req.user.id });
+  const r = broadcast.send(req.shopId, { targeting: targetOf(req.body), segment: broadcast.SEGMENTS.includes(req.body.segment) ? req.body.segment : 'custom', arg: str(req.body.arg, 40), text: req.body.text, createdBy: req.user.id, baseUrl: process.env.PUBLIC_URL || `${req.protocol}://${req.get('host')}` });
   if (r.error) return res.status(r.error === 'daily_limit' ? 429 : 400).json(r);
   res.json(r);
 });
+app.post('/api/campaigns/audiences', auth.auth('studio'), (req, res) => { const r = broadcast.saveAudience(req.shopId, req.body.name, targetOf(req.body)); res.status(r.error ? 400 : 200).json(r); });
+app.delete('/api/campaigns/audiences/:id', auth.auth('studio'), (req, res) => { broadcast.deleteAudience(req.shopId, num(req.params.id)); res.json({ ok: true }); });
 app.get('/api/campaigns/:id/queue', auth.auth(), (req, res) => res.json(broadcast.queue(req.shopId, num(req.params.id))));
 app.post('/api/campaigns/recipients/:id/done', auth.auth('studio'), (req, res) => { broadcast.markDone(req.shopId, num(req.params.id)); res.json({ ok: true }); });
 
@@ -561,7 +567,7 @@ app.get(['/track', '/t/:slug/:num'], (req, res) => res.sendFile(path.join(__dirn
 // Demo mode: put the demo shop back to its original state (only when CENDOOR_DEMO=1)
 app.post('/api/demo/reset', auth.auth(), (req, res) => {
   if (process.env.CENDOOR_DEMO !== '1' || req.user.email !== 'demo@cendoor.com') return res.status(403).json({ error: 'forbidden' });
-  tx(() => { for (const t of ['broadcast_recipients', 'broadcasts', 'assistant_log', 'phone_rep', 'wa_sessions', 'shipment_events', 'order_items', 'reviews', 'orders', 'messages', 'conversations', 'customers', 'post_links', 'carriers', 'variants', 'products', 'sessions', 'users', 'shops']) run(`DELETE FROM ${t}`); });
+  tx(() => { for (const t of ['broadcast_recipients', 'broadcasts', 'audiences', 'assistant_log', 'phone_rep', 'wa_sessions', 'shipment_events', 'order_items', 'reviews', 'orders', 'messages', 'conversations', 'customers', 'post_links', 'carriers', 'variants', 'products', 'sessions', 'users', 'shops']) run(`DELETE FROM ${t}`); });
   seedDemo();
   const u = get("SELECT id FROM users WHERE email='demo@cendoor.com'");
   auth.setCookie(res, auth.createSession(u.id), req);

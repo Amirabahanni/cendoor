@@ -226,3 +226,13 @@ html[dir=rtl] .overlay { justify-content: flex-start; }
 .credits { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; font-weight: 700; padding: 4px 11px; border-radius: 999px; background: var(--orange-100); color: var(--text); }
 .camp { display: grid; grid-template-columns: minmax(300px, 1fr) minmax(280px, 1fr); gap: 14px; } @media (max-width: 900px) { .camp { grid-template-columns: 1fr; } }
 .qrow { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+
+/* Campaign targeting */
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; } @media (max-width: 520px) { .grid2 { grid-template-columns: 1fr; } }
+.cbxs { display: flex; flex-wrap: wrap; gap: 6px; }
+.cbx { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--border); background: var(--surface); padding: 5px 10px; border-radius: 999px; font-size: 13px; cursor: pointer; }
+.cbx:has(input:checked) { border-color: var(--teal); background: color-mix(in srgb, var(--teal) 12%, transparent); font-weight: 600; }
+.cbx input { accent-color: var(--teal); }
+.pickbox { border: 1px solid var(--border); border-radius: 10px; padding: 8px 10px; } .pickbox summary { cursor: pointer; font-size: 13px; font-weight: 600; }
+.audbox { margin-top: 16px; padding: 12px 14px; border-radius: 12px; background: color-mix(in srgb, var(--teal) 10%, transparent); border: 1px solid color-mix(in srgb, var(--teal) 30%, transparent); min-height: 20px; }
+.wabubble { margin-top: 4px; padding: 10px 12px; background: #dcf8c6; color: #111; border-radius: 12px 12px 12px 2px; white-space: pre-wrap; max-width: 420px; font-size: 14px; }

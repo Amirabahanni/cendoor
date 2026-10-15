@@ -120,3 +120,8 @@ body.cards-outline .card { box-shadow: none; background: transparent; border-wid
 body.cards-glass .card { background: color-mix(in srgb, var(--surface) 70%, transparent); backdrop-filter: blur(12px); border-color: color-mix(in srgb, var(--teal) 30%, var(--border)); }
 body.cards-glass { background-image: radial-gradient(900px 400px at 10% -10%, color-mix(in srgb, var(--teal) 22%, transparent), transparent), radial-gradient(700px 400px at 100% 0%, color-mix(in srgb, var(--orange) 18%, transparent), transparent); background-attachment: fixed; }
 .card .img { border-radius: 0; } .badge { background: var(--red); color: #fff; }
+
+/* generated sites: the host only provides smooth scrolling and keeps its own widgets above the page */
+html { scroll-behavior: smooth; } #site { position: relative; z-index: 1; min-height: 100vh; } #site .g-empty { padding: 30px; color: var(--muted, #888); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body.site-mode { padding-bottom: 0; }

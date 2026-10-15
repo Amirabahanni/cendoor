@@ -10,11 +10,11 @@
 
   const TXT = {
     en: { dir: 'ltr', n: 'EN', chat: 'Chat to order', orderChat: 'Order by chat', orderHere: 'Order here', wa: 'WhatsApp', sold: 'Sold out', only: n => `Only ${n} left`, left: 'in stock', delivery: 'Delivery all over Morocco', cod: 'Pay cash on delivery', ai: 'Instant replies, day and night', free: n => `Free delivery above ${n} MAD`,
-      qty: 'Quantity', name: 'Full name', phone: 'Phone (06… / 07…)', city: 'City', addr: 'Full address', place: 'Place order — pay on delivery', placed: 'Order confirmed!', thanks: 'Thank you', eta: d => `Delivery in about ${d} days. Pay cash when it arrives.`, verify: 'The shop will call you to verify your order.', close: 'Close', typeMsg: 'Type a message…', listening: 'Listening…', voiceLang: 'Voice language', speak: 'Read replies aloud', all: 'All', reviews: 'reviews', welcome: 'Hello! Ask me about any product, or tell me what you want to order. You can also send a voice message.', aiTitle: 'Shop assistant', aiSub: 'Replies instantly', mic: 'Speak', send: 'Send', badPhone: 'Please enter a Moroccan mobile number (06/07…).', missing: 'Please fill in all the fields.', soldNow: 'Sorry, this item just sold out.', err: 'Something went wrong. Please try again.', iWant: (q, n) => `I want ${q} ${n}`, powered: 'Powered by', noSpeech: 'Voice input is not supported on this browser.', total: 'Total', visitor: 'You', shopLabel: 'Shop' },
+      qty: 'Quantity', name: 'Full name', phone: 'Phone (06… / 07…)', city: 'City', addr: 'Full address', place: 'Place order — pay on delivery', placed: 'Order confirmed!', thanks: 'Thank you', eta: d => `Delivery in about ${d} days. Pay cash when it arrives.`, verify: 'You will get a message to confirm your order. Reply YES and we prepare it.', close: 'Close', typeMsg: 'Type a message…', listening: 'Listening…', voiceLang: 'Voice language', speak: 'Read replies aloud', all: 'All', reviews: 'reviews', welcome: 'Hello! Ask me about any product, or tell me what you want to order. You can also send a voice message.', aiTitle: 'Shop assistant', aiSub: 'Replies instantly', mic: 'Speak', send: 'Send', badPhone: 'Please enter a Moroccan mobile number (06/07…).', missing: 'Please fill in all the fields.', soldNow: 'Sorry, this item just sold out.', err: 'Something went wrong. Please try again.', iWant: (q, n) => `I want ${q} ${n}`, powered: 'Powered by', noSpeech: 'Voice input is not supported on this browser.', total: 'Total', visitor: 'You', shopLabel: 'Shop' },
     fr: { dir: 'ltr', n: 'FR', chat: 'Commander par chat', orderChat: 'Commander par chat', orderHere: 'Commander ici', wa: 'WhatsApp', sold: 'Épuisé', only: n => `Plus que ${n}`, left: 'en stock', delivery: 'Livraison partout au Maroc', cod: 'Paiement à la livraison', ai: 'Réponses instantanées, jour et nuit', free: n => `Livraison gratuite dès ${n} MAD`,
-      qty: 'Quantité', name: 'Nom complet', phone: 'Téléphone (06… / 07…)', city: 'Ville', addr: 'Adresse complète', place: 'Commander — payer à la livraison', placed: 'Commande confirmée !', thanks: 'Merci', eta: d => `Livraison en environ ${d} jours. Payez en espèces à la réception.`, verify: 'La boutique vous appellera pour vérifier votre commande.', close: 'Fermer', typeMsg: 'Écrivez un message…', listening: 'Écoute…', voiceLang: 'Langue vocale', speak: 'Lire les réponses à voix haute', all: 'Tout', reviews: 'avis', welcome: 'Bonjour ! Posez-moi vos questions sur un produit, ou dites-moi ce que vous voulez commander. Vous pouvez aussi envoyer un message vocal.', aiTitle: 'Assistant boutique', aiSub: 'Réponses instantanées', mic: 'Parler', send: 'Envoyer', badPhone: 'Saisissez un mobile marocain (06/07…).', missing: 'Veuillez remplir tous les champs.', soldNow: "Désolé, cet article vient d'être épuisé.", err: 'Une erreur est survenue. Réessayez.', iWant: (q, n) => `Je veux ${q} ${n}`, powered: 'Propulsé par', noSpeech: "La saisie vocale n'est pas disponible sur ce navigateur.", total: 'Total', visitor: 'Vous', shopLabel: 'Boutique' },
+      qty: 'Quantité', name: 'Nom complet', phone: 'Téléphone (06… / 07…)', city: 'Ville', addr: 'Adresse complète', place: 'Commander — payer à la livraison', placed: 'Commande confirmée !', thanks: 'Merci', eta: d => `Livraison en environ ${d} jours. Payez en espèces à la réception.`, verify: 'Vous allez recevoir un message pour confirmer votre commande. Répondez OUI et nous la préparons.', close: 'Fermer', typeMsg: 'Écrivez un message…', listening: 'Écoute…', voiceLang: 'Langue vocale', speak: 'Lire les réponses à voix haute', all: 'Tout', reviews: 'avis', welcome: 'Bonjour ! Posez-moi vos questions sur un produit, ou dites-moi ce que vous voulez commander. Vous pouvez aussi envoyer un message vocal.', aiTitle: 'Assistant boutique', aiSub: 'Réponses instantanées', mic: 'Parler', send: 'Envoyer', badPhone: 'Saisissez un mobile marocain (06/07…).', missing: 'Veuillez remplir tous les champs.', soldNow: "Désolé, cet article vient d'être épuisé.", err: 'Une erreur est survenue. Réessayez.', iWant: (q, n) => `Je veux ${q} ${n}`, powered: 'Propulsé par', noSpeech: "La saisie vocale n'est pas disponible sur ce navigateur.", total: 'Total', visitor: 'Vous', shopLabel: 'Boutique' },
     ar: { dir: 'rtl', n: 'ع', chat: 'اطلب عبر الدردشة', orderChat: 'اطلب عبر الدردشة', orderHere: 'اطلب من هنا', wa: 'واتساب', sold: 'نفد', only: n => `باقي ${n} فقط`, left: 'متوفر', delivery: 'توصيل لكل المغرب', cod: 'الدفع عند الاستلام', ai: 'ردود فورية ليلا ونهارا', free: n => `توصيل مجاني فوق ${n} درهم`,
-      qty: 'الكمية', name: 'الاسم الكامل', phone: 'الهاتف (06… / 07…)', city: 'المدينة', addr: 'العنوان الكامل', place: 'اطلب — الدفع عند الاستلام', placed: 'تم تأكيد طلبك!', thanks: 'شكرا', eta: d => `التوصيل خلال حوالي ${d} أيام. تدفع نقدا عند الاستلام.`, verify: 'سيتصل بك المحل للتأكد من الطلب.', close: 'إغلاق', typeMsg: 'اكتب رسالة…', listening: 'جارٍ الاستماع…', voiceLang: 'لغة الصوت', speak: 'قراءة الردود بصوت عال', all: 'الكل', reviews: 'تقييم', welcome: 'مرحبا! اسألني عن أي منتج، أو قل لي ماذا تريد أن تطلب. يمكنك أيضا إرسال رسالة صوتية.', aiTitle: 'مساعد المتجر', aiSub: 'ردود فورية', mic: 'تكلم', send: 'إرسال', badPhone: 'أدخل رقم موبايل مغربي (06/07…).', missing: 'المرجو ملء كل الحقول.', soldNow: 'عذرا، نفد هذا المنتج للتو.', err: 'حدث خطأ. حاول مجددا.', iWant: (q, n) => `بغيت ${q} ${n}`, powered: 'مدعوم من', noSpeech: 'الإدخال الصوتي غير مدعوم في هذا المتصفح.', total: 'المجموع', visitor: 'أنت', shopLabel: 'المحل' },
+      qty: 'الكمية', name: 'الاسم الكامل', phone: 'الهاتف (06… / 07…)', city: 'المدينة', addr: 'العنوان الكامل', place: 'اطلب — الدفع عند الاستلام', placed: 'تم تأكيد طلبك!', thanks: 'شكرا', eta: d => `التوصيل خلال حوالي ${d} أيام. تدفع نقدا عند الاستلام.`, verify: 'ستصلك رسالة لتأكيد طلبك. أجب بنعم وسنجهزه.', close: 'إغلاق', typeMsg: 'اكتب رسالة…', listening: 'جارٍ الاستماع…', voiceLang: 'لغة الصوت', speak: 'قراءة الردود بصوت عال', all: 'الكل', reviews: 'تقييم', welcome: 'مرحبا! اسألني عن أي منتج، أو قل لي ماذا تريد أن تطلب. يمكنك أيضا إرسال رسالة صوتية.', aiTitle: 'مساعد المتجر', aiSub: 'ردود فورية', mic: 'تكلم', send: 'إرسال', badPhone: 'أدخل رقم موبايل مغربي (06/07…).', missing: 'المرجو ملء كل الحقول.', soldNow: 'عذرا، نفد هذا المنتج للتو.', err: 'حدث خطأ. حاول مجددا.', iWant: (q, n) => `بغيت ${q} ${n}`, powered: 'مدعوم من', noSpeech: 'الإدخال الصوتي غير مدعوم في هذا المتصفح.', total: 'المجموع', visitor: 'أنت', shopLabel: 'المحل' },
   };
 
   const X = {
@@ -23,6 +23,12 @@
     ar: { shopNow: 'تسوق الآن', sec: { products: 'منتجاتنا', featured: 'الأكثر مبيعا', reviews: 'ماذا يقول زبناؤنا', faq: 'أسئلة شائعة', delivery: 'التوصيل', contact: 'تواصل معنا', about: 'من نحن' }, navAbout: 'من نحن', navFaq: 'الأسئلة', navContact: 'تواصل', navShop: 'المتجر', days: 'أيام', free2: n => `توصيل مجاني فوق ${n} درهم`, cod2: 'الدفع عند الاستلام: تدفع عندما يصلك طردك', nation: 'نوصل لكل المغرب', callUs: 'اتصل', mailUs: 'بريد', follow: 'تابعنا', noItems: 'المنتجات قادمة قريبا.', basedIn: c => `مقرنا في ${c}` },
   };
   for (const k of Object.keys(TXT)) Object.assign(TXT[k], X[k]);
+
+  const UI = {
+    en: { delivery: 'Delivery all over Morocco', cod: 'Pay cash on delivery', ai: 'Instant replies, day and night', quality: 'Carefully selected', navShop: 'Shop', navAbout: 'About', navReviews: 'Reviews', navFaq: 'FAQ', navContact: 'Contact', chatShort: 'Order by chat', reviews: 'reviews', reviewsTitle: 'What customers say', faqTitle: 'Questions', contactTitle: 'Get in touch', products: 'Our products', featured: 'Best sellers', about: 'About us', rating: 'Rating', ready: 'Ready to order?', powered: 'Powered by', from: 'From' },
+    fr: { delivery: 'Livraison partout au Maroc', cod: 'Paiement à la livraison', ai: 'Réponses instantanées, jour et nuit', quality: 'Sélection soignée', navShop: 'Boutique', navAbout: 'À propos', navReviews: 'Avis', navFaq: 'FAQ', navContact: 'Contact', chatShort: 'Commander par chat', reviews: 'avis', reviewsTitle: 'Ce que disent nos clients', faqTitle: 'Questions fréquentes', contactTitle: 'Nous contacter', products: 'Nos produits', featured: 'Meilleures ventes', about: 'À propos', rating: 'Note', ready: 'Prêt à commander ?', powered: 'Propulsé par', from: 'Dès' },
+    ar: { delivery: 'توصيل لكل المغرب', cod: 'الدفع عند الاستلام', ai: 'ردود فورية ليلا ونهارا', quality: 'اختيار بعناية', navShop: 'المتجر', navAbout: 'من نحن', navReviews: 'التقييمات', navFaq: 'الأسئلة', navContact: 'تواصل', chatShort: 'اطلب عبر الدردشة', reviews: 'تقييم', reviewsTitle: 'ماذا يقول زبناؤنا', faqTitle: 'أسئلة شائعة', contactTitle: 'تواصل معنا', products: 'منتجاتنا', featured: 'الأكثر مبيعا', about: 'من نحن', rating: 'التقييم', ready: 'جاهز للطلب؟', powered: 'مدعوم من', from: 'ابتداء من' },
+  };
   let L = store.get('cd_shop_lang', null);
   if (!TXT[L]) { const nl = (navigator.language || 'en').slice(0, 2); L = nl === 'fr' ? 'fr' : nl === 'ar' ? 'ar' : 'en'; }
   const T = () => TXT[L];
@@ -126,7 +132,83 @@
     }
   }
 
+
+  // ---------- AI-written / generated site (sanitised on the server, rendered inside #site) ----------
+  function applyVars(v) {
+    const st = document.documentElement.style; const set = (k, x) => st.setProperty(k, x);
+    const dark = lum(v.bg) < 0.25;
+    set('--bg', v.bg); set('--surface', v.sf); set('--text', v.tx); set('--muted', v.mu); set('--border', v.ln); set('--gray-100', mix(v.bg, v.tx, 0.07));
+    set('--teal', v.a); set('--teal-700', mix(v.a, '#000000', 0.25)); set('--teal-100', dark ? mix(v.bg, v.a, 0.28) : mix(v.a, '#ffffff', 0.82)); set('--teal-50', dark ? mix(v.bg, v.a, 0.14) : mix(v.a, '#ffffff', 0.92));
+    set('--orange', v.a2); set('--orange-600', mix(v.a2, '#000000', 0.2)); set('--orange-100', dark ? mix(v.bg, v.a2, 0.25) : mix(v.a2, '#ffffff', 0.85));
+    set('--on-accent', v['on-a']); set('--on-accent2', v['on-a2']); set('--r', v.r); set('--font', v.bf);
+    document.documentElement.dataset.mode = dark ? 'dark' : 'light'; document.body.className = 'site-mode';
+    const m = document.querySelector('meta[name="theme-color"]'); if (m) m.content = v.bg;
+  }
+  function tokenValues() {
+    const d = DATA.design, shop = DATA.shop, t = T(); const about = d.sections.find(s => s.type === 'about') || {};
+    const prices = DATA.products.flatMap(p => p.variants.map(v => v.price)); const min = prices.length ? Math.min(...prices) : 0;
+    return { name: shop.name, tagline: shop.tagline || '', city: shop.city || '', about: about.body || '', hero_title: d.hero.title || shop.tagline || shop.name, hero_subtitle: d.hero.subtitle || '', cta: d.hero.cta || t.shopNow, announcement: shop.announcement || '',
+      rating: DATA.rating.avg || '', review_count: DATA.rating.count || '', year: String(new Date().getFullYear()), from_price: min ? `${UI[L].from} ${Math.round(min)} MAD` : '', instagram: d.social.instagram, phone: d.social.phone, email: d.social.email, logo_emoji: d.logo.emoji };
+  }
+  const blockHas = {
+    about: () => !!((DATA.design.sections.find(s => s.type === 'about') || {}).body) && (DATA.design.sections.find(s => s.type === 'about') || {}).enabled !== false,
+    faq: () => { const s = DATA.design.sections.find(x => x.type === 'faq'); return !!(s && s.enabled && s.items.length); },
+    reviews: () => { const s = DATA.design.sections.find(x => x.type === 'reviews'); return (!s || s.enabled !== false) && ((DATA.reviews || []).length > 0 || !!(s && s.items.some(i => i.text))); },
+    featured: () => { const s = DATA.design.sections.find(x => x.type === 'featured'); return !!(s && s.enabled) && (DATA.featured || []).length > 0; },
+    rating: () => !!DATA.rating.avg, city: () => !!DATA.shop.city,
+  };
+  function pcardHtml(p) {
+    const t = T(); const low = p.stock > 0 && p.stock <= 3;
+    return `<button class="g-pcard" data-p="${p.id}"><div class="g-pimg">${p.image ? `<img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy">` : esc(p.emoji || '📦')}${p.stock === 0 ? `<span class="g-badge">${t.sold}</span>` : low ? `<span class="g-badge low">${t.only(p.stock)}</span>` : ''}</div><div class="g-pbody"><div class="g-pname">${esc(p.name)}</div><div class="g-pprice">${money(Math.min(...p.variants.map(v => v.price)))}</div></div></button>`;
+  }
+  function hydrateBlocks(root) {
+    const t = T(), d = DATA.design, shop = DATA.shop; const cats = [...new Set(DATA.products.map(p => p.category).filter(Boolean))];
+    root.querySelectorAll('[data-cd]').forEach(el => {
+      const k = el.dataset.cd;
+      if (k === 'announcement') { if (shop.announcement) el.innerHTML = `<div class="g-ann">${esc(shop.announcement)}</div>`; }
+      else if (k === 'logo') { el.innerHTML = d.logo.image ? `<span class="g-lg"><img src="${esc(d.logo.image)}" alt=""></span>` : d.logo.emoji ? `<span class="g-lg">${esc(d.logo.emoji)}</span>` : ''; }
+      else if (k === 'langs') { el.innerHTML = `<div class="g-langs">${Object.keys(TXT).map(x => `<button class="g-lang ${x === L ? 'on' : ''}" data-lang="${x}" aria-label="${x}">${TXT[x].n}</button>`).join('')}</div>`; }
+      else if (k === 'categories') { el.innerHTML = cats.length > 1 ? `<div class="g-cats"><button class="g-cat ${cat === 'all' ? 'on' : ''}" data-cat="all">${t.all}</button>${cats.map(c => `<button class="g-cat ${cat === c ? 'on' : ''}" data-cat="${esc(c)}">${esc(c)}</button>`).join('')}</div>` : ''; }
+      else if (k === 'products') { const lay = /^(grid|carousel|magazine|list|masonry)$/.test(el.dataset.layout) ? el.dataset.layout : 'grid'; const list = DATA.products.filter(p => cat === 'all' || p.category === cat).slice(0, Number(el.dataset.limit) || 48); el.className = `g-products g-layout-${lay}`; el.style.setProperty('--cols', String(Math.min(4, Math.max(2, Number(el.dataset.cols) || 3)))); el.innerHTML = list.length ? list.map(pcardHtml).join('') : `<p class="g-empty">${t.noItems}</p>`; }
+      else if (k === 'featured') { const f = (DATA.featured || []).map(id => DATA.products.find(p => p.id === id)).filter(Boolean).slice(0, Number(el.dataset.limit) || 4); el.className = 'g-products g-layout-grid'; el.style.setProperty('--cols', '4'); el.innerHTML = f.map(pcardHtml).join(''); }
+      else if (k === 'reviews') {
+        const own = ((d.sections.find(s => s.type === 'reviews') || {}).items || []).filter(i => i.text).map(i => ({ rating: 5, comment: i.text, name: i.name }));
+        const real = (DATA.reviews || []).map(r => ({ rating: r.rating, comment: r.comment, name: [r.name, r.city].filter(Boolean).join(', ') }));
+        el.className = 'g-reviews'; el.innerHTML = [...own, ...real].slice(0, Number(el.dataset.limit) || 6).map(r => `<div class="g-review"><div class="g-stars">${stars(r.rating)}</div>${r.comment ? `<p class="g-rtext">${esc(r.comment)}</p>` : ''}<div class="g-rname">${esc(r.name || '')}</div></div>`).join('');
+      }
+      else if (k === 'faq') { const s = d.sections.find(x => x.type === 'faq'); el.className = 'g-faq'; el.innerHTML = ((s && s.items) || []).map(i => `<details class="g-qa"><summary>${esc(i.q)}</summary><p>${esc(i.a)}</p></details>`).join(''); }
+      else if (k === 'delivery') { const car = (DATA.carriers || []).slice(0, 4).map(c => `<div class="g-dline"><b>${esc(c.name)}</b> · ${esc(c.eta_days)} ${t.days}</div>`).join(''); el.className = 'g-delivery'; el.innerHTML = `<div class="g-dline">🚚 ${t.nation}</div><div class="g-dline">💵 ${t.cod2}</div>${shop.free_shipping_over ? `<div class="g-dline">🎁 ${t.free2(shop.free_shipping_over)}</div>` : ''}${car}`; }
+      else if (k === 'contact') {
+        const so = d.social; const wa = so.whatsapp || shop.wa_number; const b = [];
+        if (wa) b.push(`<a class="g-clink" href="https://wa.me/${esc(wa)}" target="_blank" rel="noopener">WhatsApp</a>`);
+        if (so.instagram) b.push(`<a class="g-clink" href="https://instagram.com/${esc(so.instagram)}" target="_blank" rel="noopener">Instagram</a>`);
+        if (so.tiktok) b.push(`<a class="g-clink" href="https://tiktok.com/@${esc(so.tiktok)}" target="_blank" rel="noopener">TikTok</a>`);
+        if (so.phone) b.push(`<a class="g-clink" href="tel:${esc(so.phone.replace(/\s/g, ''))}">${t.callUs} ${esc(so.phone)}</a>`);
+        if (so.email) b.push(`<a class="g-clink" href="mailto:${esc(so.email)}">${t.mailUs}</a>`);
+        el.className = 'g-contact'; el.innerHTML = b.join('');
+      }
+      else if (k === 'photo') { const img = el.dataset.target === 'about' ? d.aboutImage : d.hero.image; el.innerHTML = img ? `<img src="${esc(img)}" alt="">` : ''; }
+    });
+  }
+  function paintSite() {
+    const t = T(); const s = DATA.site; const shop = DATA.shop;
+    document.documentElement.lang = L; document.documentElement.dir = t.dir;
+    let link = document.getElementById('site-fonts'); if (!link) { link = document.createElement('link'); link.id = 'site-fonts'; link.rel = 'stylesheet'; document.head.appendChild(link); } if (link.getAttribute('href') !== s.fontsHref) link.setAttribute('href', s.fontsHref);
+    let st = document.getElementById('site-css'); if (!st) { st = document.createElement('style'); st.id = 'site-css'; document.head.appendChild(st); } st.textContent = s.css;
+    applyVars(s.vars);
+    const tok = tokenValues(); const ui = UI[L];
+    const html = s.html.replace(/\{\{([A-Za-z_.]+)\}\}/g, (m, k) => esc(k.startsWith('ui.') ? (ui[k.slice(3)] ?? '') : (tok[k] ?? '')));
+    const vars = Object.entries(s.vars).map(([k, v]) => `--${k}:${v}`).join(';');
+    $('#app').innerHTML = `<div id="site" style="${esc(vars)}">${html}</div>${shop.ai_enabled !== false ? `<button class="fab ${chatOpen ? 'hidden' : ''}" data-chat="open">${ic('chat')} ${t.chat}${chat.unread ? '<span class="dot"></span>' : ''}</button>` : ''}<div id="chatHost"></div>`;
+    const root = $('#site');
+    root.querySelectorAll('[data-if]').forEach(el => { const f = blockHas[el.dataset.if]; if (f && !f()) el.remove(); });
+    hydrateBlocks(root);
+    if (chatOpen) paintChat();
+  }
+  function rehydrateProducts() { const root = $('#site'); if (!root) return; hydrateBlocks(root); }
+
   function paint() {
+    if (DATA.site) return paintSite();
     const t = T(); document.documentElement.lang = L; document.documentElement.dir = t.dir;
     const { shop, products, rating, design: d } = DATA;
     applyDesign(d);
@@ -286,7 +368,8 @@
   document.addEventListener('click', e => {
     const el = e.target;
     const lang = el.closest('[data-lang]'); if (lang) { L = lang.dataset.lang; store.set('cd_shop_lang', L); chat.vlang = L === 'fr' ? 'fr-FR' : L === 'en' ? 'en-US' : 'ar-MA'; paint(); if (open) paintSheet(); return; }
-    const c = el.closest('[data-cat]'); if (c) { cat = c.dataset.cat; paint(); return; }
+    const c = el.closest('[data-cat]'); if (c) { cat = c.dataset.cat; if (DATA.site) rehydrateProducts(); else paint(); return; }
+    const act = el.closest('#site [data-act]'); if (act) { e.preventDefault(); const a = act.dataset.act; if (a === 'chat') { chatOpen = true; chat.unread = false; paint(); } else if (a === 'shop') { const t0 = document.querySelector('#site [data-cd=products]'); if (t0) t0.scrollIntoView({ behavior: 'smooth', block: 'start' }); } else if (a === 'whatsapp' && DATA.shop.wa_number) window.open('https://wa.me/' + DATA.shop.wa_number, '_blank', 'noopener'); return; }
     const p = el.closest('[data-p]'); if (p) { openProduct(Number(p.dataset.p)); return; }
     if (el.closest('[data-close]') || (el.dataset && el.dataset.ov !== undefined)) { closeSheet(); return; }
     const v = el.closest('[data-v]'); if (v && open) { sel.v = Number(v.dataset.v); sel.q = 1; paintSheet(); return; }

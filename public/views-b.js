@@ -147,6 +147,7 @@
           <div class="grid k2" style="gap:10px"><div><label class="f">${t('city')}</label><input class="inp" id="s_city" value="${shop.city || ''}"></div><div><label class="f">${t('phone')}</label><input class="inp" id="s_phone" value="${shop.phone || ''}"></div></div></fieldset></div>
         <div class="card"><h3>${icon('zap')} ${t('aiSettings')}</h3><fieldset style="border:0;padding:0;margin:0" ${dis}>
           <label class="row" style="margin:6px 0"><input type="checkbox" id="s_ai" ${shop.ai_enabled ? raw('checked') : ''}> ${t('aiOn')}</label>
+          <label class="row" style="margin:6px 0"><input type="checkbox" id="s_confirm" ${shop.confirm_agent ? raw('checked') : ''}> ${t('confirmAgent')}</label><div class="tiny muted">${t('confirmAgentHint')}</div>
           <div class="grid k2" style="gap:10px"><div><label class="f">${t('defaultLang')}</label><select class="inp" id="s_lang">${[['fr', 'Français'], ['en', 'English'], ['ar', 'العربية']].map(([k, n]) => html`<option value="${k}" ${k === (shop.lang === 'dar' ? 'ar' : shop.lang) ? raw('selected') : ''}>${n}</option>`)}</select></div>
           <div><label class="f">${t('tone')}</label><select class="inp" id="s_tone"><option value="friendly" ${shop.tone === 'friendly' ? raw('selected') : ''}>${t('friendly')}</option><option value="formal" ${shop.tone === 'formal' ? raw('selected') : ''}>${t('formal')}</option></select></div></div></fieldset>
           <div class="small muted" style="margin-top:10px">${t('llmState')}: <b>${ig.llm ? t('llmOn') : t('llmOff')}</b></div></div></div>
@@ -167,7 +168,7 @@
   act.resetDemo = async () => { if (!confirm(t('resetDemo') + '?')) return; try { await api('/api/demo/reset', { method: 'POST' }); toast(t('resetDone')); setTimeout(() => location.assign('/app'), 600); } catch (_) {} };
   act.saveSettings = async () => {
     try {
-      await saveShop({ name: $('#s_name').value, tagline: $('#s_tag').value, city: $('#s_city').value, phone: $('#s_phone').value, ai_enabled: $('#s_ai').checked ? 1 : 0, lang: $('#s_lang').value, tone: $('#s_tone').value, free_shipping_over: $('#s_free').value, default_carrier: $('#s_car').value, wa_number: $('#s_wa').value, auto_carrier: $('#s_auto').checked ? 1 : 0 });
+      await saveShop({ name: $('#s_name').value, tagline: $('#s_tag').value, city: $('#s_city').value, phone: $('#s_phone').value, ai_enabled: $('#s_ai').checked ? 1 : 0, confirm_agent: $('#s_confirm').checked ? 1 : 0, lang: $('#s_lang').value, tone: $('#s_tone').value, free_shipping_over: $('#s_free').value, default_carrier: $('#s_car').value, wa_number: $('#s_wa').value, auto_carrier: $('#s_auto').checked ? 1 : 0 });
       toast(t('saved')); CD.render();
     } catch (_) {}
   };

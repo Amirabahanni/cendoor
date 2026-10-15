@@ -4,6 +4,7 @@ const { get, all, run, tx } = require('./lib/db');
 const auth = require('./lib/auth');
 const network = require('./lib/network');
 const designLib = require('./lib/design');
+const siteLib = require('./lib/site');
 
 function rng(seed) { let a = seed; return () => { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
 const ts = (daysAgo, hour = 12, min = 0) => { const d = new Date(Date.now() - daysAgo * 86400000); d.setUTCHours(hour, min, 0, 0); return d.toISOString().replace('T', ' ').slice(0, 19); };
@@ -57,9 +58,11 @@ function seedDemo() {
       const shopRow = get('SELECT * FROM shops WHERE id=?', shopId);
       const built = designLib.buildFromWizard(shopRow, { category: 'fashion', style: 'natural', lang: 'fr' });
       built.design.hero.title = '';
-      built.design.logo = { emoji: '👗', image: '', showName: true };
+      built.design.logo = { emoji: '', image: '', showName: true };
       built.design.social = { instagram: 'amina.boutique', tiktok: 'amina.boutique', whatsapp: '', phone: '0661234567', email: '' };
       designLib.saveDesign(shopId, built.design);
+      run('UPDATE shops SET ai_credits=10 WHERE id=?', shopId);
+      siteLib.build(shopId, { category: 'fashion', mood: 'warm', colors: [], variants: { hero: 'split', products: 'magazine' } }, { seed: 7 });
     }
     run("INSERT INTO post_links (shop_id, code, label, channel, product_id, visits) VALUES (?,?,?,?,?,?)", shopId, 'ig-satin', 'Reel: Robe Satin bleue', 'instagram', pid[0], 540);
     run("INSERT INTO post_links (shop_id, code, label, channel, product_id, visits) VALUES (?,?,?,?,?,?)", shopId, 'tt-caftan', 'TikTok: Caftan Brodé', 'tiktok', pid[1], 1350);

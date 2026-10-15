@@ -106,7 +106,7 @@
   let authTab = 'login';
   function authView() {
     return html`<div class="auth"><div class="auth-card">
-      <div class="row between"><div class="logo"><img class="logo-img" src="/logo.svg" alt="">cendoor</div>${langPicker()}</div>
+      <div class="row between"><div class="logo">cendoor</div>${langPicker()}</div>
       <p class="muted small" style="margin:10px 0 0">${t('slogan')}</p>
       <div class="tabs"><button class="${authTab === 'login' ? 'on' : ''}" data-act="authTab" data-v="login">${t('login')}</button><button class="${authTab === 'signup' ? 'on' : ''}" data-act="authTab" data-v="signup">${t('signup')}</button></div>
       <form id="authForm" autocomplete="on">
@@ -132,14 +132,14 @@
   // ---------- shell ----------
   const NAV = [['overview', 'home'], ['studio', 'zap'], ['orders', 'box'], ['inbox', 'chat'], ['products', 'tag'], ['customers', 'users'], ['settings', 'sliders']];
   // pages that live under another menu entry, shown as tabs at the top of the page
-  const GROUPS = { orders: ['orders', 'money'], products: ['products', 'links'], settings: ['settings', 'team'] };
+  const GROUPS = { orders: ['orders', 'money'], products: ['products', 'links'], customers: ['customers', 'campaigns'], settings: ['settings', 'team'] };
   const groupOf = r => Object.keys(GROUPS).find(g => GROUPS[g].includes(r)) || r;
   function shell(inner) {
     const { me, badges } = CD.state; const r = CD.state.route;
     const b = { orders: badges.toApprove, inbox: badges.attention };
     return html`<div class="shell">
       <aside class="side" id="side">
-        <div class="logo"><img class="logo-img" src="/logo.svg" alt="">cendoor</div>
+        <div class="logo">cendoor</div>
         <nav class="nav">${NAV.filter(([k]) => k !== 'team' || me.can.team || true).map(([k, ic]) => html`<a href="#/${k}" class="${groupOf(r) === k ? 'on' : ''}" data-act="closeMenu">${icon(ic)}<span>${t(k)}</span>${b[k] ? html`<span class="badge">${b[k]}</span>` : ''}</a>`)}</nav>
         <div class="spacer"></div>
         <a class="btn sm" href="/s/${me.shop.slug}" target="_blank" rel="noopener">${icon('ext')} ${t('viewStore')}</a>

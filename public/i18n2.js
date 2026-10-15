@@ -61,3 +61,7 @@ Object.assign(I18N.ar, { askTitle: 'ماذا تريد أن تفعل؟', askPlace
 Object.assign(I18N.en, { slogan: 'You post. Cendoor does the rest.' });
 Object.assign(I18N.fr, { slogan: 'Vous postez. Cendoor fait le reste.' });
 Object.assign(I18N.ar, { slogan: 'أنت تنشر، وسندوور تتكفل بالباقي.' });
+
+Object.assign(I18N.en, { confirmAgent: 'AI asks customers to confirm form orders', confirmAgentHint: 'Orders placed with the quick form wait until the customer replies YES to the AI message (WhatsApp). Until WhatsApp is connected, use the one-tap "Confirm on WhatsApp" button in the order.' });
+Object.assign(I18N.fr, { confirmAgent: "L'IA demande aux clients de confirmer les commandes du formulaire", confirmAgentHint: "Les commandes passées avec le formulaire rapide attendent que le client réponde OUI au message de l'IA (WhatsApp). Tant que WhatsApp n'est pas connecté, utilisez le bouton « Confirmer sur WhatsApp » dans la commande." });
+Object.assign(I18N.ar, { confirmAgent: 'الذكاء الاصطناعي يطلب من الزبناء تأكيد طلبات الاستمارة', confirmAgentHint: 'الطلبات المسجلة بالاستمارة السريعة تنتظر حتى يجيب الزبون بنعم على رسالة الذكاء الاصطناعي (واتساب). إلى أن يُربط واتساب، استعمل زر «تأكيد عبر واتساب» داخل الطلب.' });

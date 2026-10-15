@@ -17,6 +17,11 @@ const insights = require('./lib/insights');
 const { caption } = require('./lib/caption');
 const assistant = require('./lib/assistant');
 const designLib = require('./lib/design');
+const siteLib = require('./lib/site');
+const fontsLib = require('./lib/fonts');
+const broadcast = require('./lib/broadcast');
+// advanced (AI-written) design uses real AI usage, so it is metered; basic customisation is always free
+const PLAN_CREDITS = { trial: 10, solo: 0, growth: 100 };
 const { seedDemo } = require('./seed');
 
 if (process.env.CENDOOR_SEED !== '0') seedDemo();
@@ -31,6 +36,8 @@ app.use((req, res, next) => {
   res.setHeader('Permissions-Policy', 'camera=(), geolocation=(), microphone=(self)');
   next();
 });
+app.get('/fonts.css', (req, res) => { res.type('text/css').set('Cache-Control', 'public, max-age=86400').send(fontsLib.css(req.query.f)); });
+app.get('/fonts/:pkg/files/:file', (req, res) => { const p = fontsLib.filePath(req.params.pkg, req.params.file); if (!p) return res.sendStatus(404); res.set('Cache-Control', 'public, max-age=31536000, immutable'); res.type('font/woff2'); res.sendFile(p); });
 app.get('/api/health', (req, res) => res.json({ ok: true, time: new Date().toISOString() }));
 app.use(express.json({ limit: '4mb', verify: (req, res, buf) => { req.rawBody = buf; } }));
 const UPLOADS = path.join(DATA_DIR, 'uploads');
@@ -81,7 +88,7 @@ app.get('/api/shop/:slug', (req, res) => {
   }
   res.json({
     shop: { name: shop.name, slug: shop.slug, city: shop.city, tagline: shop.tagline, lang: shop.lang, wa_number: shop.wa_number, free_shipping_over: shop.free_shipping_over, ai_enabled: !!shop.ai_enabled, theme_color: shop.theme_color, announcement: shop.announcement, welcome_msg: shop.welcome_msg },
-    design: designLib.getDesign(shop.id),
+    design: designLib.getDesign(shop.id), site: siteLib.publicSite(shop.id),
     featured: (() => {
       const top = all(`SELECT oi.product_id id, SUM(oi.qty) q FROM order_items oi JOIN orders o ON o.id=oi.order_id WHERE o.shop_id=? AND o.status != 'cancelled' AND date(o.created_at) >= date('now','-60 days') GROUP BY oi.product_id ORDER BY q DESC LIMIT 4`, shop.id).map(x => x.id);
       return top.length ? top : all('SELECT id FROM products WHERE shop_id=? AND active=1 ORDER BY id LIMIT 4', shop.id).map(x => x.id);
@@ -141,7 +148,7 @@ app.post('/api/shop/:slug/order', wrap(async (req, res) => {
     const order = orders.createOrder({
       shopId: shop.id, customer: { name: str(b.name, 80), phone, city, address: str(b.address, 200) },
       items: (Array.isArray(b.items) ? b.items : []).slice(0, 20).map(i => ({ variantId: num(i.variantId), qty: Math.min(20, Math.max(1, num(i.qty, 1))) })),
-      channel: link ? link.channel : 'web', sourceCode: link ? link.code : '',
+      channel: link ? link.channel : 'web', sourceCode: link ? link.code : '', needsCustomerConfirm: !!shop.confirm_agent,
     });
     res.json({ ok: true, number: order.number, total: order.total, eta: order.eta, verify: order.verify });
   } catch (e) {
@@ -171,7 +178,7 @@ app.post('/api/auth/signup', (req, res) => {
   let slug = slugify(shopName); let i = 1;
   while (get('SELECT id FROM shops WHERE slug=?', slug)) slug = slugify(shopName) + '-' + (++i);
   const token = tx(() => {
-    run("INSERT INTO shops (slug, name, city, phone, lang, plan, trial_ends_at) VALUES (?,?,?,?,?,'trial',datetime('now','+14 days'))", slug, shopName, str(req.body.city, 40), str(req.body.phone, 20), 'fr');
+    run("INSERT INTO shops (slug, name, city, phone, lang, plan, trial_ends_at, ai_credits) VALUES (?,?,?,?,?,'trial',datetime('now','+14 days')," + PLAN_CREDITS.trial + ")", slug, shopName, str(req.body.city, 40), str(req.body.phone, 20), 'fr');
     const shop = get('SELECT id FROM shops WHERE slug=?', slug);
     const salt = auth.newSalt();
     run('INSERT INTO users (shop_id, email, name, pass_hash, salt, role) VALUES (?,?,?,?,?,?)', shop.id, email, name || shopName, auth.hash(password, salt), salt, 'admin');
@@ -195,7 +202,7 @@ app.post('/api/auth/logout', (req, res) => {
   auth.clearCookie(res); res.json({ ok: true });
 });
 app.get('/api/me', auth.auth(), (req, res) => {
-  const shop = get('SELECT * FROM shops WHERE id=?', req.shopId);
+  const { site: _site, design: _design, ...shop } = get('SELECT * FROM shops WHERE id=?', req.shopId);
   const used = analytics.monthlyUsage(shop.id);
   res.json({
     user: req.user, shop, can: Object.fromEntries(Object.entries(auth.CAN).map(([k, v]) => [k, v.includes(req.user.role)])),
@@ -214,12 +221,13 @@ app.put('/api/settings', auth.auth('settings'), (req, res) => {
     name: str(b.name, 60), city: str(b.city, 40), phone: str(b.phone, 20), tagline: str(b.tagline, 140),
     lang: ['dar', 'fr', 'en', 'ar'].includes(b.lang) ? b.lang : 'dar', tone: b.tone === 'formal' ? 'formal' : 'friendly',
     ai_enabled: b.ai_enabled ? 1 : 0, default_carrier: str(b.default_carrier, 30), free_shipping_over: Math.max(0, num(b.free_shipping_over)),
-    auto_carrier: b.auto_carrier ? 1 : 0, wa_number: str(b.wa_number, 20).replace(/\D/g, ''), plan: ['solo', 'growth'].includes(b.plan) ? b.plan : undefined,
+    auto_carrier: b.auto_carrier ? 1 : 0, confirm_agent: b.confirm_agent ? 1 : 0, wa_number: str(b.wa_number, 20).replace(/\D/g, ''), plan: ['solo', 'growth'].includes(b.plan) ? b.plan : undefined,
   };
   if (!f.name) return res.status(400).json({ error: 'name_required' });
   const cur = get('SELECT * FROM shops WHERE id=?', req.shopId);
-  run('UPDATE shops SET name=?, city=?, phone=?, tagline=?, lang=?, tone=?, ai_enabled=?, default_carrier=?, free_shipping_over=?, wa_number=?, plan=?, auto_carrier=? WHERE id=?',
-    f.name, f.city, f.phone, f.tagline, f.lang, f.tone, f.ai_enabled, f.default_carrier || cur.default_carrier, f.free_shipping_over, f.wa_number, f.plan || cur.plan, f.auto_carrier, req.shopId);
+  if (f.plan && f.plan !== cur.plan) run('UPDATE shops SET ai_credits=? WHERE id=?', PLAN_CREDITS[f.plan] ?? 0, req.shopId);
+  run('UPDATE shops SET name=?, city=?, phone=?, tagline=?, lang=?, tone=?, ai_enabled=?, default_carrier=?, free_shipping_over=?, wa_number=?, plan=?, auto_carrier=?, confirm_agent=? WHERE id=?',
+    f.name, f.city, f.phone, f.tagline, f.lang, f.tone, f.ai_enabled, f.default_carrier || cur.default_carrier, f.free_shipping_over, f.wa_number, f.plan || cur.plan, f.auto_carrier, f.confirm_agent, req.shopId);
   res.json({ ok: true });
 });
 app.get('/api/carriers', auth.auth(), (req, res) => res.json(all('SELECT * FROM carriers WHERE shop_id=? ORDER BY id', req.shopId).map(c => ({ ...c, city_prices: convo.safeJson(c.city_prices, {}) }))));
@@ -490,13 +498,51 @@ app.post('/api/studio', auth.auth('studio'), wrap(async (req, res) => {
   const lang = ['en', 'fr', 'ar'].includes(req.body.lang) ? req.body.lang : 'en';
   const imageUrl = req.body.image ? saveImage(req.body.image, req.shopId) : null;
   if (req.body.image && !imageUrl) return res.status(400).json({ error: 'bad_image' });
-  const out = await assistant.handle(req.shopId, req.body.text, { history: Array.isArray(req.body.history) ? req.body.history : [], lang, state: req.body.state && typeof req.body.state === 'object' ? req.body.state : null, imageUrl });
+  const out = await assistant.handle(req.shopId, req.body.text, { history: Array.isArray(req.body.history) ? req.body.history : [], lang, state: req.body.state && typeof req.body.state === 'object' ? req.body.state : null, imageUrl, userId: req.user.id });
   res.json({ ...out, log: assistant.recentLog(req.shopId) });
 }));
 app.post('/api/studio/undo', auth.auth('studio'), (req, res) => {
   const l = assistant.undoLast(req.shopId);
   res.json({ ok: !!l, label: l ? l.label : null, log: assistant.recentLog(req.shopId) });
 });
+
+// Edit the text and pictures of the generated site directly (free: no AI credits used)
+app.get('/api/site/content', auth.auth(), (req, res) => {
+  const shop = get('SELECT * FROM shops WHERE id=?', req.shopId); const d = designLib.getDesign(req.shopId); const about = designLib.section(d, 'about') || {}; const site = siteLib.getSite(req.shopId);
+  res.json({ name: shop.name, tagline: shop.tagline, announcement: shop.announcement, hero: { title: d.hero.title, subtitle: d.hero.subtitle, cta: d.hero.cta, image: d.hero.image }, about: { title: about.title || '', body: about.body || '', image: d.aboutImage }, logo: d.logo, social: d.social, footer: d.footer, hasSite: !!site, source: site ? site.source : null, credits: shop.ai_credits });
+});
+app.put('/api/site/content', auth.auth('studio'), (req, res) => {
+  const b = req.body || {}; const images = {};
+  for (const k of ['hero', 'about', 'logo']) {
+    const val = b.images && b.images[k];
+    if (val === '' || val === null) images[k] = '';
+    else if (typeof val === 'string' && val.startsWith('data:')) { const u = saveImage(val, req.shopId); if (!u) return res.status(400).json({ error: 'bad_image' }); images[k] = u; }
+  }
+  const r = assistant.editContent(req.shopId, { name: b.name, tagline: b.tagline, announcement: b.announcement, hero: b.hero, about: b.about, footer: b.footer, social: b.social, images });
+  if (r.error) return res.status(400).json(r);
+  res.json({ ok: true });
+});
+
+// Campaigns: announcements and mass messages (always previewed, opted-out customers excluded, daily limit)
+const segArg = q => ({ segment: broadcast.SEGMENTS.includes(q.segment) ? q.segment : 'all', arg: str(q.arg, 40) });
+app.get('/api/campaigns', auth.auth(), (req, res) => {
+  const counts = Object.fromEntries(broadcast.SEGMENTS.filter(s => s !== 'city').map(s => [s, broadcast.audience(req.shopId, s).count]));
+  res.json({ history: broadcast.history(req.shopId), counts, excluded: broadcast.audience(req.shopId, 'all').excluded, purposes: broadcast.PURPOSES, whatsapp: whatsapp.configured(), maxPerDay: broadcast.MAX_PER_DAY, cities: nlp.CITY_NAMES.filter(c => all('SELECT 1 FROM customers WHERE shop_id=? AND city=? LIMIT 1', req.shopId, c).length) });
+});
+app.post('/api/campaigns/draft', auth.auth('studio'), (req, res) => {
+  const shop = get('SELECT * FROM shops WHERE id=?', req.shopId); const lang = ['en', 'fr', 'ar'].includes(req.body.lang) ? req.body.lang : (shop.lang === 'dar' ? 'fr' : shop.lang);
+  const purpose = broadcast.PURPOSES.includes(req.body.purpose) ? req.body.purpose : 'promo';
+  res.json({ text: broadcast.draft(shop, purpose, lang, `${req.protocol}://${req.get('host')}/s/${shop.slug}`) });
+});
+app.post('/api/campaigns/preview', auth.auth('studio'), (req, res) => { const a = broadcast.audience(req.shopId, segArg(req.body).segment, segArg(req.body).arg); res.json({ count: a.count, excluded: a.excluded, sample: a.rows.slice(0, 3).map(c => c.name) }); });
+app.post('/api/campaigns/send', auth.auth('studio'), (req, res) => {
+  if (limited('campaign:' + req.shopId, 5, 3600000)) return res.status(429).json({ error: 'slow_down' });
+  const r = broadcast.send(req.shopId, { ...segArg(req.body), text: req.body.text, createdBy: req.user.id });
+  if (r.error) return res.status(r.error === 'daily_limit' ? 429 : 400).json(r);
+  res.json(r);
+});
+app.get('/api/campaigns/:id/queue', auth.auth(), (req, res) => res.json(broadcast.queue(req.shopId, num(req.params.id))));
+app.post('/api/campaigns/recipients/:id/done', auth.auth('studio'), (req, res) => { broadcast.markDone(req.shopId, num(req.params.id)); res.json({ ok: true }); });
 
 // Public order tracking: needs the order number AND the phone used on the order
 app.get('/api/track', (req, res) => {
@@ -515,7 +561,7 @@ app.get(['/track', '/t/:slug/:num'], (req, res) => res.sendFile(path.join(__dirn
 // Investor demo: put the demo shop back to its original state (only when CENDOOR_DEMO=1)
 app.post('/api/demo/reset', auth.auth(), (req, res) => {
   if (process.env.CENDOOR_DEMO !== '1' || req.user.email !== 'demo@cendoor.com') return res.status(403).json({ error: 'forbidden' });
-  tx(() => { for (const t of ['phone_rep', 'wa_sessions', 'shipment_events', 'order_items', 'reviews', 'orders', 'messages', 'conversations', 'customers', 'post_links', 'carriers', 'variants', 'products', 'sessions', 'users', 'shops']) run(`DELETE FROM ${t}`); });
+  tx(() => { for (const t of ['broadcast_recipients', 'broadcasts', 'assistant_log', 'phone_rep', 'wa_sessions', 'shipment_events', 'order_items', 'reviews', 'orders', 'messages', 'conversations', 'customers', 'post_links', 'carriers', 'variants', 'products', 'sessions', 'users', 'shops']) run(`DELETE FROM ${t}`); });
   seedDemo();
   const u = get("SELECT id FROM users WHERE email='demo@cendoor.com'");
   auth.setCookie(res, auth.createSession(u.id), req);

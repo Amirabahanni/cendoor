@@ -14,7 +14,7 @@ Object.assign(I18N.en, {
   bestCarrier: 'Best carrier here', sinceN: n => `${n} deliveries`, askWhatsApp: 'Confirm on WhatsApp',
   postKit: 'Post kit', postKitHint: 'A caption and a tracked link, ready to paste into Instagram, TikTok or a WhatsApp status.', generate: 'Generate', copyCaption: 'Copy caption',
   autoCarrier: 'Choose the best carrier automatically for each city', autoCarrierHint: 'Based on how each carrier really performed on your orders (needs a few completed deliveries per city).', carrierPerf: 'Carrier performance (your orders)',
-  demoTools: 'Investor demo', demoHint2: 'Put the demo shop back to its original data. Anything investors created is removed.', resetDemo: 'Reset demo data', resetDone: 'Demo reset',
+  demoTools: 'Demo tools', demoHint2: 'Put the demo shop back to its original data. Anything visitors created is removed.', resetDemo: 'Reset demo data', resetDone: 'Demo reset',
   trackTitle: 'Track your order', shield: 'Cendoor Shield',
 });
 Object.assign(I18N.fr, {

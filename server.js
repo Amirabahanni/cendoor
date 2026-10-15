@@ -558,7 +558,7 @@ app.get('/api/track', (req, res) => {
 });
 app.get(['/track', '/t/:slug/:num'], (req, res) => res.sendFile(path.join(__dirname, 'public', 'track.html')));
 
-// Investor demo: put the demo shop back to its original state (only when CENDOOR_DEMO=1)
+// Demo mode: put the demo shop back to its original state (only when CENDOOR_DEMO=1)
 app.post('/api/demo/reset', auth.auth(), (req, res) => {
   if (process.env.CENDOOR_DEMO !== '1' || req.user.email !== 'demo@cendoor.com') return res.status(403).json({ error: 'forbidden' });
   tx(() => { for (const t of ['broadcast_recipients', 'broadcasts', 'assistant_log', 'phone_rep', 'wa_sessions', 'shipment_events', 'order_items', 'reviews', 'orders', 'messages', 'conversations', 'customers', 'post_links', 'carriers', 'variants', 'products', 'sessions', 'users', 'shops']) run(`DELETE FROM ${t}`); });
@@ -583,7 +583,7 @@ if (require.main === module) {
   app.listen(PORT, () => {
     console.log(`Cendoor running on http://localhost:${PORT}`);
     console.log(`  Dashboard : http://localhost:${PORT}/app   (demo@cendoor.com / demo1234)`);
-    console.log(`  Storefront: http://localhost:${PORT}/s/amina-boutique`);
+    console.log(`  Storefront: http://localhost:${PORT}/s/atlas-boutique`);
     console.log(`  AI mode   : ${chat.llmEnabled() ? 'Claude (tool calling)' : 'built-in rules (set ANTHROPIC_API_KEY for the LLM)'}`);
     console.log(`  WhatsApp  : ${whatsapp.configured() ? 'connected' : 'not configured (dry-run)'}`);
   });

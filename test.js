@@ -19,7 +19,7 @@ const insights = require('./lib/insights');
 const network = require('./lib/network');
 
 seedDemo();
-const shop = get("SELECT * FROM shops WHERE slug='amina-boutique'");
+const shop = get("SELECT * FROM shops WHERE slug='atlas-boutique'");
 let pass = 0, fail = 0;
 const ok = (cond, msg) => { if (cond) { pass++; console.log('  ok  ', msg); } else { fail++; console.log('  FAIL', msg); } };
 const VERBOSE = process.argv.includes('-v');
@@ -111,7 +111,7 @@ const stockOf = label => get("SELECT v.stock FROM variants v JOIN products p ON 
   const fo = o2.id;
   orders.setOrderStatus(fo, 'shipped');
   orders.setOrderStatus(fo, 'failed');
-  const abayaStock = () => get("SELECT v.stock FROM variants v JOIN products p ON p.id=v.product_id WHERE p.name='Abaya Classique' AND v.label='Black / M'").stock;
+  const abayaStock = () => get("SELECT v.stock FROM variants v JOIN products p ON p.id=v.product_id WHERE p.name='Classic Abaya' AND v.label='Black / M'").stock;
   const stockAbaya = abayaStock();
   await talk('t-fr-1', ['3']);
   ok(orders.getOrder(fo).status === 'cancelled', 'failed-delivery recovery: customer cancels');
@@ -140,12 +140,12 @@ const stockOf = label => get("SELECT v.stock FROM variants v JOIN products p ON 
   await S('free delivery above 500');
   ok(row().free_shipping_over === 500, 'free delivery threshold set');
   const priceOf = n => get('SELECT price FROM products WHERE shop_id=? AND name=?', shop.id, n).price;
-  const caftanBefore = priceOf('Caftan Brodé');
+  const caftanBefore = priceOf('Embroidered Caftan');
   await S('set the price of the caftan to 600');
-  ok(priceOf('Caftan Brodé') === 600, 'product price changed by sentence');
+  ok(priceOf('Embroidered Caftan') === 600, 'product price changed by sentence');
   await S('undo');
-  ok(priceOf('Caftan Brodé') === caftanBefore, 'undo restores the previous price');
-  const parfum = () => get("SELECT v.stock FROM variants v JOIN products p ON p.id=v.product_id WHERE p.name='Parfum Oud' AND p.shop_id=?", shop.id).stock;
+  ok(priceOf('Embroidered Caftan') === caftanBefore, 'undo restores the previous price');
+  const parfum = () => get("SELECT v.stock FROM variants v JOIN products p ON p.id=v.product_id WHERE p.name='Oud Perfume' AND p.shop_id=?", shop.id).stock;
   const ps = parfum();
   await S('add 10 to the perfume');
   ok(parfum() === ps + 10, 'stock increased by sentence');
@@ -172,7 +172,7 @@ const stockOf = label => get("SELECT v.stock FROM variants v JOIN products p ON 
   ok(D.section(D.getDesign(shop.id), 'about').body.includes('Marrakech since 2015'), 'About text set');
   await S('add faq: "Do you ship to Dakhla?" Yes, in 3 to 5 days.');
   ok(D.section(D.getDesign(shop.id), 'faq').items.some(i => /Dakhla/.test(i.q) && /3 to 5/.test(i.a)), 'FAQ question and answer parsed');
-  await S('add my instagram amina.boutique'); ok(D.getDesign(shop.id).social.instagram === 'amina.boutique', 'Instagram link added');
+  await S('add my instagram atlas.boutique'); ok(D.getDesign(shop.id).social.instagram === 'atlas.boutique', 'Instagram link added');
   await S('remove the about section'); ok(D.section(D.getDesign(shop.id), 'about').enabled === false, 'a section can be hidden');
   const pre = siteLib.getSite(shop.id).html; await S('undo'); ok(true, 'undo works on a style change'); await S('undo');
   const beforeBuild = site().html; await S('build my website'); await S('perfumes, elegant, soft pink'); ok(site().input.category === 'beauty' && site().html !== beforeBuild, 'a new description replaces the whole site');
@@ -185,7 +185,7 @@ const stockOf = label => get("SELECT v.stock FROM variants v JOIN products p ON 
   await assistant.handle(shop.id, 'use it as my logo', { lang: 'en', imageUrl: '/uploads/test-logo.png' }); ok(D.getDesign(shop.id).logo.image === '/uploads/test-logo.png', 'photo used as logo');
   await assistant.handle(shop.id, 'use it as my main photo', { lang: 'en', imageUrl: '/uploads/test-hero.jpg' }); ok(D.getDesign(shop.id).hero.image === '/uploads/test-hero.jpg', 'photo used as the main (hero) photo');
   await assistant.handle(shop.id, 'use it for the about section', { lang: 'en', imageUrl: '/uploads/test-about.jpg' }); ok(D.getDesign(shop.id).aboutImage === '/uploads/test-about.jpg' && site().input.variants.about === 'split', 'photo used in the About section (layout switches to one with a photo slot)');
-  const e = assistant.editContent(shop.id, { name: 'Amina Boutique', tagline: 'New tagline', hero: { title: 'Edited title', cta: 'Buy now' }, about: { body: 'Edited about text' }, social: { phone: '0661234567' }, images: { hero: '' } });
+  const e = assistant.editContent(shop.id, { name: 'Atlas Boutique', tagline: 'New tagline', hero: { title: 'Edited title', cta: 'Buy now' }, about: { body: 'Edited about text' }, social: { phone: '0661234567' }, images: { hero: '' } });
   ok(e.ok && row().tagline === 'New tagline' && D.getDesign(shop.id).hero.title === 'Edited title' && D.getDesign(shop.id).hero.image === '' && D.section(D.getDesign(shop.id), 'about').body === 'Edited about text', 'direct text and photo editing (no AI credits)');
   ok(D.normalize({ hero: { image: 'https://evil.example/x.png' }, logo: { image: 'javascript:alert(1)' } }, shop).hero.image === '', 'only uploaded photos are accepted in the design document');
 
@@ -223,7 +223,7 @@ const stockOf = label => get("SELECT v.stock FROM variants v JOIN products p ON 
   const optc = get("SELECT id FROM customers WHERE shop_id=? ORDER BY id LIMIT 1", shop.id); run('UPDATE customers SET opted_out=1 WHERE id=?', optc.id);
   ok(broadcast.audience(shop.id, 'all').count < get('SELECT COUNT(*) n FROM customers WHERE shop_id=?', shop.id).n, 'customers who asked to stop are excluded');
   let lim = null; for (let i = 0; i < 4; i++) lim = broadcast.send(shop.id, { segment: 'all', text: 'Hello {name}, new things at the shop!' }); ok(lim.error === 'daily_limit', 'there is a daily limit on campaigns');
-  const co = orders.createOrder({ shopId: shop.id, customer: { name: 'Confirm Test', phone: '0662999111', city: 'Casablanca', address: '12 Rue des Tests, Maarif' }, items: [{ variantId: get("SELECT v.id FROM variants v JOIN products p ON p.id=v.product_id WHERE p.name='Parfum Oud'").id, qty: 1 }], channel: 'web', needsCustomerConfirm: true });
+  const co = orders.createOrder({ shopId: shop.id, customer: { name: 'Confirm Test', phone: '0662999111', city: 'Casablanca', address: '12 Rue des Tests, Maarif' }, items: [{ variantId: get("SELECT v.id FROM variants v JOIN products p ON p.id=v.product_id WHERE p.name='Oud Perfume'").id, qty: 1 }], channel: 'web', needsCustomerConfirm: true });
   ok(co.status === 'pending_confirmation' && co.conversation_id, 'an order from the quick form waits for the customer and gets a conversation');
   const askMsgs = all("SELECT text FROM messages WHERE conversation_id=? AND role='system'", co.conversation_id); ok(askMsgs.length === 1 && /YES|OUI|iyeh|إيه/i.test(askMsgs[0].text), 'the AI agent asked the customer to confirm');
   await chat.handleCustomerMessage({ shop: get('SELECT * FROM shops WHERE id=?', shop.id), convoRow: convo.byId(co.conversation_id), text: 'yes' });
@@ -232,7 +232,7 @@ const stockOf = label => get("SELECT v.stock FROM variants v JOIN products p ON 
   ok(get('SELECT opted_out FROM customers WHERE shop_id=? AND phone=?', shop.id, '0662999111').opted_out === 1, 'STOP from a customer opts them out of announcements');
 
   console.log('Cendoor Shield + Copilot');
-  const risky = orders.createOrder({ shopId: shop.id, customer: { name: 'Test Net', phone: '0670000099', city: 'Casablanca', address: '12 Rue des Tests, Maarif' }, items: [{ variantId: get("SELECT v.id FROM variants v JOIN products p ON p.id=v.product_id WHERE p.name='Parfum Oud'").id, qty: 1 }] });
+  const risky = orders.createOrder({ shopId: shop.id, customer: { name: 'Test Net', phone: '0670000099', city: 'Casablanca', address: '12 Rue des Tests, Maarif' }, items: [{ variantId: get("SELECT v.id FROM variants v JOIN products p ON p.id=v.product_id WHERE p.name='Oud Perfume'").id, qty: 1 }] });
   ok(risky.risk_reasons.includes('network_failed') && risky.risk_level !== 'green', 'number with failures at other sellers is flagged');
   ok(network.lookup('0661020304', shop.id).delivered >= 4, 'good history at other sellers is visible as counters only');
   const ins = insights.insights(shop.id);

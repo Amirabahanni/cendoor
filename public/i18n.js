@@ -7,7 +7,7 @@ window.I18N = {
     overview: 'Overview', orders: 'Orders', products: 'Products', inbox: 'Inbox', customers: 'Customers', links: 'Post links', money: 'Cash & delivery', team: 'Team', settings: 'Settings',
     today: 'Today', thisMonth: 'This month', successRate: 'Delivery success', rating: 'Rating', salesToday: 'Sales today', salesMonth: 'Sales this month', ordersWord: 'orders', reviewsWord: 'reviews',
     hello: 'Welcome back', needsAttention: 'Needs your attention', allClear: 'Everything is under control. Cendoor is handling the rest.',
-    toShip: 'orders ready to ship', toConfirm: 'orders waiting for your approval', chatsFlag: 'conversations need you', lowStockN: 'products running low', failedOpen: 'failed deliveries',
+    toShip: 'order(s) ready to ship', toConfirm: 'order(s) waiting for your approval', chatsFlag: 'conversation(s) need you', lowStockN: 'product(s) running low', failedOpen: 'failed delivery(ies)',
     salesChart: 'Sales, last 14 days', topProducts: 'Top products (30 days)', byChannel: 'Orders by channel (30 days)', autopilot: 'Cendoor on autopilot', timeSaved: 'Estimated time saved this month',
     timeSavedNote: 'Estimate: about 6 minutes of manual work saved per order (replies, order entry, labels, updates).', hours: 'h',
     getStarted: 'Get started', stepProduct: 'Add your first product', stepShipping: 'Check your shipping prices', stepShare: 'Share your shop link', stepTest: 'Test a customer chat',

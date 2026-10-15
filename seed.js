@@ -3,6 +3,7 @@
 const { get, all, run, tx } = require('./lib/db');
 const auth = require('./lib/auth');
 const network = require('./lib/network');
+const designLib = require('./lib/design');
 
 function rng(seed) { let a = seed; return () => { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
 const ts = (daysAgo, hour = 12, min = 0) => { const d = new Date(Date.now() - daysAgo * 86400000); d.setUTCHours(hour, min, 0, 0); return d.toISOString().replace('T', ' ').slice(0, 19); };
@@ -19,6 +20,7 @@ function seedDemo() {
     run(`INSERT INTO shops (slug, name, city, phone, lang, tone, plan, default_carrier, free_shipping_over, wa_number, tagline) VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
       'amina-boutique', 'Amina Boutique', 'Marrakech', '0661234567', 'dar', 'friendly', 'solo', 'Amana', 600, '', 'Robes, caftans & accessoires — livraison partout au Maroc');
     const shopId = Number(get('SELECT id FROM shops WHERE slug=?', 'amina-boutique').id);
+    run("UPDATE shops SET plan='trial', trial_ends_at=datetime('now','+11 days'), lang='fr' WHERE id=?", shopId);
     addUser(shopId, 'demo@cendoor.com', 'Amina (owner)', 'admin');
     addUser(shopId, 'manager@cendoor.com', 'Salma (manager)', 'manager');
     addUser(shopId, 'operator@cendoor.com', 'Youssef (operator)', 'operator');
@@ -50,6 +52,15 @@ function seedDemo() {
       }
     }
 
+    // storefront design: what a seller would get after talking to the Studio
+    {
+      const shopRow = get('SELECT * FROM shops WHERE id=?', shopId);
+      const built = designLib.buildFromWizard(shopRow, { category: 'fashion', style: 'natural', lang: 'fr' });
+      built.design.hero.title = '';
+      built.design.logo = { emoji: '👗', image: '', showName: true };
+      built.design.social = { instagram: 'amina.boutique', tiktok: 'amina.boutique', whatsapp: '', phone: '0661234567', email: '' };
+      designLib.saveDesign(shopId, built.design);
+    }
     run("INSERT INTO post_links (shop_id, code, label, channel, product_id, visits) VALUES (?,?,?,?,?,?)", shopId, 'ig-satin', 'Reel: Robe Satin bleue', 'instagram', pid[0], 540);
     run("INSERT INTO post_links (shop_id, code, label, channel, product_id, visits) VALUES (?,?,?,?,?,?)", shopId, 'tt-caftan', 'TikTok: Caftan Brodé', 'tiktok', pid[1], 1350);
     run("INSERT INTO post_links (shop_id, code, label, channel, product_id, visits) VALUES (?,?,?,?,?,?)", shopId, 'ig-bio', 'Lien dans la bio', 'instagram', null, 980);

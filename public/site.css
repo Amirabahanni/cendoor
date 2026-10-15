@@ -1,0 +1,32 @@
+/* Cendoor marketing site: dark, glassy, futuristic. Shared by the landing page and the investor guide. */
+:root { --bg: #04070d; --fg: #eef6f7; --mut: #93a8ad; --line: rgba(255,255,255,.09); --glass: rgba(255,255,255,.045); --teal: #2dd4bf; --cyan: #22d3ee; --violet: #8b5cf6; --orange: #f28c28; --grad: linear-gradient(120deg, #2dd4bf, #22d3ee 45%, #8b5cf6); }
+* { box-sizing: border-box; } html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 17px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans Arabic", sans-serif; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+a { color: inherit; } .wrap { max-width: 1120px; margin: 0 auto; padding: 0 22px; position: relative; z-index: 1; }
+.bgfx { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.bgfx::before { content: ""; position: absolute; inset: -20%; background: radial-gradient(600px 420px at 18% 12%, rgba(45,212,191,.22), transparent 70%), radial-gradient(560px 420px at 85% 8%, rgba(139,92,246,.22), transparent 70%), radial-gradient(520px 420px at 60% 85%, rgba(242,140,40,.13), transparent 70%); animation: drift 22s ease-in-out infinite alternate; }
+.bgfx::after { content: ""; position: absolute; inset: 0; background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: 56px 56px; -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 20%, #000 20%, transparent 75%); mask-image: radial-gradient(ellipse 70% 60% at 50% 20%, #000 20%, transparent 75%); opacity: .55; }
+@keyframes drift { to { transform: translate3d(3%, 4%, 0) scale(1.08); } }
+header.nav { position: sticky; top: 0; z-index: 20; backdrop-filter: blur(16px); background: rgba(4,7,13,.62); border-bottom: 1px solid var(--line); }
+header.nav .wrap { display: flex; align-items: center; gap: 18px; height: 68px; }
+.logo { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 800; font-size: 24px; letter-spacing: -.04em; flex: 1; }
+.logo img { width: 34px; height: 34px; filter: drop-shadow(0 4px 14px rgba(45,212,191,.45)); } .logo b { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.links { display: flex; gap: 26px; } .links a { text-decoration: none; color: var(--mut); font-weight: 600; font-size: 15px; transition: color .2s; } .links a:hover { color: var(--fg); } @media (max-width: 760px) { .links { display: none; } }
+.lang { display: flex; background: var(--glass); border: 1px solid var(--line); border-radius: 999px; padding: 3px; } .lang button { border: 0; background: transparent; color: var(--mut); font: inherit; font-size: 13px; font-weight: 700; padding: 5px 11px; border-radius: 999px; cursor: pointer; } .lang button.on { background: rgba(255,255,255,.12); color: var(--fg); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 13px 24px; min-height: 48px; border-radius: 999px; font-weight: 700; text-decoration: none; border: 1px solid var(--line); background: var(--glass); color: var(--fg); transition: transform .15s, box-shadow .25s, background .25s; cursor: pointer; font-size: 16px; white-space: nowrap; }
+.btn:hover { transform: translateY(-2px); background: rgba(255,255,255,.09); } .btn.sm { padding: 8px 18px; min-height: 40px; font-size: 14px; }
+.btn.glow { background: var(--grad); color: #04121a; border: 0; box-shadow: 0 10px 40px rgba(45,212,191,.35), 0 0 0 1px rgba(255,255,255,.15) inset; } .btn.glow:hover { box-shadow: 0 14px 50px rgba(34,211,238,.5); background: var(--grad); }
+.grad { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.eyebrow { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; background: var(--glass); border: 1px solid var(--line); color: var(--mut); font-size: 13.5px; font-weight: 600; } .eyebrow i { width: 7px; height: 7px; border-radius: 50%; background: var(--teal); box-shadow: 0 0 12px var(--teal); }
+section { padding: 84px 0; position: relative; z-index: 1; } h2.t { font-size: clamp(30px, 4.6vw, 48px); letter-spacing: -.035em; line-height: 1.08; margin: 0 0 12px; text-align: center; } p.s { color: var(--mut); text-align: center; margin: 0 auto 46px; max-width: 560px; font-size: 18px; }
+.glass { background: var(--glass); border: 1px solid var(--line); border-radius: 24px; backdrop-filter: blur(14px); }
+footer { border-top: 1px solid var(--line); padding: 36px 0 52px; color: var(--mut); font-size: 14px; position: relative; z-index: 1; } footer .wrap { display: flex; flex-wrap: wrap; gap: 18px; align-items: center; justify-content: space-between; } footer a { text-decoration: none; margin-inline-end: 18px; } footer a:hover { color: var(--fg); }
+:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s, transform .7s; } .reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .bgfx::before { animation: none; } .reveal { opacity: 1; transform: none; transition: none; } * { scroll-behavior: auto !important; } }
+
+@media (max-width: 560px) {
+  header.nav .wrap { gap: 8px; padding: 0 14px; } .logo { font-size: 20px; gap: 7px; } .logo img { width: 28px; height: 28px; }
+  .lang button { padding: 4px 8px; font-size: 12px; } header.nav .btn.sm { padding: 6px 12px; min-height: 36px; font-size: 13px; }
+  section { padding: 56px 0; } .wrap { padding: 0 16px; }
+}

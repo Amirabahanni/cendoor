@@ -3,132 +3,196 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Cendoor: Sell where your customers chat</title>
-<meta name="description" content="Cendoor takes your WhatsApp, Instagram and TikTok orders from chat to delivery: AI replies in Darija, shared stock, labels, tracking and cash reconciliation.">
-<meta name="theme-color" content="#0F5C5C">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%230F5C5C'/%3E%3Cpath d='M9 23V9h8a6 6 0 0 1 0 12h-3v2z' fill='none' stroke='%23fff' stroke-width='2.4'/%3E%3C/svg%3E">
+<title>Cendoor: You post. Cendoor does the rest.</title>
+<meta name="description" content="Tell the AI what you sell. Cendoor builds your online shop, answers your customers and tracks every delivery. Free 14-day trial.">
+<meta name="theme-color" content="#04070d">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/site.css">
 <style>
-  :root { --teal:#0F5C5C; --teal-700:#0B4545; --teal-100:#D9ECEA; --teal-50:#EEF6F5; --orange:#F28C28; --orange-600:#D9751A; --orange-100:#FDE9D0; --bg:#FAF7F2; --surface:#fff; --text:#1B2A2A; --muted:#5E7274; --border:#E6E0D5; }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --teal:#43B0AC; --teal-700:#2E8C88; --teal-100:#18403F; --teal-50:#14302F; --orange-100:#46301A; --bg:#0E1717; --surface:#152323; --text:#E8F0EE; --muted:#9DB1B0; --border:#254040; } }
-  * { box-sizing: border-box; } html { scroll-behavior: smooth; }
-  body { margin:0; background:var(--bg); color:var(--text); font:17px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; -webkit-font-smoothing:antialiased; }
-  .wrap { max-width:1060px; margin:0 auto; padding:0 20px; }
-  header { position:sticky; top:0; z-index:10; background:color-mix(in srgb,var(--bg) 88%,transparent); backdrop-filter:blur(10px); border-bottom:1px solid var(--border); }
-  header .wrap { display:flex; align-items:center; gap:16px; height:64px; }
-  .logo { font-weight:800; font-size:24px; letter-spacing:-.03em; color:var(--teal); display:flex; align-items:center; gap:8px; text-decoration:none; flex:1; }
-  .mark { width:30px; height:30px; border-radius:9px; background:var(--teal); display:grid; place-items:center; }
-  nav a.l { color:var(--muted); text-decoration:none; margin-inline-end:16px; font-weight:600; font-size:15px; } @media (max-width:700px){ nav a.l { display:none } }
-  .btn { display:inline-flex; align-items:center; gap:8px; padding:12px 22px; border-radius:999px; font-weight:700; text-decoration:none; border:1.5px solid var(--border); color:var(--text); background:var(--surface); min-height:48px; }
-  .btn.primary { background:var(--teal); color:#fff; border-color:var(--teal); } .btn.accent { background:var(--orange); color:#fff; border-color:var(--orange); } .btn:hover { filter:brightness(1.05); }
-  .hero { padding:64px 0 40px; display:grid; gap:40px; grid-template-columns:1.1fr .9fr; align-items:center; } @media (max-width:880px){ .hero { grid-template-columns:1fr; padding-top:36px } }
-  h1 { font-size:clamp(36px,6vw,60px); line-height:1.06; letter-spacing:-.035em; margin:0 0 18px; } h1 em { font-style:normal; color:var(--orange); }
-  .lead { font-size:19px; color:var(--muted); max-width:560px; margin:0 0 26px; } .cta { display:flex; gap:12px; flex-wrap:wrap; } .fine { font-size:14px; color:var(--muted); margin-top:14px; }
-  .phone { background:var(--surface); border:1px solid var(--border); border-radius:28px; padding:14px; box-shadow:0 24px 60px rgba(15,60,60,.18); max-width:380px; justify-self:center; width:100%; }
-  .phone .bar { background:var(--teal); color:#fff; border-radius:16px; padding:10px 14px; font-weight:700; display:flex; justify-content:space-between; font-size:15px; }
-  .b { max-width:84%; padding:9px 13px; border-radius:16px; margin:9px 0; font-size:14.5px; white-space:pre-line; } .b.c { background:var(--teal); color:#fff; margin-inline-start:auto; border-end-end-radius:4px; } .b.a { background:var(--teal-50); border:1px solid var(--border); border-end-start-radius:4px; }
-  section { padding:56px 0; } h2 { font-size:clamp(28px,4vw,40px); letter-spacing:-.03em; line-height:1.15; margin:0 0 14px; } .sub { color:var(--muted); max-width:640px; margin:0 0 30px; }
-  .grid3 { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:16px; }
-  .card { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:24px; } .card h3 { margin:0 0 6px; font-size:19px; } .card p { margin:0; color:var(--muted); font-size:15.5px; }
-  .num { width:36px; height:36px; border-radius:50%; background:var(--orange); color:#fff; display:grid; place-items:center; font-weight:800; margin-bottom:12px; }
-  .strip { background:var(--teal); color:#fff; border-radius:28px; padding:36px 32px; display:grid; gap:24px; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); } .strip b { font-size:40px; letter-spacing:-.03em; display:block; line-height:1.1; } .strip span { opacity:.88; font-size:15px; }
-  .plans { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; } .plan { background:var(--surface); border:2px solid var(--border); border-radius:22px; padding:26px; } .plan.pop { border-color:var(--orange); position:relative; } .plan.pop::before { content:"Most chosen"; position:absolute; top:-13px; inset-inline-start:22px; background:var(--orange); color:#fff; font-size:12px; font-weight:800; padding:3px 12px; border-radius:999px; }
-  .price { font-size:38px; font-weight:800; letter-spacing:-.03em; } .price small { font-size:15px; color:var(--muted); font-weight:500; } .plan ul { padding-inline-start:20px; margin:14px 0 20px; color:var(--muted); font-size:15.5px; } .plan li { margin:4px 0; }
-  .status { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:16px; } .status .card.ok { border-top:4px solid #1E8E5A; } .status .card.wait { border-top:4px solid var(--orange); } .status ul { margin:8px 0 0; padding-inline-start:20px; color:var(--muted); font-size:15.5px; }
-  details { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:16px 20px; margin:10px 0; } summary { font-weight:700; cursor:pointer; } details p { color:var(--muted); margin:10px 0 0; font-size:15.5px; }
-  footer { border-top:1px solid var(--border); padding:30px 0 44px; color:var(--muted); font-size:14px; text-align:center; }
-  :focus-visible { outline:3px solid var(--orange); outline-offset:2px; }
+  .hero { padding: 64px 0 40px; } .hero-grid { display: grid; grid-template-columns: 1.02fr .98fr; gap: 48px; align-items: center; } @media (max-width: 960px) { .hero-grid { grid-template-columns: 1fr; gap: 36px; } }
+  h1 { font-size: clamp(42px, 6.6vw, 78px); line-height: 1.02; letter-spacing: -.05em; margin: 22px 0 18px; font-weight: 800; } .sub { font-size: clamp(18px, 2vw, 21px); color: var(--mut); max-width: 520px; margin: 0 0 30px; }
+  .cta { display: flex; gap: 12px; flex-wrap: wrap; } .fine { margin-top: 18px; color: var(--mut); font-size: 14px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap; } .fine > span { display: inline-flex; align-items: center; gap: 6px; } .fine svg { width: 16px; height: 16px; stroke: var(--teal); fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+  /* demo */
+  .demo { display: grid; gap: 16px; justify-items: center; }
+  .prompt { width: min(420px, 100%); padding: 14px 18px; display: flex; align-items: center; gap: 12px; font-size: 16px; min-height: 56px; border-radius: 18px; } .prompt .live { width: 9px; height: 9px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 14px var(--orange); flex: none; animation: pulse 1.6s infinite; } @keyframes pulse { 50% { opacity: .35; } }
+  .caret { width: 2px; height: 20px; background: var(--teal); animation: blink 1s steps(1) infinite; } @keyframes blink { 50% { opacity: 0; } }
+  .phone { width: min(300px, 78vw); border-radius: 38px; padding: 10px; background: linear-gradient(160deg, rgba(255,255,255,.16), rgba(255,255,255,.04)); border: 1px solid rgba(255,255,255,.18); box-shadow: 0 40px 90px rgba(0,0,0,.55), 0 0 80px rgba(45,212,191,.18); }
+  .screen { border-radius: 30px; overflow: hidden; height: 540px; position: relative; }
+  .mini { --a: #c9a24a; --b: #2b2118; --bg: #fbf7ef; --fg: #2b2118; --font: Georgia, serif; --r: 6px; height: 100%; background: var(--bg); color: var(--fg); font-family: var(--font); transition: background .7s, color .7s; display: flex; flex-direction: column; position: relative; font-size: 12px; }
+  .m-ann { background: var(--b); color: #fff; text-align: center; font-size: 10.5px; font-weight: 700; padding: 0 8px; max-height: 0; overflow: hidden; transition: max-height .6s, padding .6s, background .7s; } .m-ann.on { max-height: 32px; padding: 7px 8px; }
+  .m-head { display: flex; align-items: center; gap: 8px; padding: 14px 14px 8px; font-weight: 800; font-size: 14px; } .m-head .lg { width: 26px; height: 26px; display: grid; place-items: center; background: color-mix(in srgb, var(--a) 22%, transparent); border-radius: calc(var(--r) * .8); font-size: 15px; }
+  .m-hero { margin: 4px 12px 12px; padding: 16px 14px; border-radius: calc(var(--r) * 1.4); background: linear-gradient(135deg, var(--a), var(--b)); color: #fff; transition: background .7s, border-radius .7s; } .m-hero h4 { margin: 0; font-size: 19px; line-height: 1.1; letter-spacing: -.02em; } .m-hero p { margin: 6px 0 12px; font-size: 11px; opacity: .88; } .m-btn { display: inline-block; background: #fff; color: #111; font-weight: 800; font-size: 10.5px; padding: 6px 12px; border-radius: calc(var(--r) * 2); }
+  .m-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 0 12px; align-content: start; } .m-card { background: color-mix(in srgb, var(--fg) 6%, var(--bg)); border: 1px solid color-mix(in srgb, var(--fg) 12%, transparent); border-radius: var(--r); overflow: hidden; opacity: 0; transform: scale(.88) translateY(10px); transition: opacity .5s, transform .5s, background .7s, border-radius .7s; } .m-card.in { opacity: 1; transform: none; }
+  .m-card .im { height: 74px; display: grid; place-items: center; font-size: 32px; background: linear-gradient(135deg, color-mix(in srgb, var(--a) 30%, transparent), color-mix(in srgb, var(--b) 18%, transparent)); } .m-card .tx { padding: 6px 8px 8px; font-weight: 700; font-size: 11px; } .m-card .tx i { display: block; font-style: normal; color: var(--a); font-weight: 800; margin-top: 1px; }
+  .m-chat { position: absolute; inset-inline: 10px; bottom: 10px; display: grid; gap: 6px; pointer-events: none; } .m-msg { padding: 7px 11px; border-radius: 14px; font: 600 11px system-ui, sans-serif; max-width: 85%; opacity: 0; transform: translateY(10px); transition: opacity .4s, transform .4s; } .m-msg.in { opacity: 1; transform: none; } .m-msg.me { justify-self: end; background: var(--a); color: #04121a; } .m-msg.ai { justify-self: start; background: #fff; color: #111; box-shadow: 0 6px 20px rgba(0,0,0,.2); }
+  .mini.fut .m-hero { box-shadow: 0 0 40px rgba(34,211,238,.25); } .mini.fut .m-card { backdrop-filter: blur(6px); box-shadow: 0 0 24px rgba(139,92,246,.18); }
+  /* steps */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; position: relative; } @media (max-width: 860px) { .steps { grid-template-columns: 1fr; } }
+  .step { padding: 30px 28px; position: relative; overflow: hidden; } .step .n { position: absolute; top: 14px; inset-inline-end: 22px; font-size: 76px; font-weight: 800; letter-spacing: -.06em; color: rgba(255,255,255,.05); line-height: 1; }
+  .ico { width: 54px; height: 54px; border-radius: 16px; display: grid; place-items: center; background: rgba(45,212,191,.12); border: 1px solid rgba(45,212,191,.3); margin-bottom: 18px; box-shadow: 0 0 30px rgba(45,212,191,.12); } .ico svg { width: 26px; height: 26px; stroke: var(--teal); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .step h3, .tile h3 { margin: 0 0 6px; font-size: 21px; letter-spacing: -.02em; } .step p, .tile p { margin: 0; color: var(--mut); font-size: 16px; }
+  .bento { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; } @media (max-width: 900px) { .bento { grid-template-columns: repeat(2, 1fr); } } @media (max-width: 560px) { .bento { grid-template-columns: 1fr; } }
+  .tile { padding: 26px; transition: transform .25s, border-color .25s, background .25s; } .tile:hover { transform: translateY(-4px); border-color: rgba(45,212,191,.4); background: rgba(255,255,255,.07); } .tile .ico { width: 46px; height: 46px; margin-bottom: 14px; border-radius: 14px; } .tile .ico svg { width: 22px; height: 22px; }
+  /* style showcase */
+  .styles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; } @media (max-width: 900px) { .styles { grid-template-columns: repeat(2, 1fr); } }
+  .sty { text-align: center; } .sty .mini { height: 250px; border-radius: 20px; border: 1px solid var(--line); overflow: hidden; transition: transform .3s; pointer-events: none; font-size: 9px; } .sty:hover .mini { transform: translateY(-6px) rotate(-.6deg); } .sty .mini .m-head { padding: 10px 10px 4px; font-size: 11px; } .sty .mini .m-hero { margin: 4px 8px 8px; padding: 10px 10px; } .sty .mini .m-hero h4 { font-size: 13px; } .sty .mini .m-hero p { font-size: 8.5px; margin: 3px 0 7px; } .sty .mini .m-grid { padding: 0 8px; gap: 5px; } .sty .mini .m-card .im { height: 40px; font-size: 20px; } .sty .mini .m-card .tx { font-size: 8.5px; padding: 4px 6px; }
+  .sty > b { display: block; margin-top: 12px; font-size: 16px; } .sty > span { color: var(--mut); font-size: 14px; }
+  /* plans */
+  .plans { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; max-width: 800px; margin: 0 auto; } @media (max-width: 700px) { .plans { grid-template-columns: 1fr; } }
+  .plan { padding: 34px 30px; position: relative; } .plan.pop { border-color: rgba(45,212,191,.55); box-shadow: 0 0 80px rgba(45,212,191,.16); } .plan.pop::before { content: attr(data-badge); position: absolute; top: -13px; inset-inline-start: 26px; background: var(--grad); color: #04121a; font-size: 13px; font-weight: 800; padding: 3px 14px; border-radius: 999px; }
+  .plan h3 { margin: 0; font-size: 20px; } .price { font-size: 52px; font-weight: 800; letter-spacing: -.05em; margin: 10px 0 2px; } .price small { font-size: 16px; color: var(--mut); font-weight: 500; letter-spacing: 0; } .plan ul { list-style: none; padding: 0; margin: 20px 0 26px; display: grid; gap: 10px; } .plan li { color: var(--mut); display: flex; gap: 10px; align-items: center; } .plan li::before { content: ""; width: 18px; height: 18px; border-radius: 50%; background: rgba(45,212,191,.16) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232dd4bf' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E") center/11px no-repeat; flex: none; } .plan .btn { width: 100%; }
+  .trialnote { text-align: center; color: var(--mut); margin-top: 22px; font-size: 15px; }
+  .band { text-align: center; padding: 70px 24px; border-radius: 32px; background: radial-gradient(500px 260px at 50% 0%, rgba(45,212,191,.25), transparent 70%), var(--glass); border: 1px solid var(--line); } .band h2 { font-size: clamp(30px, 4.6vw, 50px); letter-spacing: -.04em; margin: 0 0 10px; } .band p { color: var(--mut); margin: 0 0 28px; font-size: 18px; }
 </style>
 </head>
 <body>
-<header><div class="wrap"><a class="logo" href="/"><span class="mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.5 8.5 0 0 1-3.8-.9L3 20l1.1-4.9A8.4 8.4 0 0 1 3 11.5 8.5 8.5 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg></span>cendoor</a>
-  <nav><a class="l" href="#how">How it works</a><a class="l" href="#why">Why Cendoor</a><a class="l" href="#investor">Walkthrough</a><a class="l" href="#plans">Pricing</a><a class="btn primary" href="/app">Open dashboard</a></nav></div></header>
+<div class="bgfx" aria-hidden="true"></div>
+<header class="nav"><div class="wrap">
+  <a class="logo" href="/"><img src="/logo.svg" alt=""><span>cen<b>door</b></span></a>
+  <nav class="links"><a href="#how" data-i="navHow">How it works</a><a href="#features" data-i="navFeatures">Features</a><a href="#plans" data-i="navPricing">Pricing</a></nav>
+  <div class="lang" role="group" aria-label="Language"><button data-lang="en" class="on">EN</button><button data-lang="fr">FR</button><button data-lang="ar">ع</button></div>
+  <a class="btn sm glow" href="/app" data-i="trial">Start free trial</a>
+</div></header>
 
 <main>
-<div class="wrap hero">
+<section class="hero"><div class="wrap hero-grid">
   <div>
-    <h1>You post and ship.<br><em>Cendoor</em> does the rest.</h1>
-    <p class="lead">Orders from Instagram, TikTok and WhatsApp land in one place. An AI that speaks Darija answers customers, takes the order, checks stock, prepares the label and keeps everyone updated, until the cash is in your hands.</p>
-    <div class="cta"><a class="btn accent" href="/s/amina-boutique">Try the customer chat</a><a class="btn" href="/app">See the seller dashboard</a></div>
-    <p class="fine">Live demo with a fictional shop. Dashboard login: demo@cendoor.com / demo1234</p>
+    <span class="eyebrow"><i></i><span data-i="badge">The AI shop builder for Moroccan sellers</span></span>
+    <h1><span data-i="h1a">You post.</span><br><span class="grad" data-i="h1b">Cendoor does the rest.</span></h1>
+    <p class="sub" data-i="sub">Tell the AI what you sell. It builds your shop, answers your customers and tracks every delivery.</p>
+    <div class="cta"><a class="btn glow" href="/app" data-i="trial">Start free trial</a><a class="btn" href="/s/amina-boutique" data-i="live">See a live shop</a></div>
+    <div class="fine"><span><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg><span data-i="f1">14 days free</span></span><span><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg><span data-i="f2">No card needed</span></span><span><svg viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg><span data-i="f3">Arabic · Français · English</span></span></div>
   </div>
-  <div class="phone" aria-label="Example conversation">
-    <div class="bar"><span>Amina Boutique</span><span>● online</span></div>
-    <div class="b c">salam, bghit robe zerqa M</div>
-    <div class="b a">Robe Satin (Blue / M) taman dyalo 220 DH. Kayn f stock. Bghiti t-commandih?</div>
-    <div class="b c">iyeh</div>
-    <div class="b a">Wakha! Smiytek l-kamla, 3afak?</div>
-    <div class="b c">Salma Idrissi, 0661020304, Casa</div>
-    <div class="b a">L-commande #CD-0104 t-confirmat ✅
-250 DH, khlass 3and l-istilam.</div>
+  <div class="demo" aria-label="Animated demo">
+    <div class="prompt glass"><span class="live"></span><span id="typed"></span><span class="caret"></span></div>
+    <div class="phone"><div class="screen">
+      <div class="mini" id="mini">
+        <div class="m-ann" id="mAnn"></div>
+        <div class="m-head"><span class="lg" id="mLogo">🧥</span><b id="mName">Amina Boutique</b></div>
+        <div class="m-hero"><h4 id="mTitle">Abayas &amp; caftans</h4><p id="mSub">Delivered across Morocco</p><span class="m-btn" id="mBtn">Shop now</span></div>
+        <div class="m-grid" id="mGrid"></div>
+        <div class="m-chat" id="mChat"></div>
+      </div>
+    </div></div>
   </div>
-</div>
+</div></section>
 
 <section id="how"><div class="wrap">
-  <h2>From post to cash, without the busywork</h2><p class="sub">Sellers on chat lose hours every day to the same tasks. Cendoor takes them over, one by one.</p>
-  <div class="grid3">
-    <div class="card"><div class="num">1</div><h3>You post a product</h3><p>Dictate "robe zerqa 200 dirham 50 pieces" or upload a photo. Cendoor creates the listing and a link for every post, so you see which reel actually sells.</p></div>
-    <div class="card"><div class="num">2</div><h3>Customers chat, the AI sells</h3><p>Price, colour, size, delivery fee: answered in Darija, French, English or Arabic, by text or voice. The order is created from the conversation and stock updates everywhere.</p></div>
-    <div class="card"><div class="num">3</div><h3>You ship, Cendoor follows up</h3><p>Print the label, hand the parcel over. Customers get delivery updates, failed deliveries are recovered, and you see exactly which cash is still with the carrier.</p></div>
+  <h2 class="t reveal" data-i="howT">Your shop in three steps</h2><p class="s reveal" data-i="howS">No design skills. No code. Just talk.</p>
+  <div class="steps">
+    <div class="step glass reveal"><span class="n">1</span><div class="ico"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.5 8.5 0 0 1-3.8-.9L3 20l1.1-4.9A8.4 8.4 0 0 1 3 11.5 8.5 8.5 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg></div><h3 data-i="s1t">Tell it what you sell</h3><p data-i="s1d">Type, speak or send a photo.</p></div>
+    <div class="step glass reveal"><span class="n">2</span><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 3v4M17 5h4M5 17v4M3 19h4"/></svg></div><h3 data-i="s2t">Your shop appears</h3><p data-i="s2d">Design, products and delivery, ready.</p></div>
+    <div class="step glass reveal"><span class="n">3</span><div class="ico"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg></div><h3 data-i="s3t">Share one link</h3><p data-i="s3d">Orders arrive. The AI handles them.</p></div>
   </div>
 </div></section>
 
-<section><div class="wrap">
-  <div class="strip">
-    <div><b>10+ h</b><span>a week many sellers spend on repetitive replies and order entry</span></div>
-    <div><b>1 stock</b><span>shared by every channel, so no more overselling</span></div>
-    <div><b>COD risk</b><span>flagged before you print a label</span></div>
-    <div><b>0 website</b><span>needed: a link in your bio is your shop</span></div>
+<section id="features"><div class="wrap">
+  <h2 class="t reveal" data-i="featT">Everything runs itself</h2><p class="s reveal" data-i="featS">You post and ship. The rest is automatic.</p>
+  <div class="bento">
+    <div class="tile glass reveal"><div class="ico"><svg viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.5 8.5 0 0 1-3.8-.9L3 20l1.1-4.9A8.4 8.4 0 0 1 3 11.5 8.5 8.5 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg></div><h3 data-i="a1t">Answers customers</h3><p data-i="a1d">Day and night, in their language.</p></div>
+    <div class="tile glass reveal"><div class="ico"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5v8l9 5 9-5zM3 8l9 5 9-5M12 13v8"/></svg></div><h3 data-i="a2t">Takes the orders</h3><p data-i="a2d">One stock across every channel.</p></div>
+    <div class="tile glass reveal"><div class="ico"><svg viewBox="0 0 24 24"><path d="M6 9V2h12v7M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2M6 14h12v8H6z"/></svg></div><h3 data-i="a3t">Prints the labels</h3><p data-i="a3d">Tracking and updates included.</p></div>
+    <div class="tile glass reveal"><div class="ico"><svg viewBox="0 0 24 24"><path d="M2 7h18a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2zM2 7l14-4v4M17 14h.01"/></svg></div><h3 data-i="a4t">Tracks your cash</h3><p data-i="a4d">Know what carriers owe you.</p></div>
+    <div class="tile glass reveal"><div class="ico"><svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div><h3 data-i="a5t">Blocks bad orders</h3><p data-i="a5d">Shield flags risky numbers early.</p></div>
+    <div class="tile glass reveal"><div class="ico"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg></div><h3 data-i="a6t">Tells you what to do</h3><p data-i="a6d">Clear advice from your own sales.</p></div>
   </div>
-  <p class="fine" style="text-align:center">Time and failure figures come from seller interviews and vendor reports, not from Cendoor measurements. Cendoor is measuring its own results with pilot sellers.</p>
 </div></section>
 
-<section id="why"><div class="wrap">
-  <h2>What Shopify and a COD app cannot do for a chat seller</h2><p class="sub">Four things built for how Moroccan sellers actually work: from a DM to a delivered parcel.</p>
-  <div class="grid3" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">
-    <div class="card"><h3>Talk to your shop</h3><p>Say "make my shop green", "announce free delivery this weekend" or "lower the caftan to 600" in Darija, French or English. The storefront changes live, and every change can be undone. No dashboard to learn.</p></div>
-    <div class="card"><h3>Cendoor Shield</h3><p>Failed cash-on-delivery is the seller's biggest loss. Cendoor shares delivery outcomes between sellers as anonymous counters, so a number that refused parcels elsewhere is flagged before you print a label.</p></div>
-    <div class="card"><h3>Cendoor Copilot</h3><p>"CTM delivers 94% of your parcels to Rabat, CashPlus 61%." "Blue Satin M sells out in 3 days: reorder 30." It reads your own orders and tells you what to do, and can pick the best carrier for each city for you.</p></div>
-    <div class="card"><h3>One link per post</h3><p>Every reel, story or video gets its own link and a ready-to-paste caption in Darija, so you see which post really sells. Customers can track their parcel on a public page, which cuts "where is my order?" messages.</p></div>
-  </div>
+<section id="styles"><div class="wrap">
+  <h2 class="t reveal" data-i="styT">Make it yours</h2><p class="s reveal" data-i="styS">Say the style. Colours, fonts, layout: done.</p>
+  <div class="styles" id="styles"></div>
 </div></section>
 
 <section id="plans"><div class="wrap">
-  <h2>Simple pricing in dirhams</h2><p class="sub">No add-ons, no website subscription underneath.</p>
+  <h2 class="t reveal" data-i="plT">Try it free for 14 days</h2><p class="s reveal" data-i="plS">Everything included. Pick a plan when you are ready.</p>
   <div class="plans">
-    <div class="plan"><b>Free</b><div class="price">0 <small>MAD / month</small></div><ul><li>Up to 50 orders a month</li><li>Shop link and AI chat</li><li>Shared stock</li></ul><a class="btn block" href="/app">Start free</a></div>
-    <div class="plan pop"><b>Solo</b><div class="price">149 <small>MAD / month</small></div><ul><li>Unlimited orders</li><li>Labels, tracking, cash reconciliation</li><li>Failed-delivery recovery, reviews</li></ul><a class="btn primary" href="/app">Choose Solo</a></div>
-    <div class="plan"><b>Growth</b><div class="price">299 <small>MAD / month</small></div><ul><li>Everything in Solo</li><li>Team roles and permissions</li><li>Priority support</li></ul><a class="btn" href="/app">Choose Growth</a></div>
+    <div class="plan glass pop reveal" data-badge="★"><h3>Solo</h3><div class="price">149 <small data-i="per">MAD / month</small></div><ul><li data-i="p1">Your AI shop and chat</li><li data-i="p2">Unlimited orders</li><li data-i="p3">Labels, tracking, cash</li></ul><a class="btn glow" href="/app" data-i="trial">Start free trial</a></div>
+    <div class="plan glass reveal"><h3>Growth</h3><div class="price">299 <small data-i="per">MAD / month</small></div><ul><li data-i="p4">Everything in Solo</li><li data-i="p5">Team access</li><li data-i="p6">Priority support</li></ul><a class="btn" href="/app" data-i="trial">Start free trial</a></div>
   </div>
+  <p class="trialnote" data-i="trialnote">No card needed to start. Cancel any time.</p>
 </div></section>
 
-<section id="status"><div class="wrap">
-  <h2>What works today, and what is next</h2><p class="sub">This is an early product. Here is the honest picture.</p>
-  <div class="status">
-    <div class="card ok"><h3>Working now</h3><ul><li>Shop link with per-post tracking links</li><li>AI chat in Darija (Latin and Arabic script), French, English, with voice input and read-aloud</li><li>Orders from chat, shared stock, COD risk score and Cendoor Shield (cross-seller delivery signal)</li><li>Studio: change your shop by talking to it, with live preview and undo</li><li>Copilot insights, automatic best-carrier choice, post kit captions, public order tracking</li><li>Printable labels with barcode</li><li>Status updates to the customer, reviews, failed-delivery recovery</li><li>Cash reconciliation, team roles, three-language dashboard</li></ul></div>
-    <div class="card wait"><h3>Needs approvals or partners</h3><ul><li>Two-way WhatsApp and Instagram connection: needs Meta business verification</li><li>TikTok messages: TikTok limits this to approved partners</li><li>Live carrier tracking: needs each carrier's API access (carrier updates are simulated in the demo)</li><li>Online billing: not connected yet</li><li>Cendoor Shield only gets strong with many sellers: the demo uses fictional data from other sellers</li></ul></div>
-  </div>
-</div></section>
-
-<section id="investor"><div class="wrap">
-  <h2>Investor walkthrough: 6 minutes</h2><p class="sub">Everything below runs on fictional demo data. Anything you create can be wiped with one click (Settings, Demo tools).</p>
-  <div class="grid3" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
-    <div class="card"><div class="num">1</div><h3>Be the customer</h3><p>Open the <a href="/s/amina-boutique">demo shop</a>, tap "Chat to order" and write <i>bghit robe zerqa M</i>. Answer the questions and confirm. Try the microphone (Chrome or Edge).</p></div>
-    <div class="card"><div class="num">2</div><h3>Be the seller</h3><p>Log in to the <a href="/app">dashboard</a> (demo@cendoor.com / demo1234). Your order is in Orders: print its label, mark it handed over, then press "simulate next carrier update" and watch the customer chat receive updates.</p></div>
-    <div class="card"><div class="num">3</div><h3>Trigger Cendoor Shield</h3><p>Place an order with the phone number <b>0670000099</b>. Other (fictional) sellers reported failed deliveries for it, so Cendoor flags it as risky and holds it for approval.</p></div>
-    <div class="card"><div class="num">4</div><h3>Talk to the shop</h3><p>Open Studio and type: <i>make my shop green</i>, then <i>announce: free delivery this weekend</i>, then <i>set the price of the caftan to 600</i>. The preview updates live. Say <i>undo</i>.</p></div>
-    <div class="card"><div class="num">5</div><h3>Read the Copilot</h3><p>Overview shows decisions from the seller's own data, the value Cendoor created this month, and the cash still held by carriers (Cash &amp; delivery).</p></div>
-    <div class="card"><div class="num">6</div><h3>Track as a customer</h3><p>Open <a href="/track">the tracking page</a> with order <b>CD-0102</b> and phone <b>0673141516</b>. Switch the dashboard to Arabic to see right-to-left support.</p></div>
-  </div>
-</div></section>
-
-<section><div class="wrap">
-  <h2>Questions</h2>
-  <details><summary>Do my customers need an app or an account?</summary><p>No. They tap your link, chat or fill a short form, and pay cash on delivery.</p></details>
-  <details><summary>Does it replace WhatsApp?</summary><p>No. Customers can start a WhatsApp chat from your links. Once Meta approves the connection, the same AI answers there too.</p></details>
-  <details><summary>Can the AI make mistakes?</summary><p>It only quotes prices and stock from your catalogue, asks the customer to confirm every order summary, and hands the chat to you when it is unsure or when a customer is unhappy. You can pause it on any conversation.</p></details>
-  <details><summary>Where is customer data stored?</summary><p>In your Cendoor account. Moroccan data protection rules (Law 09-08) apply to customer details; get legal advice before launching commercially.</p></details>
-</div></section>
+<section><div class="wrap"><div class="band reveal"><h2 data-i="bandT">Your shop, ready in minutes.</h2><p data-i="bandS">Tell Cendoor what you sell.</p><a class="btn glow" href="/app" data-i="trial">Start free trial</a></div></div></section>
 </main>
-<footer><div class="wrap">© Cendoor · Sell where your customers chat · Vendez là où vos clients discutent</div></footer>
+
+<footer><div class="wrap"><div><a class="logo" href="/" style="flex:none;font-size:20px"><img src="/logo.svg" alt="" style="width:26px;height:26px"><span>cen<b>door</b></span></a></div>
+  <div><a href="/s/amina-boutique" data-i="fLive">Live demo</a><a href="/investor" data-i="fInv">For investors</a><a href="/app" data-i="fLogin">Log in</a></div>
+  <div data-i="foot">You post. Cendoor does the rest.</div></div></footer>
+
+<script>
+(() => {
+  const T = {
+    en: { navHow: 'How it works', navFeatures: 'Features', navPricing: 'Pricing', trial: 'Start free trial', live: 'See a live shop', badge: 'The AI shop builder for Moroccan sellers', h1a: 'You post.', h1b: 'Cendoor does the rest.', sub: 'Tell the AI what you sell. It builds your shop, answers your customers and tracks every delivery.', f1: '14 days free', f2: 'No card needed', f3: 'Arabic · Français · English',
+      howT: 'Your shop in three steps', howS: 'No design skills. No code. Just talk.', s1t: 'Tell it what you sell', s1d: 'Type, speak or send a photo.', s2t: 'Your shop appears', s2d: 'Design, products and delivery, ready.', s3t: 'Share one link', s3d: 'Orders arrive. The AI handles them.',
+      featT: 'Everything runs itself', featS: 'You post and ship. The rest is automatic.', a1t: 'Answers customers', a1d: 'Day and night, in their language.', a2t: 'Takes the orders', a2d: 'One stock across every channel.', a3t: 'Prints the labels', a3d: 'Tracking and updates included.', a4t: 'Tracks your cash', a4d: 'Know what carriers owe you.', a5t: 'Blocks bad orders', a5d: 'Shield flags risky numbers early.', a6t: 'Tells you what to do', a6d: 'Clear advice from your own sales.',
+      styT: 'Make it yours', styS: 'Say the style. Colours, fonts, layout: done.', plT: 'Try it free for 14 days', plS: 'Everything included. Pick a plan when you are ready.', per: 'MAD / month', p1: 'Your AI shop and chat', p2: 'Unlimited orders', p3: 'Labels, tracking, cash', p4: 'Everything in Solo', p5: 'Team access', p6: 'Priority support', trialnote: 'No card needed to start. Cancel any time.',
+      bandT: 'Your shop, ready in minutes.', bandS: 'Tell Cendoor what you sell.', fLive: 'Live demo', fInv: 'For investors', fLogin: 'Log in', foot: 'You post. Cendoor does the rest.',
+      prompts: ['Build my shop: elegant abayas', 'Add this photo: 350 dirham', 'Make it dark and futuristic', 'Announce free delivery'], ann: 'Free delivery this weekend', title1: 'Abayas & caftans', sub1: 'Delivered across Morocco', btn: 'Shop now', cus: 'I want the black abaya, M', ai: 'Order #CD-0104 confirmed ✅', stl: ['Elegant', 'Bold', 'Futuristic', 'Natural'], stlD: ['Serif, gold, calm', 'Strong colours', 'Dark, neon glow', 'Soft, earthy'] },
+    fr: { navHow: 'Comment ça marche', navFeatures: 'Fonctions', navPricing: 'Tarifs', trial: 'Essai gratuit', live: 'Voir une boutique', badge: 'Le créateur de boutique IA pour les vendeurs marocains', h1a: 'Vous postez.', h1b: 'Cendoor fait le reste.', sub: "Dites à l'IA ce que vous vendez. Elle crée votre boutique, répond à vos clients et suit chaque livraison.", f1: '14 jours gratuits', f2: 'Sans carte bancaire', f3: 'Arabe · Français · English',
+      howT: 'Votre boutique en trois étapes', howS: 'Aucune compétence en design. Aucun code. Parlez, simplement.', s1t: 'Dites ce que vous vendez', s1d: 'Écrivez, parlez ou envoyez une photo.', s2t: 'Votre boutique apparaît', s2d: 'Design, produits et livraison, prêts.', s3t: 'Partagez un seul lien', s3d: "Les commandes arrivent. L'IA s'en occupe.",
+      featT: 'Tout tourne tout seul', featS: 'Vous publiez et expédiez. Le reste est automatique.', a1t: 'Répond aux clients', a1d: 'Jour et nuit, dans leur langue.', a2t: 'Prend les commandes', a2d: 'Un seul stock pour tous les canaux.', a3t: 'Imprime les étiquettes', a3d: 'Suivi et messages inclus.', a4t: 'Suit votre argent', a4d: 'Sachez ce que les livreurs vous doivent.', a5t: 'Bloque les mauvaises commandes', a5d: 'Shield repère vite les numéros à risque.', a6t: 'Vous dit quoi faire', a6d: 'Des conseils clairs tirés de vos ventes.',
+      styT: 'Faites-la à votre image', styS: 'Dites le style. Couleurs, polices, mise en page : fait.', plT: 'Essayez gratuitement 14 jours', plS: 'Tout est inclus. Choisissez une offre quand vous êtes prêt.', per: 'MAD / mois', p1: 'Votre boutique IA et le chat', p2: 'Commandes illimitées', p3: 'Étiquettes, suivi, cash', p4: 'Tout Solo', p5: 'Accès équipe', p6: 'Support prioritaire', trialnote: 'Pas de carte pour commencer. Résiliable à tout moment.',
+      bandT: 'Votre boutique, prête en quelques minutes.', bandS: 'Dites à Cendoor ce que vous vendez.', fLive: 'Démo en direct', fInv: 'Investisseurs', fLogin: 'Connexion', foot: 'Vous postez. Cendoor fait le reste.',
+      prompts: ['Construis ma boutique : abayas élégantes', 'Ajoute cette photo : 350 dirham', 'Mode sombre et futuriste', 'Annonce la livraison gratuite'], ann: 'Livraison gratuite ce week-end', title1: 'Abayas & caftans', sub1: 'Livré partout au Maroc', btn: 'Découvrir', cus: "Je veux l'abaya noire, M", ai: 'Commande #CD-0104 confirmée ✅', stl: ['Élégant', 'Audacieux', 'Futuriste', 'Naturel'], stlD: ['Serif, or, calme', 'Couleurs fortes', 'Sombre, néon', 'Doux, terreux'] },
+    ar: { navHow: 'كيف تعمل', navFeatures: 'المميزات', navPricing: 'الأسعار', trial: 'ابدأ تجربة مجانية', live: 'شاهد متجرا حيا', badge: 'منشئ المتاجر بالذكاء الاصطناعي للبائعين المغاربة', h1a: 'أنت تنشر.', h1b: 'وسندوور تتكفل بالباقي.', sub: 'قل للذكاء الاصطناعي ماذا تبيع. يبني متجرك ويجيب زبناءك ويتتبع كل توصيل.', f1: '14 يوما مجانا', f2: 'بدون بطاقة بنكية', f3: 'العربية · Français · English',
+      howT: 'متجرك في ثلاث خطوات', howS: 'بدون مهارات تصميم. بدون برمجة. فقط تكلّم.', s1t: 'قل ماذا تبيع', s1d: 'اكتب أو تكلّم أو أرسل صورة.', s2t: 'يظهر متجرك', s2d: 'التصميم والمنتجات والتوصيل جاهزة.', s3t: 'شارك رابطا واحدا', s3d: 'تصل الطلبات والذكاء الاصطناعي يتولاها.',
+      featT: 'كل شيء يعمل وحده', featS: 'أنت تنشر وتشحن. الباقي تلقائي.', a1t: 'يجيب الزبناء', a1d: 'ليلا ونهارا وبلغتهم.', a2t: 'يستقبل الطلبات', a2d: 'مخزون واحد لكل القنوات.', a3t: 'يطبع الملصقات', a3d: 'التتبع والإشعارات مشمولة.', a4t: 'يتتبع أموالك', a4d: 'اعرف ما تدين به شركات التوصيل.', a5t: 'يمنع الطلبات السيئة', a5d: 'الدرع يكشف الأرقام المشبوهة مبكرا.', a6t: 'يقول لك ماذا تفعل', a6d: 'نصائح واضحة من مبيعاتك أنت.',
+      styT: 'اجعله يشبهك', styS: 'قل الأسلوب. الألوان والخطوط والتخطيط: تمّ.', plT: 'جرّب مجانا لمدة 14 يوما', plS: 'كل شيء مشمول. اختر باقة عندما تكون جاهزا.', per: 'درهم / شهر', p1: 'متجرك الذكي والمحادثة', p2: 'طلبات غير محدودة', p3: 'ملصقات وتتبع وأموال', p4: 'كل ما في سولو', p5: 'وصول الفريق', p6: 'دعم ذو أولوية', trialnote: 'لا حاجة لبطاقة للبدء. ألغِ متى شئت.',
+      bandT: 'متجرك جاهز في دقائق.', bandS: 'قل لسندوور ماذا تبيع.', fLive: 'عرض حي', fInv: 'للمستثمرين', fLogin: 'تسجيل الدخول', foot: 'أنت تنشر. وسندوور تتكفل بالباقي.',
+      prompts: ['ابني متجري: عبايات أنيقة', 'أضف هذه الصورة: 350 درهم', 'خليه داكنا ومستقبليا', 'أعلن التوصيل المجاني'], ann: 'توصيل مجاني هذا الأسبوع', title1: 'عبايات وقفاطين', sub1: 'توصيل لكل المغرب', btn: 'تسوق الآن', cus: 'بغيت العباية السوداء، M', ai: 'تم تأكيد الطلب #CD-0104 ✅', stl: ['أنيق', 'جريء', 'مستقبلي', 'طبيعي'], stlD: ['كلاسيكي، ذهبي، هادئ', 'ألوان قوية', 'داكن، نيون', 'ناعم، ترابي'] },
+  };
+  const $ = s => document.querySelector(s); const sleep = ms => new Promise(r => setTimeout(r, ms));
+  let L = 'en'; try { L = localStorage.getItem('cd_site_lang') || ((navigator.language || '').startsWith('fr') ? 'fr' : (navigator.language || '').startsWith('ar') ? 'ar' : 'en'); } catch (_) {}
+  if (!T[L]) L = 'en';
+  let run = 0; // incremented to cancel the running demo loop when the language changes
+
+  const PRE = {
+    elegant: { a: '#c9a24a', b: '#2b2118', bg: '#fbf7ef', fg: '#2b2118', font: 'Georgia, serif', r: '4px', cls: '' },
+    bold: { a: '#e4572e', b: '#1b1b1b', bg: '#fffaf3', fg: '#1b1b1b', font: 'system-ui, sans-serif', r: '14px', cls: '' },
+    futuristic: { a: '#22d3ee', b: '#8b5cf6', bg: '#070b14', fg: '#e6f6ff', font: 'system-ui, sans-serif', r: '16px', cls: 'fut' },
+    natural: { a: '#1e8e5a', b: '#c9a46a', bg: '#f6f3ec', fg: '#2a3a2e', font: 'ui-rounded, system-ui, sans-serif', r: '18px', cls: '' },
+  };
+  const CARDS = [['🧥', 'Abaya', '350'], ['👗', 'Robe', '320'], ['🥻', 'Caftan', '650'], ['🖤', 'Abaya Noire', '350']];
+  const setStyle = (el, p) => { el.style.setProperty('--a', p.a); el.style.setProperty('--b', p.b); el.style.setProperty('--bg', p.bg); el.style.setProperty('--fg', p.fg); el.style.setProperty('--font', p.font); el.style.setProperty('--r', p.r); el.classList.toggle('fut', p.cls === 'fut'); };
+  const cardHtml = (c, cls = 'in') => `<div class="m-card ${cls}"><div class="im">${c[0]}</div><div class="tx">${c[1]}<i>${c[2]} MAD</i></div></div>`;
+
+  function applyLang() {
+    const t = T[L]; document.documentElement.lang = L; document.documentElement.dir = L === 'ar' ? 'rtl' : 'ltr';
+    document.querySelectorAll('[data-i]').forEach(e => { if (t[e.dataset.i] !== undefined) e.textContent = t[e.dataset.i]; });
+    document.querySelectorAll('.lang button').forEach(b => b.classList.toggle('on', b.dataset.lang === L));
+    $('#mBtn').textContent = t.btn; $('#mTitle').textContent = t.title1; $('#mSub').textContent = t.sub1;
+    $('#styles').innerHTML = ['elegant', 'bold', 'futuristic', 'natural'].map((k, i) => `<div class="sty reveal in"><div class="mini" id="sty-${k}"><div class="m-head"><span class="lg">${['🧥', '👟', '🧴', '🍯'][i]}</span><b>Amina</b></div><div class="m-hero"><h4>${t.title1}</h4><p>${t.sub1}</p><span class="m-btn">${t.btn}</span></div><div class="m-grid">${CARDS.slice(0, 2).map(c => cardHtml(c)).join('')}</div></div><b>${t.stl[i]}</b><span>${t.stlD[i]}</span></div>`).join('');
+    ['elegant', 'bold', 'futuristic', 'natural'].forEach(k => setStyle($('#sty-' + k), PRE[k]));
+  }
+
+  async function type(text, my) { const el = $('#typed'); el.textContent = ''; for (const ch of text) { if (my !== run) return false; el.textContent += ch; await sleep(34); } return true; }
+  async function demo(my) {
+    const t = T[L]; const mini = $('#mini'); const grid = $('#mGrid'); const ann = $('#mAnn'); const chat = $('#mChat');
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reset = () => { setStyle(mini, PRE.elegant); grid.innerHTML = ''; ann.classList.remove('on'); chat.innerHTML = ''; $('#mLogo').textContent = '🧥'; };
+    if (reduce) { setStyle(mini, PRE.futuristic); grid.innerHTML = CARDS.map(c => cardHtml(c)).join(''); $('#typed').textContent = t.prompts[2]; return; }
+    while (my === run) {
+      reset(); await sleep(500);
+      if (!await type(t.prompts[0], my)) return; await sleep(500);
+      for (const c of CARDS.slice(0, 3)) { if (my !== run) return; grid.insertAdjacentHTML('beforeend', cardHtml(c, '')); await sleep(60); grid.lastElementChild.classList.add('in'); await sleep(420); }
+      await sleep(1100);
+      if (!await type(t.prompts[1], my)) return; await sleep(400);
+      grid.insertAdjacentHTML('beforeend', cardHtml(CARDS[3], '')); await sleep(60); grid.lastElementChild.classList.add('in'); await sleep(1500);
+      if (!await type(t.prompts[3], my)) return; await sleep(300); ann.textContent = t.ann; ann.classList.add('on'); await sleep(1400);
+      if (!await type(t.prompts[2], my)) return; await sleep(300); setStyle(mini, PRE.futuristic); await sleep(2200);
+      if (my !== run) return;
+      chat.innerHTML = `<div class="m-msg me">${t.cus}</div>`; await sleep(100); chat.firstChild.classList.add('in'); await sleep(900);
+      if (my !== run) return;
+      chat.insertAdjacentHTML('beforeend', `<div class="m-msg ai">${t.ai}</div>`); await sleep(100); chat.lastChild.classList.add('in'); await sleep(3000);
+    }
+  }
+  function start() { run++; applyLang(); demo(run); }
+  document.querySelector('.lang').addEventListener('click', e => { const b = e.target.closest('button'); if (!b) return; L = b.dataset.lang; try { localStorage.setItem('cd_site_lang', L); } catch (_) {} start(); });
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }), { threshold: .15 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) start(); else run++; });
+  start();
+})();
+</script>
 </body>
 </html>

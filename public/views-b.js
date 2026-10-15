@@ -138,7 +138,7 @@
     const [carriers, ins] = await Promise.all([api('/api/carriers'), api('/api/insights'), CD.reloadMe()]);
     CD._carriers = carriers;
     const { shop, integrations: ig, usage, can } = CD.state.me; const ed = can.settings; const dis = ed ? '' : raw('disabled');
-    const plans = [['free', 0, 'freeF'], ['solo', 149, 'soloF'], ['growth', 299, 'growthF']];
+    const plans = [['solo', 149, 'soloF'], ['growth', 299, 'growthF']];
     main.innerHTML = html`${CD.topbar(t('settings'), ed ? html`<button class="btn primary" data-act="saveSettings">${icon('check')} ${t('save')}</button>` : '')}
       ${ed ? '' : html`<div class="alert mb">${icon('alert')}<div>${t('readOnly')}</div></div>`}
       <div class="grid k2 mb">
@@ -147,7 +147,7 @@
           <div class="grid k2" style="gap:10px"><div><label class="f">${t('city')}</label><input class="inp" id="s_city" value="${shop.city || ''}"></div><div><label class="f">${t('phone')}</label><input class="inp" id="s_phone" value="${shop.phone || ''}"></div></div></fieldset></div>
         <div class="card"><h3>${icon('zap')} ${t('aiSettings')}</h3><fieldset style="border:0;padding:0;margin:0" ${dis}>
           <label class="row" style="margin:6px 0"><input type="checkbox" id="s_ai" ${shop.ai_enabled ? raw('checked') : ''}> ${t('aiOn')}</label>
-          <div class="grid k2" style="gap:10px"><div><label class="f">${t('defaultLang')}</label><select class="inp" id="s_lang">${[['dar', 'Darija'], ['fr', 'Français'], ['en', 'English'], ['ar', 'العربية']].map(([k, n]) => html`<option value="${k}" ${k === shop.lang ? raw('selected') : ''}>${n}</option>`)}</select></div>
+          <div class="grid k2" style="gap:10px"><div><label class="f">${t('defaultLang')}</label><select class="inp" id="s_lang">${[['fr', 'Français'], ['en', 'English'], ['ar', 'العربية']].map(([k, n]) => html`<option value="${k}" ${k === (shop.lang === 'dar' ? 'ar' : shop.lang) ? raw('selected') : ''}>${n}</option>`)}</select></div>
           <div><label class="f">${t('tone')}</label><select class="inp" id="s_tone"><option value="friendly" ${shop.tone === 'friendly' ? raw('selected') : ''}>${t('friendly')}</option><option value="formal" ${shop.tone === 'formal' ? raw('selected') : ''}>${t('formal')}</option></select></div></div></fieldset>
           <div class="small muted" style="margin-top:10px">${t('llmState')}: <b>${ig.llm ? t('llmOn') : t('llmOff')}</b></div></div></div>
       <div class="card mb"><h3>${t('shipping')}</h3><fieldset style="border:0;padding:0;margin:0" ${dis}><div class="grid k2" style="gap:10px"><div><label class="f">${t('freeOver')}</label><input class="inp" id="s_free" type="number" min="0" value="${shop.free_shipping_over}"></div>
@@ -159,8 +159,8 @@
         ${[['chWaTitle', 'chWaLive', ig.whatsapp], ['chIgTitle', 'chIgLive', false], ['chTtTitle', 'chTtLive', false]].map(([ti, de, live]) => html`<div class="card" style="box-shadow:none;background:var(--surface-2)"><div class="row between"><b>${t(ti)}</b><span class="pill ${live ? 'green' : 'amber'}">${live ? t('connected') : t('pendingApproval')}</span></div><div class="row" style="margin:8px 0"><span class="pill green">${t('active')}</span></div><div class="small muted">${t(de)}</div></div>`)}</div>
         <fieldset style="border:0;padding:0;margin:14px 0 0" ${dis}><label class="f">${t('waNumber')}</label><input class="inp" id="s_wa" value="${shop.wa_number || ''}" inputmode="numeric" style="max-width:320px"></fieldset>
         <div class="small muted" style="margin-top:8px">${t('apiState')}: <b>${ig.whatsapp ? t('connected') : t('notConnected')}</b> · Webhook: <code>/webhooks/whatsapp</code></div></div>
-      <div class="card mb"><h3>${t('plan')}</h3><div class="grid k3">${plans.map(([k, p, f]) => html`<div class="plan ${shop.plan === k ? 'on' : ''}"><b>${t(k)}</b><div class="price">${p} MAD<span class="small muted"> ${t('perMonth')}</span></div><ul>${t(f).map(x => html`<li>${x}</li>`)}</ul>${shop.plan === k ? html`<span class="pill green">${t('current')}</span>` : ed ? html`<button class="btn sm block" data-act="setPlan" data-v="${k}">${t('choose')}</button>` : ''}</div>`)}</div>
-        <div class="row between mt"><span class="small muted">${t('usage')}: <b>${usage.orders}${usage.limit ? '/' + usage.limit : ''}</b></span><span class="small muted">${t('billingNote')}</span></div>${usage.limit ? html`<div class="meter" style="margin-top:8px"><i style="width:${Math.min(100, usage.orders / usage.limit * 100)}%"></i></div>` : ''}</div>
+      <div class="card mb"><h3>${t('plan')}</h3>${CD.state.me.trial ? html`<div class="alert teal mb">${icon('zap')}<div><b>${t('trialLeft', CD.state.me.trial.daysLeft)}</b> · ${t('trialThen')}</div></div>` : ''}<div class="grid k2">${plans.map(([k, p, f]) => html`<div class="plan ${shop.plan === k ? 'on' : ''}"><b>${t(k)}</b><div class="price">${p} MAD<span class="small muted"> ${t('perMonth')}</span></div><ul>${t(f).map(x => html`<li>${x}</li>`)}</ul>${shop.plan === k ? html`<span class="pill green">${t('current')}</span>` : ed ? html`<button class="btn sm block" data-act="setPlan" data-v="${k}">${shop.plan === 'trial' ? t('choosePlan') : t('choose')}</button>` : ''}</div>`)}</div>
+        <p class="small muted" style="margin-bottom:0">${t('billingNote')}</p></div>
       ${CD.state.me.demo ? html`<div class="card mb"><h3>${t('demoTools')}</h3><p class="small muted">${t('demoHint2')}</p><button class="btn danger" data-act="resetDemo">${t('resetDemo')}</button></div>` : ''}
       <a class="btn" href="/api/orders.csv">${icon('download')} ${t('exportData')}</a>`.s;
   };

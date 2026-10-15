@@ -38,7 +38,9 @@
     const chMax = Math.max(1, ...a.channels.map(c => c.n));
     main.innerHTML = html`
       ${CD.topbar(html`${t('hello')}, ${(me.user.name || '').split(' ')[0] || me.shop.name}`, html`<a class="btn primary" href="${shopUrl()}" target="_blank" rel="noopener">${icon('ext')} ${t('viewStore')}</a>`)}
-      ${me.usage.limit && me.usage.orders >= me.usage.limit * 0.8 ? html`<div class="alert mb">${icon('alert')}<div>${t('usage')}: <b>${me.usage.orders}/${me.usage.limit}</b> — ${t('plan')}</div><a class="btn sm" href="#/settings">${t('choose')}</a></div>` : ''}
+      ${me.trial ? html`<div class="alert teal mb">${icon('zap')}<div class="grow"><b>${t('trialLeft', me.trial.daysLeft)}</b> · ${t('trialThen')}</div><a class="btn sm primary" href="#/settings">${t('choosePlan')}</a></div>` : ''}
+      <div class="card ask mb"><div class="row wrap"><div class="grow" style="min-width:240px"><b>${t('askTitle')}</b><input class="inp" id="askInput" placeholder="${t('askPlaceholder')}" style="margin-top:8px"></div><button class="btn primary" data-act="askGo">${icon('send')} ${t('askBtn')}</button></div>
+        <div class="chips" style="margin-top:10px">${[t('askChip1'), t('askChip2'), t('askChip3')].map(c => html`<button class="chip" data-act="askChip" data-v="${c}">${c}</button>`)}</div></div>
       ${showStart ? html`<div class="card mb"><h3>${t('getStarted')}</h3>
         <div class="check ${prods.length ? 'done' : ''}"><span class="box">${prods.length ? icon('check') : ''}</span><span class="t grow">${t('stepProduct')}</span><a class="btn sm" href="#/products">${t('add')}</a></div>
         <div class="check"><span class="box"></span><span class="t grow">${t('stepShipping')}</span><a class="btn sm" href="#/settings">${t('settings')}</a></div>
@@ -62,16 +64,17 @@
           <p class="tiny muted" style="margin-bottom:0">${t('valueNote')}</p>
         </div>
       </div>
-      ${ins.insights.length ? html`<div class="card mb"><h3>${icon('zap')} ${t('copilot')}</h3><p class="small muted" style="margin-top:-6px">${t('copilotSub')}</p><div class="stack">${ins.insights.map(i => html`<a class="alert teal" href="${i.href}" style="text-decoration:none;color:inherit">${icon('zap')}<div class="grow">${t('ins_' + i.k, i)}</div></a>`)}</div></div>` : ''}
+      ${ins.insights.length ? html`<div class="card mb"><h3>${icon('zap')} ${t('copilot')}</h3><p class="small muted" style="margin-top:-6px">${t('copilotSub')}</p><div class="stack">${ins.insights.slice(0, 3).map(i => html`<a class="alert teal" href="${i.href}" style="text-decoration:none;color:inherit">${icon('zap')}<div class="grow">${t('ins_' + i.k, i)}</div></a>`)}</div></div>` : ''}
       <div class="card mb"><h3>${t('salesChart')}</h3>
         <div class="bars">${a.series.map(s => html`<div class="b" title="${fmtDay(s.date)}: ${money(s.sales)} · ${s.orders}"><div class="bar" style="height:${Math.max(2, s.sales / max * 100)}%"></div><div class="x">${s.date.slice(8)}</div></div>`)}</div>
       </div>
       <div class="grid k2">
         <div class="card"><h3>${t('topProducts')}</h3>${a.top.length ? a.top.map(p => html`<div class="hbar"><span class="nowrap" style="overflow:hidden;text-overflow:ellipsis">${p.name}</span><span class="track"><span class="fill" style="width:${p.revenue / a.top[0].revenue * 100}%;display:block"></span></span><b class="small">${money(p.revenue)}</b></div>`) : html`<div class="empty">—</div>`}</div>
-        <div class="card"><h3>${t('byChannel')}</h3>${a.channels.length ? a.channels.map(c => html`<div class="hbar"><span>${CD.chanLabel(c.channel)}</span><span class="track"><span class="fill" style="width:${c.n / chMax * 100}%;display:block;background:var(--orange)"></span></span><b class="small">${c.n}</b></div>`) : html`<div class="empty">—</div>`}</div>
       </div>`.s;
   };
   act.copyShop = () => copyText(shopUrl());
+  act.askGo = () => { const v = ($('#askInput').value || '').trim(); CD.pendingStudio = v || null; location.hash = '#/studio'; };
+  act.askChip = el => { CD.pendingStudio = el.dataset.v; location.hash = '#/studio'; };
 
   // ======================= ORDERS =======================
   const OSTATUS = ['all', 'pending_confirmation', 'confirmed', 'shipped', 'delivered', 'failed', 'cancelled'];
@@ -196,7 +199,7 @@
       <button class="btn sm" type="button" data-act="addVariant">${icon('plus')} ${t('addVariant')}</button>
       <label class="f">${t('lowAlert')}</label><input class="inp" id="p_low" type="number" min="0" value="${p.low_stock_alert == null ? 3 : p.low_stock_alert}" style="max-width:120px"></fieldset>
       ${id ? html`<div class="sep"></div><h3 style="margin:0 0 6px;font-size:15px">${icon('zap')} ${t('postKit')}</h3><p class="small muted" style="margin-top:0">${t('postKitHint')}</p>
-        <div class="row wrap"><select class="inp" id="pk_lang" style="max-width:150px">${[['dar', 'Darija'], ['fr', 'Français'], ['en', 'English'], ['ar', 'العربية']].map(([k, n]) => html`<option value="${k}" ${k === CD.state.me.shop.lang ? raw('selected') : ''}>${n}</option>`)}</select><select class="inp" id="pk_ch" style="max-width:150px"><option value="instagram">Instagram</option><option value="tiktok">TikTok</option></select><button class="btn accent" type="button" data-act="postKit" data-id="${id}">${t('generate')}</button></div>
+        <div class="row wrap"><select class="inp" id="pk_lang" style="max-width:150px">${[['fr', 'Français'], ['en', 'English'], ['ar', 'العربية']].map(([k, n]) => html`<option value="${k}" ${k === CD.state.me.shop.lang ? raw('selected') : ''}>${n}</option>`)}</select><select class="inp" id="pk_ch" style="max-width:150px"><option value="instagram">Instagram</option><option value="tiktok">TikTok</option></select><button class="btn accent" type="button" data-act="postKit" data-id="${id}">${t('generate')}</button></div>
         <textarea class="inp" id="pk_text" rows="7" readonly style="margin-top:10px"></textarea><div class="row wrap" style="margin-top:8px"><button class="btn sm" type="button" data-act="pkCopy">${icon('copy')} ${t('copyCaption')}</button></div>` : ''}
       <div class="err" id="pErr"></div>
       ${can ? html`<div class="row" style="justify-content:space-between;margin-top:16px">${id ? html`<button class="btn danger" data-act="delProduct" data-id="${id}">${icon('trash')} ${t('delete')}</button>` : '<span></span>'}<button class="btn primary" data-act="saveProduct" data-id="${id}">${t('save')}</button></div>` : html`<p class="muted small">${t('readOnly')}</p>`}`);

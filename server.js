@@ -16,6 +16,7 @@ const { labelHtml } = require('./lib/label');
 const insights = require('./lib/insights');
 const { caption } = require('./lib/caption');
 const assistant = require('./lib/assistant');
+const designLib = require('./lib/design');
 const { seedDemo } = require('./seed');
 
 if (process.env.CENDOOR_SEED !== '0') seedDemo();
@@ -38,7 +39,6 @@ app.use('/uploads', express.static(UPLOADS, { maxAge: '7d', setHeaders: res => r
 app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'] }));
 
 const wrap = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);
-const PLAN_LIMIT = { free: 50, solo: Infinity, growth: Infinity };
 const hits = new Map();
 function limited(key, max, windowMs = 60000) {
   const t = Date.now(); const arr = (hits.get(key) || []).filter(x => t - x < windowMs);
@@ -81,6 +81,12 @@ app.get('/api/shop/:slug', (req, res) => {
   }
   res.json({
     shop: { name: shop.name, slug: shop.slug, city: shop.city, tagline: shop.tagline, lang: shop.lang, wa_number: shop.wa_number, free_shipping_over: shop.free_shipping_over, ai_enabled: !!shop.ai_enabled, theme_color: shop.theme_color, announcement: shop.announcement, welcome_msg: shop.welcome_msg },
+    design: designLib.getDesign(shop.id),
+    featured: (() => {
+      const top = all(`SELECT oi.product_id id, SUM(oi.qty) q FROM order_items oi JOIN orders o ON o.id=oi.order_id WHERE o.shop_id=? AND o.status != 'cancelled' AND date(o.created_at) >= date('now','-60 days') GROUP BY oi.product_id ORDER BY q DESC LIMIT 4`, shop.id).map(x => x.id);
+      return top.length ? top : all('SELECT id FROM products WHERE shop_id=? AND active=1 ORDER BY id LIMIT 4', shop.id).map(x => x.id);
+    })(),
+    reviews: all('SELECT r.rating, r.comment, o.name, o.city FROM reviews r LEFT JOIN orders o ON o.id=r.order_id WHERE r.shop_id=? ORDER BY r.id DESC LIMIT 6', shop.id).map(r => ({ rating: r.rating, comment: r.comment, name: String(r.name || '').split(' ')[0], city: r.city })),
     products: publicProducts(shop.id), rating: orders.shopRating(shop.id), source,
     carriers: all('SELECT name, base_price, eta_days FROM carriers WHERE shop_id=? AND enabled=1', shop.id),
   });
@@ -165,7 +171,7 @@ app.post('/api/auth/signup', (req, res) => {
   let slug = slugify(shopName); let i = 1;
   while (get('SELECT id FROM shops WHERE slug=?', slug)) slug = slugify(shopName) + '-' + (++i);
   const token = tx(() => {
-    run('INSERT INTO shops (slug, name, city, phone) VALUES (?,?,?,?)', slug, shopName, str(req.body.city, 40), str(req.body.phone, 20));
+    run("INSERT INTO shops (slug, name, city, phone, lang, plan, trial_ends_at) VALUES (?,?,?,?,?,'trial',datetime('now','+14 days'))", slug, shopName, str(req.body.city, 40), str(req.body.phone, 20), 'fr');
     const shop = get('SELECT id FROM shops WHERE slug=?', slug);
     const salt = auth.newSalt();
     run('INSERT INTO users (shop_id, email, name, pass_hash, salt, role) VALUES (?,?,?,?,?,?)', shop.id, email, name || shopName, auth.hash(password, salt), salt, 'admin');
@@ -193,7 +199,8 @@ app.get('/api/me', auth.auth(), (req, res) => {
   const used = analytics.monthlyUsage(shop.id);
   res.json({
     user: req.user, shop, can: Object.fromEntries(Object.entries(auth.CAN).map(([k, v]) => [k, v.includes(req.user.role)])),
-    usage: { orders: used, limit: PLAN_LIMIT[shop.plan] === Infinity ? null : PLAN_LIMIT[shop.plan] },
+    usage: { orders: used, limit: null },
+    trial: shop.plan === 'trial' ? { daysLeft: Math.max(0, Math.ceil((Date.parse(String(shop.trial_ends_at).replace(' ', 'T') + 'Z') - Date.now()) / 86400000)) } : null,
     integrations: { whatsapp: whatsapp.configured(), llm: chat.llmEnabled() }, demo: process.env.CENDOOR_DEMO === '1' && req.user.email === 'demo@cendoor.com',
   });
 });
@@ -207,7 +214,7 @@ app.put('/api/settings', auth.auth('settings'), (req, res) => {
     name: str(b.name, 60), city: str(b.city, 40), phone: str(b.phone, 20), tagline: str(b.tagline, 140),
     lang: ['dar', 'fr', 'en', 'ar'].includes(b.lang) ? b.lang : 'dar', tone: b.tone === 'formal' ? 'formal' : 'friendly',
     ai_enabled: b.ai_enabled ? 1 : 0, default_carrier: str(b.default_carrier, 30), free_shipping_over: Math.max(0, num(b.free_shipping_over)),
-    auto_carrier: b.auto_carrier ? 1 : 0, wa_number: str(b.wa_number, 20).replace(/\D/g, ''), plan: ['free', 'solo', 'growth'].includes(b.plan) ? b.plan : undefined,
+    auto_carrier: b.auto_carrier ? 1 : 0, wa_number: str(b.wa_number, 20).replace(/\D/g, ''), plan: ['solo', 'growth'].includes(b.plan) ? b.plan : undefined,
   };
   if (!f.name) return res.status(400).json({ error: 'name_required' });
   const cur = get('SELECT * FROM shops WHERE id=?', req.shopId);
@@ -481,7 +488,9 @@ app.post('/api/products/:id/postlink', auth.auth('links'), (req, res) => {
 app.post('/api/studio', auth.auth('studio'), wrap(async (req, res) => {
   if (limited('studio:' + req.user.id, 60)) return res.status(429).json({ error: 'slow_down' });
   const lang = ['en', 'fr', 'ar'].includes(req.body.lang) ? req.body.lang : 'en';
-  const out = await assistant.handle(req.shopId, req.body.text, { history: Array.isArray(req.body.history) ? req.body.history : [], lang });
+  const imageUrl = req.body.image ? saveImage(req.body.image, req.shopId) : null;
+  if (req.body.image && !imageUrl) return res.status(400).json({ error: 'bad_image' });
+  const out = await assistant.handle(req.shopId, req.body.text, { history: Array.isArray(req.body.history) ? req.body.history : [], lang, state: req.body.state && typeof req.body.state === 'object' ? req.body.state : null, imageUrl });
   res.json({ ...out, log: assistant.recentLog(req.shopId) });
 }));
 app.post('/api/studio/undo', auth.auth('studio'), (req, res) => {

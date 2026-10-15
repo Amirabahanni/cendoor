@@ -53,3 +53,11 @@ Object.assign(I18N.ar, {
   demoTools: 'عرض المستثمرين', demoHint2: 'يعيد متجر العرض إلى بياناته الأصلية. كل ما أنشأه المستثمرون يُحذف.', resetDemo: 'إعادة ضبط العرض', resetDone: 'تمت إعادة الضبط',
   trackTitle: 'تتبّع طلبك', shield: 'درع سندوور',
 });
+
+Object.assign(I18N.en, { askTitle: 'What do you want to do?', askPlaceholder: 'Tell Cendoor in your own words…', askBtn: 'Ask', askChip1: 'Build my shop', askChip2: 'Make it elegant, gold and black', askChip3: 'Add my Instagram', trialLeft: n => `Free trial: ${n} day(s) left`, trialThen: 'then 149 MAD a month, cancel any time', choosePlan: 'Choose a plan' });
+Object.assign(I18N.fr, { askTitle: 'Que voulez-vous faire ?', askPlaceholder: 'Dites-le à Cendoor avec vos mots…', askBtn: 'Demander', askChip1: 'Construis ma boutique', askChip2: 'Style élégant, or et noir', askChip3: 'Ajoute mon Instagram', trialLeft: n => `Essai gratuit : ${n} jour(s) restant(s)`, trialThen: 'puis 149 MAD par mois, sans engagement', choosePlan: 'Choisir une offre' });
+Object.assign(I18N.ar, { askTitle: 'ماذا تريد أن تفعل؟', askPlaceholder: 'قل لسندوور بكلامك…', askBtn: 'اسأل', askChip1: 'ابني متجري', askChip2: 'خليه أنيق بالذهبي والأسود', askChip3: 'زيد الإنستغرام ديالي', trialLeft: n => `تجربة مجانية: بقي ${n} يوم`, trialThen: 'ثم 149 درهم شهريا، يمكنك الإلغاء في أي وقت', choosePlan: 'اختر باقة' });
+
+Object.assign(I18N.en, { slogan: 'You post. Cendoor does the rest.' });
+Object.assign(I18N.fr, { slogan: 'Vous postez. Cendoor fait le reste.' });
+Object.assign(I18N.ar, { slogan: 'أنت تنشر، وسندوور تتكفل بالباقي.' });

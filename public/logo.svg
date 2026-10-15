@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Cendoor">
+  <defs>
+    <linearGradient id="g" x1="8" y1="8" x2="58" y2="62" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0f5c5c"/>
+      <stop offset="0.55" stop-color="#14a89a"/>
+      <stop offset="1" stop-color="#3de0d0"/>
+    </linearGradient>
+    <linearGradient id="d" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#d9fbf6"/>
+    </linearGradient>
+  </defs>
+  <!-- a chat bubble shaped like an arched door -->
+  <path d="M14 26A18 18 0 0 1 50 26V42A10 10 0 0 1 40 52H24L14 60V26Z" fill="url(#g)"/>
+  <!-- the open door -->
+  <path d="M23 45V31A9 9 0 0 1 41 31V45Z" fill="url(#d)"/>
+  <!-- door handle / notification spark -->
+  <circle cx="36.5" cy="38" r="2.3" fill="#f28c28"/>
+</svg>

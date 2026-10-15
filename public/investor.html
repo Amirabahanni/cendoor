@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cendoor: investor guide</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#04070d">
+<link rel="icon" href="/logo.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/site.css">
+<style>
+  .wrap.narrow { max-width: 860px; } h1 { font-size: clamp(36px, 5.4vw, 60px); letter-spacing: -.045em; line-height: 1.05; margin: 22px 0 14px; } .lead { color: var(--mut); font-size: 20px; max-width: 620px; margin: 0 0 8px; }
+  .steps { counter-reset: s; display: grid; gap: 14px; margin: 34px 0 10px; padding: 0; list-style: none; } .steps li { counter-increment: s; padding: 22px 24px 22px 76px; position: relative; } html[dir=rtl] .steps li { padding: 22px 76px 22px 24px; }
+  .steps li::before { content: counter(s); position: absolute; inset-inline-start: 22px; top: 20px; width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; font-weight: 800; background: var(--grad); color: #04121a; }
+  .steps b { display: block; font-size: 18px; margin-bottom: 2px; } .steps p { margin: 0; color: var(--mut); font-size: 16px; } .steps a { color: var(--teal); }
+  code { background: rgba(255,255,255,.08); padding: 2px 8px; border-radius: 8px; font-size: 14px; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; } @media (max-width: 760px) { .two { grid-template-columns: 1fr; } } .box { padding: 26px; } .box h3 { margin: 0 0 10px; font-size: 19px; } .box ul { margin: 0; padding-inline-start: 20px; color: var(--mut); display: grid; gap: 6px; font-size: 15.5px; } .ok { border-top: 3px solid var(--teal); } .wait { border-top: 3px solid var(--orange); }
+  h2.sec { font-size: 26px; letter-spacing: -.03em; margin: 56px 0 14px; }
+</style>
+</head>
+<body>
+<div class="bgfx" aria-hidden="true"></div>
+<header class="nav"><div class="wrap"><a class="logo" href="/"><img src="/logo.svg" alt=""><span>cen<b>door</b></span></a><a class="btn sm" href="/">← Home</a></div></header>
+<main class="wrap narrow" style="padding-top:56px;padding-bottom:70px">
+  <span class="eyebrow"><i></i>Investor guide · 6 minutes</span>
+  <h1>Try Cendoor <span class="grad">as a seller and as a customer.</span></h1>
+  <p class="lead">Everything runs on fictional demo data. Nothing you create is kept: a reset button in Settings returns the demo to its original state.</p>
+
+  <ol class="steps">
+    <li class="glass"><b>Build a shop by talking</b><p>Open the <a href="/app">dashboard</a> and use the demo login below. In <i>Studio</i>, say <code>Build my shop</code> and answer the four questions. Then try <code>Make it futuristic, dark mode</code>, <code>Add an About section</code>, or attach a product photo with a price. The preview changes live; every change has an Undo.</p></li>
+    <li class="glass"><b>Be the customer</b><p>Open the <a href="/s/amina-boutique">demo shop</a>, tap “Chat to order”, write <code>bghit robe zerqa M</code> (Darija), <code>Je veux une abaya noire</code> or <code>I want a dress</code>, and finish the order. The microphone works in Chrome and Edge.</p></li>
+    <li class="glass"><b>Run the order</b><p>In the dashboard, open <i>Orders</i>: approve, print the label, mark it handed over, then press “simulate next carrier update”. The customer chat receives each update, with a tracking link.</p></li>
+    <li class="glass"><b>Trigger the fraud shield</b><p>Place an order with the phone number <code>0670000099</code>. Other (fictional) sellers reported failed deliveries for it, so Cendoor holds the order for approval.</p></li>
+    <li class="glass"><b>Read the advice</b><p>The Home screen shows what the AI learned from the seller’s own orders (best carrier per city, stock run-out, best-converting post) and the cash still held by carriers.</p></li>
+    <li class="glass"><b>Track as a customer</b><p>Open the <a href="/track">tracking page</a> with order <code>CD-0102</code> and phone <code>0673141516</code>. Switch the dashboard to Arabic to see right-to-left support.</p></li>
+  </ol>
+
+  <h2 class="sec">Demo logins</h2>
+  <div class="glass box"><p style="margin:0">Dashboard: <code>demo@cendoor.com</code> / <code>demo1234</code> (owner). Role demos with the same password: <code>manager@</code>, <code>operator@</code>, <code>viewer@cendoor.com</code>.</p></div>
+
+  <h2 class="sec">What is real, and what is not yet</h2>
+  <div class="two">
+    <div class="glass box ok"><h3>Working now</h3><ul><li>AI that builds and restyles the whole shop from a conversation, with undo</li><li>Customer chat in Arabic, French, English and Darija, with voice</li><li>Orders, shared stock, labels, delivery updates, failed-delivery recovery</li><li>Fraud shield, carrier advice, cash tracking, team roles</li><li>14-day free trial flow</li></ul></div>
+    <div class="glass box wait"><h3>Needs approvals or partners</h3><ul><li>Two-way WhatsApp and Instagram: needs Meta business verification</li><li>TikTok messages: limited to approved partners</li><li>Live carrier tracking: carrier APIs (simulated in the demo)</li><li>Payments and billing: not connected yet</li><li>The fraud shield only becomes strong with many sellers (demo data is fictional)</li></ul></div>
+  </div>
+</main>
+<footer><div class="wrap"><div>You post. Cendoor does the rest.</div><div><a href="/">Home</a><a href="/app">Dashboard</a><a href="/s/amina-boutique">Demo shop</a></div></div></footer>
+</body>
+</html>

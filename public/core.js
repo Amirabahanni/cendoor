@@ -106,7 +106,8 @@
   let authTab = 'login';
   function authView() {
     return html`<div class="auth"><div class="auth-card">
-      <div class="row between"><div class="logo"><span class="logo-mark">${icon('chat')}</span>cendoor</div>${langPicker()}</div>
+      <div class="row between"><div class="logo"><img class="logo-img" src="/logo.svg" alt="">cendoor</div>${langPicker()}</div>
+      <p class="muted small" style="margin:10px 0 0">${t('slogan')}</p>
       <div class="tabs"><button class="${authTab === 'login' ? 'on' : ''}" data-act="authTab" data-v="login">${t('login')}</button><button class="${authTab === 'signup' ? 'on' : ''}" data-act="authTab" data-v="signup">${t('signup')}</button></div>
       <form id="authForm" autocomplete="on">
         ${authTab === 'signup' ? html`<label class="f">${t('shopName')}</label><input class="inp" name="shopName" required maxlength="60"><label class="f">${t('yourName')}</label><input class="inp" name="name" maxlength="60">` : ''}
@@ -129,14 +130,17 @@
   });
 
   // ---------- shell ----------
-  const NAV = [['overview', 'home'], ['studio', 'zap'], ['orders', 'box'], ['inbox', 'chat'], ['products', 'tag'], ['customers', 'users'], ['links', 'link'], ['money', 'cash'], ['team', 'users'], ['settings', 'sliders']];
+  const NAV = [['overview', 'home'], ['studio', 'zap'], ['orders', 'box'], ['inbox', 'chat'], ['products', 'tag'], ['customers', 'users'], ['settings', 'sliders']];
+  // pages that live under another menu entry, shown as tabs at the top of the page
+  const GROUPS = { orders: ['orders', 'money'], products: ['products', 'links'], settings: ['settings', 'team'] };
+  const groupOf = r => Object.keys(GROUPS).find(g => GROUPS[g].includes(r)) || r;
   function shell(inner) {
     const { me, badges } = CD.state; const r = CD.state.route;
     const b = { orders: badges.toApprove, inbox: badges.attention };
     return html`<div class="shell">
       <aside class="side" id="side">
-        <div class="logo"><span class="logo-mark">${icon('chat')}</span>cendoor</div>
-        <nav class="nav">${NAV.filter(([k]) => k !== 'team' || me.can.team || true).map(([k, ic]) => html`<a href="#/${k}" class="${r === k ? 'on' : ''}" data-act="closeMenu">${icon(ic)}<span>${t(k)}</span>${b[k] ? html`<span class="badge">${b[k]}</span>` : ''}</a>`)}</nav>
+        <div class="logo"><img class="logo-img" src="/logo.svg" alt="">cendoor</div>
+        <nav class="nav">${NAV.filter(([k]) => k !== 'team' || me.can.team || true).map(([k, ic]) => html`<a href="#/${k}" class="${groupOf(r) === k ? 'on' : ''}" data-act="closeMenu">${icon(ic)}<span>${t(k)}</span>${b[k] ? html`<span class="badge">${b[k]}</span>` : ''}</a>`)}</nav>
         <div class="spacer"></div>
         <a class="btn sm" href="/s/${me.shop.slug}" target="_blank" rel="noopener">${icon('ext')} ${t('viewStore')}</a>
         <div class="userbox">
@@ -152,7 +156,8 @@
   CD.act.closeMenu = () => { document.getElementById('side')?.classList.remove('open'); document.getElementById('scrim')?.classList.add('hidden'); };
   CD.act.openMenu = () => { document.getElementById('side')?.classList.add('open'); document.getElementById('scrim')?.classList.remove('hidden'); };
   CD.act.logout = async () => { await CD.api('/api/auth/logout', { method: 'POST' }).catch(() => {}); CD.state.me = null; render(); };
-  CD.topbar = (title, actions) => html`<div class="topbar"><button class="btn ghost menu-btn" data-act="openMenu" aria-label="Menu">${icon('menu')}</button><h1>${title}</h1>${actions || ''}</div>`;
+  const subnav = () => { const g = GROUPS[groupOf(CD.state.route)]; return g && g.length > 1 ? html`<div class="chips mb subnav">${g.map(k => html`<a class="chip ${k === CD.state.route ? 'on' : ''}" href="#/${k}">${t(k)}</a>`)}</div>` : ''; };
+  CD.topbar = (title, actions) => html`<div class="topbar"><button class="btn ghost menu-btn" data-act="openMenu" aria-label="Menu">${icon('menu')}</button><h1>${title}</h1>${actions || ''}</div>${subnav()}`;
   CD.can = k => !!(CD.state.me && CD.state.me.can[k]);
 
   // ---------- routing ----------

@@ -1,0 +1,18 @@
+# One-click deploy on Render (https://render.com): New > Blueprint > pick your GitHub repo.
+# The free plan has no persistent disk: the demo data is re-created automatically every time the service restarts,
+# which is exactly what you want for an investor demo. For real customers use a paid plan and add a disk (see README).
+services:
+  - type: web
+    name: cendoor
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: CENDOOR_DEMO
+        value: "1"
+      - key: CENDOOR_NETWORK_SECRET
+        generateValue: true
+      - key: PUBLIC_URL
+        sync: false          # set to your https URL after the first deploy, e.g. https://cendoor.onrender.com
+      - key: ANTHROPIC_API_KEY
+        sync: false          # optional: switches the chat and Studio to Claude

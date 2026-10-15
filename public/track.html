@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Track your order</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%230F5C5C'/%3E%3Cpath d='M9 23V9h8a6 6 0 0 1 0 12h-3v2z' fill='none' stroke='%23fff' stroke-width='2.4'/%3E%3C/svg%3E">
+<style>
+  :root { --teal:#0F5C5C; --teal-100:#D9ECEA; --orange:#F28C28; --bg:#FAF7F2; --surface:#fff; --text:#1B2A2A; --muted:#62767A; --border:#E6E0D5; --red:#C8382E; --green:#1E8E5A; }
+  @media (prefers-color-scheme: dark) { :root { --teal:#43B0AC; --teal-100:#18403F; --bg:#0E1717; --surface:#152323; --text:#E8F0EE; --muted:#9DB1B0; --border:#254040; --red:#F07167; --green:#4CC38A; } }
+  * { box-sizing: border-box; } body { margin:0; background:var(--bg); color:var(--text); font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans Arabic",sans-serif; }
+  .wrap { max-width:520px; margin:0 auto; padding:24px 16px 60px; } .brand { font-weight:800; font-size:22px; color:var(--teal); letter-spacing:-.02em; }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:22px; margin-top:16px; }
+  h1 { font-size:24px; margin:18px 0 4px; letter-spacing:-.02em; } .muted { color:var(--muted); font-size:14px; }
+  label { display:block; font-size:13px; font-weight:650; color:var(--muted); margin:12px 0 5px; } input { width:100%; border:1.5px solid var(--border); border-radius:12px; padding:12px 14px; background:var(--surface); color:var(--text); font:inherit; min-height:48px; }
+  button { margin-top:16px; width:100%; min-height:50px; border:0; border-radius:14px; background:var(--teal); color:#fff; font:inherit; font-weight:700; cursor:pointer; }
+  .err { color:var(--red); margin-top:10px; min-height:22px; }
+  .steps { display:flex; justify-content:space-between; margin:20px 0 6px; position:relative; } .steps::before { content:""; position:absolute; top:13px; inset-inline:14px; height:3px; background:var(--border); }
+  .st { position:relative; text-align:center; flex:1; font-size:12px; color:var(--muted); } .dot { width:28px; height:28px; border-radius:50%; background:var(--border); margin:0 auto 6px; display:grid; place-items:center; color:#fff; font-weight:800; position:relative; }
+  .st.on .dot { background:var(--teal); } .st.on { color:var(--text); font-weight:650; } .st.bad .dot { background:var(--red); }
+  ul { list-style:none; padding:0; margin:14px 0 0; } li { display:flex; justify-content:space-between; gap:10px; padding:8px 0; border-bottom:1px solid var(--border); font-size:14px; } li:last-child { border:0; }
+  .pill { display:inline-block; padding:3px 12px; border-radius:999px; font-weight:700; font-size:13px; background:var(--teal-100); color:var(--teal); }
+</style>
+</head>
+<body>
+<div class="wrap"><div class="brand">cendoor</div>
+  <h1 id="h1">Track your order</h1><div class="muted" id="sub">Enter your order number and the phone number you used.</div>
+  <div class="card" id="formCard"><label id="l1">Order number</label><input id="num" placeholder="CD-0104" autocapitalize="characters"><label id="l2">Phone number</label><input id="phone" inputmode="tel" placeholder="06…"><div class="err" id="err"></div><button id="go">Track</button></div>
+  <div class="card" id="result" hidden></div></div>
+<script>
+(() => {
+  const parts = location.pathname.split('/').filter(Boolean);
+  const slug = parts[0] === 't' ? decodeURIComponent(parts[1] || '') : new URLSearchParams(location.search).get('shop') || '';
+  const pre = parts[0] === 't' ? decodeURIComponent(parts[2] || '') : '';
+  const nl = (navigator.language || 'en').slice(0, 2);
+  const L = nl === 'fr' ? 'fr' : nl === 'ar' ? 'ar' : 'en';
+  const X = {
+    en: { h1: 'Track your order', sub: 'Enter your order number and the phone number you used.', l1: 'Order number', l2: 'Phone number', go: 'Track', nf: 'We could not find this order. Check the number and phone.', steps: ['Confirmed', 'Shipped', 'In transit', 'Out for delivery', 'Delivered'], failed: 'Delivery failed. The shop will contact you to arrange a new delivery.', cancelled: 'This order was cancelled.', pending: 'The shop is verifying your order.', total: 'Pay on delivery', carrier: 'Carrier', hi: n => `Hello ${n}`, ev: { order_created: 'Order received', confirmed: 'Order confirmed', label_created: 'Label prepared', picked_up: 'Handed to carrier', in_transit: 'In transit', out_for_delivery: 'Out for delivery', delivered: 'Delivered', failed: 'Delivery attempt failed', retry: 'New attempt requested', pickup_requested: 'Pickup at agency requested', cancelled: 'Cancelled' } },
+    fr: { h1: 'Suivre votre commande', sub: 'Saisissez votre numéro de commande et le téléphone utilisé.', l1: 'Numéro de commande', l2: 'Téléphone', go: 'Suivre', nf: 'Commande introuvable. Vérifiez le numéro et le téléphone.', steps: ['Confirmée', 'Expédiée', 'En transit', 'En livraison', 'Livrée'], failed: "Livraison échouée. La boutique vous contactera pour organiser une nouvelle livraison.", cancelled: 'Cette commande a été annulée.', pending: 'La boutique vérifie votre commande.', total: 'À payer à la livraison', carrier: 'Transporteur', hi: n => `Bonjour ${n}`, ev: { order_created: 'Commande reçue', confirmed: 'Commande confirmée', label_created: 'Étiquette préparée', picked_up: 'Remise au transporteur', in_transit: 'En transit', out_for_delivery: 'En cours de livraison', delivered: 'Livrée', failed: 'Tentative échouée', retry: 'Nouvelle tentative demandée', pickup_requested: "Retrait en agence demandé", cancelled: 'Annulée' } },
+    ar: { h1: 'تتبّع طلبك', sub: 'أدخل رقم الطلب ورقم الهاتف المستعمل.', l1: 'رقم الطلب', l2: 'رقم الهاتف', go: 'تتبّع', nf: 'لم نجد هذا الطلب. تحقق من الرقم والهاتف.', steps: ['مؤكد', 'تم الشحن', 'في الطريق', 'خرج للتوصيل', 'تم التسليم'], failed: 'فشل التوصيل. سيتصل بك المتجر لترتيب توصيل جديد.', cancelled: 'تم إلغاء هذا الطلب.', pending: 'المتجر يتحقق من طلبك.', total: 'الدفع عند الاستلام', carrier: 'الناقل', hi: n => `مرحبا ${n}`, ev: { order_created: 'تم استلام الطلب', confirmed: 'تم تأكيد الطلب', label_created: 'تم تجهيز الملصق', picked_up: 'سُلّم للناقل', in_transit: 'في الطريق', out_for_delivery: 'خرج للتوصيل', delivered: 'تم التسليم', failed: 'فشلت محاولة التوصيل', retry: 'طُلبت محاولة جديدة', pickup_requested: 'طُلب الاستلام من الوكالة', cancelled: 'ملغى' } },
+  }[L];
+  document.documentElement.lang = L; document.documentElement.dir = L === 'ar' ? 'rtl' : 'ltr';
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  $('h1').textContent = X.h1; $('sub').textContent = X.sub; $('l1').textContent = X.l1; $('l2').textContent = X.l2; $('go').textContent = X.go; $('num').value = pre;
+  async function go() {
+    $('err').textContent = ''; $('go').disabled = true;
+    try {
+      const r = await fetch(`/api/track?shop=${encodeURIComponent(slug)}&number=${encodeURIComponent($('num').value)}&phone=${encodeURIComponent($('phone').value)}`);
+      if (!r.ok) { $('err').textContent = X.nf; return; }
+      const o = await r.json();
+      const idx = o.status === 'delivered' ? 4 : o.shipment === 'out_for_delivery' ? 3 : o.shipment === 'in_transit' ? 2 : o.status === 'shipped' ? 1 : o.status === 'confirmed' ? 0 : -1;
+      const bad = o.status === 'failed', can = o.status === 'cancelled';
+      const date = s => new Date(String(s).replace(' ', 'T') + 'Z').toLocaleString(L === 'ar' ? 'ar-MA-u-nu-latn' : L, { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
+      $('result').hidden = false; $('formCard').hidden = true;
+      $('result').innerHTML = `<div class="muted">${esc(o.shop)}</div><h1 style="margin-top:4px">${esc(X.hi(o.name))}</h1><div><span class="pill">${esc(o.number)}</span></div>
+        ${can ? `<p>${X.cancelled}</p>` : bad ? `<p style="color:var(--red)">${X.failed}</p>` : o.status === 'pending_confirmation' ? `<p>${X.pending}</p>` : ''}
+        ${!can ? `<div class="steps">${X.steps.map((s, i) => `<div class="st ${i <= idx ? 'on' : ''} ${bad && i === idx + 1 ? 'bad' : ''}"><div class="dot">${i <= idx ? '✓' : ''}</div>${esc(s)}</div>`).join('')}</div>` : ''}
+        <ul>${o.events.slice().reverse().map(e => `<li><span>${esc(X.ev[e.status] || e.status)}</span><span class="muted">${esc(date(e.created_at))}</span></li>`).join('')}</ul>
+        <div class="muted" style="margin-top:14px">${esc(X.carrier)}: ${esc(o.carrier)}${o.tracking ? ' · ' + esc(o.tracking) : ''}<br>${esc(X.total)}: <b>${Math.round(o.total)} MAD</b></div>`;
+    } catch (_) { $('err').textContent = X.nf; } finally { $('go').disabled = false; }
+  }
+  $('go').addEventListener('click', go);
+  document.addEventListener('keydown', e => { if (e.key === 'Enter') go(); });
+})();
+</script>
+</body>
+</html>

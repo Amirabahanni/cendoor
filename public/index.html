@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cendoor: Sell where your customers chat</title>
+<meta name="description" content="Cendoor takes your WhatsApp, Instagram and TikTok orders from chat to delivery: AI replies in Darija, shared stock, labels, tracking and cash reconciliation.">
+<meta name="theme-color" content="#0F5C5C">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%230F5C5C'/%3E%3Cpath d='M9 23V9h8a6 6 0 0 1 0 12h-3v2z' fill='none' stroke='%23fff' stroke-width='2.4'/%3E%3C/svg%3E">
+<style>
+  :root { --teal:#0F5C5C; --teal-700:#0B4545; --teal-100:#D9ECEA; --teal-50:#EEF6F5; --orange:#F28C28; --orange-600:#D9751A; --orange-100:#FDE9D0; --bg:#FAF7F2; --surface:#fff; --text:#1B2A2A; --muted:#5E7274; --border:#E6E0D5; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --teal:#43B0AC; --teal-700:#2E8C88; --teal-100:#18403F; --teal-50:#14302F; --orange-100:#46301A; --bg:#0E1717; --surface:#152323; --text:#E8F0EE; --muted:#9DB1B0; --border:#254040; } }
+  * { box-sizing: border-box; } html { scroll-behavior: smooth; }
+  body { margin:0; background:var(--bg); color:var(--text); font:17px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:1060px; margin:0 auto; padding:0 20px; }
+  header { position:sticky; top:0; z-index:10; background:color-mix(in srgb,var(--bg) 88%,transparent); backdrop-filter:blur(10px); border-bottom:1px solid var(--border); }
+  header .wrap { display:flex; align-items:center; gap:16px; height:64px; }
+  .logo { font-weight:800; font-size:24px; letter-spacing:-.03em; color:var(--teal); display:flex; align-items:center; gap:8px; text-decoration:none; flex:1; }
+  .mark { width:30px; height:30px; border-radius:9px; background:var(--teal); display:grid; place-items:center; }
+  nav a.l { color:var(--muted); text-decoration:none; margin-inline-end:16px; font-weight:600; font-size:15px; } @media (max-width:700px){ nav a.l { display:none } }
+  .btn { display:inline-flex; align-items:center; gap:8px; padding:12px 22px; border-radius:999px; font-weight:700; text-decoration:none; border:1.5px solid var(--border); color:var(--text); background:var(--surface); min-height:48px; }
+  .btn.primary { background:var(--teal); color:#fff; border-color:var(--teal); } .btn.accent { background:var(--orange); color:#fff; border-color:var(--orange); } .btn:hover { filter:brightness(1.05); }
+  .hero { padding:64px 0 40px; display:grid; gap:40px; grid-template-columns:1.1fr .9fr; align-items:center; } @media (max-width:880px){ .hero { grid-template-columns:1fr; padding-top:36px } }
+  h1 { font-size:clamp(36px,6vw,60px); line-height:1.06; letter-spacing:-.035em; margin:0 0 18px; } h1 em { font-style:normal; color:var(--orange); }
+  .lead { font-size:19px; color:var(--muted); max-width:560px; margin:0 0 26px; } .cta { display:flex; gap:12px; flex-wrap:wrap; } .fine { font-size:14px; color:var(--muted); margin-top:14px; }
+  .phone { background:var(--surface); border:1px solid var(--border); border-radius:28px; padding:14px; box-shadow:0 24px 60px rgba(15,60,60,.18); max-width:380px; justify-self:center; width:100%; }
+  .phone .bar { background:var(--teal); color:#fff; border-radius:16px; padding:10px 14px; font-weight:700; display:flex; justify-content:space-between; font-size:15px; }
+  .b { max-width:84%; padding:9px 13px; border-radius:16px; margin:9px 0; font-size:14.5px; white-space:pre-line; } .b.c { background:var(--teal); color:#fff; margin-inline-start:auto; border-end-end-radius:4px; } .b.a { background:var(--teal-50); border:1px solid var(--border); border-end-start-radius:4px; }
+  section { padding:56px 0; } h2 { font-size:clamp(28px,4vw,40px); letter-spacing:-.03em; line-height:1.15; margin:0 0 14px; } .sub { color:var(--muted); max-width:640px; margin:0 0 30px; }
+  .grid3 { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:16px; }
+  .card { background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:24px; } .card h3 { margin:0 0 6px; font-size:19px; } .card p { margin:0; color:var(--muted); font-size:15.5px; }
+  .num { width:36px; height:36px; border-radius:50%; background:var(--orange); color:#fff; display:grid; place-items:center; font-weight:800; margin-bottom:12px; }
+  .strip { background:var(--teal); color:#fff; border-radius:28px; padding:36px 32px; display:grid; gap:24px; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); } .strip b { font-size:40px; letter-spacing:-.03em; display:block; line-height:1.1; } .strip span { opacity:.88; font-size:15px; }
+  .plans { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; } .plan { background:var(--surface); border:2px solid var(--border); border-radius:22px; padding:26px; } .plan.pop { border-color:var(--orange); position:relative; } .plan.pop::before { content:"Most chosen"; position:absolute; top:-13px; inset-inline-start:22px; background:var(--orange); color:#fff; font-size:12px; font-weight:800; padding:3px 12px; border-radius:999px; }
+  .price { font-size:38px; font-weight:800; letter-spacing:-.03em; } .price small { font-size:15px; color:var(--muted); font-weight:500; } .plan ul { padding-inline-start:20px; margin:14px 0 20px; color:var(--muted); font-size:15.5px; } .plan li { margin:4px 0; }
+  .status { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:16px; } .status .card.ok { border-top:4px solid #1E8E5A; } .status .card.wait { border-top:4px solid var(--orange); } .status ul { margin:8px 0 0; padding-inline-start:20px; color:var(--muted); font-size:15.5px; }
+  details { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:16px 20px; margin:10px 0; } summary { font-weight:700; cursor:pointer; } details p { color:var(--muted); margin:10px 0 0; font-size:15.5px; }
+  footer { border-top:1px solid var(--border); padding:30px 0 44px; color:var(--muted); font-size:14px; text-align:center; }
+  :focus-visible { outline:3px solid var(--orange); outline-offset:2px; }
+</style>
+</head>
+<body>
+<header><div class="wrap"><a class="logo" href="/"><span class="mark"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.5 8.5 0 0 1-3.8-.9L3 20l1.1-4.9A8.4 8.4 0 0 1 3 11.5 8.5 8.5 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/></svg></span>cendoor</a>
+  <nav><a class="l" href="#how">How it works</a><a class="l" href="#why">Why Cendoor</a><a class="l" href="#investor">Walkthrough</a><a class="l" href="#plans">Pricing</a><a class="btn primary" href="/app">Open dashboard</a></nav></div></header>
+
+<main>
+<div class="wrap hero">
+  <div>
+    <h1>You post and ship.<br><em>Cendoor</em> does the rest.</h1>
+    <p class="lead">Orders from Instagram, TikTok and WhatsApp land in one place. An AI that speaks Darija answers customers, takes the order, checks stock, prepares the label and keeps everyone updated, until the cash is in your hands.</p>
+    <div class="cta"><a class="btn accent" href="/s/amina-boutique">Try the customer chat</a><a class="btn" href="/app">See the seller dashboard</a></div>
+    <p class="fine">Live demo with a fictional shop. Dashboard login: demo@cendoor.com / demo1234</p>
+  </div>
+  <div class="phone" aria-label="Example conversation">
+    <div class="bar"><span>Amina Boutique</span><span>● online</span></div>
+    <div class="b c">salam, bghit robe zerqa M</div>
+    <div class="b a">Robe Satin (Blue / M) taman dyalo 220 DH. Kayn f stock. Bghiti t-commandih?</div>
+    <div class="b c">iyeh</div>
+    <div class="b a">Wakha! Smiytek l-kamla, 3afak?</div>
+    <div class="b c">Salma Idrissi, 0661020304, Casa</div>
+    <div class="b a">L-commande #CD-0104 t-confirmat ✅
+250 DH, khlass 3and l-istilam.</div>
+  </div>
+</div>
+
+<section id="how"><div class="wrap">
+  <h2>From post to cash, without the busywork</h2><p class="sub">Sellers on chat lose hours every day to the same tasks. Cendoor takes them over, one by one.</p>
+  <div class="grid3">
+    <div class="card"><div class="num">1</div><h3>You post a product</h3><p>Dictate "robe zerqa 200 dirham 50 pieces" or upload a photo. Cendoor creates the listing and a link for every post, so you see which reel actually sells.</p></div>
+    <div class="card"><div class="num">2</div><h3>Customers chat, the AI sells</h3><p>Price, colour, size, delivery fee: answered in Darija, French, English or Arabic, by text or voice. The order is created from the conversation and stock updates everywhere.</p></div>
+    <div class="card"><div class="num">3</div><h3>You ship, Cendoor follows up</h3><p>Print the label, hand the parcel over. Customers get delivery updates, failed deliveries are recovered, and you see exactly which cash is still with the carrier.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <div class="strip">
+    <div><b>10+ h</b><span>a week many sellers spend on repetitive replies and order entry</span></div>
+    <div><b>1 stock</b><span>shared by every channel, so no more overselling</span></div>
+    <div><b>COD risk</b><span>flagged before you print a label</span></div>
+    <div><b>0 website</b><span>needed: a link in your bio is your shop</span></div>
+  </div>
+  <p class="fine" style="text-align:center">Time and failure figures come from seller interviews and vendor reports, not from Cendoor measurements. Cendoor is measuring its own results with pilot sellers.</p>
+</div></section>
+
+<section id="why"><div class="wrap">
+  <h2>What Shopify and a COD app cannot do for a chat seller</h2><p class="sub">Four things built for how Moroccan sellers actually work: from a DM to a delivered parcel.</p>
+  <div class="grid3" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">
+    <div class="card"><h3>Talk to your shop</h3><p>Say "make my shop green", "announce free delivery this weekend" or "lower the caftan to 600" in Darija, French or English. The storefront changes live, and every change can be undone. No dashboard to learn.</p></div>
+    <div class="card"><h3>Cendoor Shield</h3><p>Failed cash-on-delivery is the seller's biggest loss. Cendoor shares delivery outcomes between sellers as anonymous counters, so a number that refused parcels elsewhere is flagged before you print a label.</p></div>
+    <div class="card"><h3>Cendoor Copilot</h3><p>"CTM delivers 94% of your parcels to Rabat, CashPlus 61%." "Blue Satin M sells out in 3 days: reorder 30." It reads your own orders and tells you what to do, and can pick the best carrier for each city for you.</p></div>
+    <div class="card"><h3>One link per post</h3><p>Every reel, story or video gets its own link and a ready-to-paste caption in Darija, so you see which post really sells. Customers can track their parcel on a public page, which cuts "where is my order?" messages.</p></div>
+  </div>
+</div></section>
+
+<section id="plans"><div class="wrap">
+  <h2>Simple pricing in dirhams</h2><p class="sub">No add-ons, no website subscription underneath.</p>
+  <div class="plans">
+    <div class="plan"><b>Free</b><div class="price">0 <small>MAD / month</small></div><ul><li>Up to 50 orders a month</li><li>Shop link and AI chat</li><li>Shared stock</li></ul><a class="btn block" href="/app">Start free</a></div>
+    <div class="plan pop"><b>Solo</b><div class="price">149 <small>MAD / month</small></div><ul><li>Unlimited orders</li><li>Labels, tracking, cash reconciliation</li><li>Failed-delivery recovery, reviews</li></ul><a class="btn primary" href="/app">Choose Solo</a></div>
+    <div class="plan"><b>Growth</b><div class="price">299 <small>MAD / month</small></div><ul><li>Everything in Solo</li><li>Team roles and permissions</li><li>Priority support</li></ul><a class="btn" href="/app">Choose Growth</a></div>
+  </div>
+</div></section>
+
+<section id="status"><div class="wrap">
+  <h2>What works today, and what is next</h2><p class="sub">This is an early product. Here is the honest picture.</p>
+  <div class="status">
+    <div class="card ok"><h3>Working now</h3><ul><li>Shop link with per-post tracking links</li><li>AI chat in Darija (Latin and Arabic script), French, English, with voice input and read-aloud</li><li>Orders from chat, shared stock, COD risk score and Cendoor Shield (cross-seller delivery signal)</li><li>Studio: change your shop by talking to it, with live preview and undo</li><li>Copilot insights, automatic best-carrier choice, post kit captions, public order tracking</li><li>Printable labels with barcode</li><li>Status updates to the customer, reviews, failed-delivery recovery</li><li>Cash reconciliation, team roles, three-language dashboard</li></ul></div>
+    <div class="card wait"><h3>Needs approvals or partners</h3><ul><li>Two-way WhatsApp and Instagram connection: needs Meta business verification</li><li>TikTok messages: TikTok limits this to approved partners</li><li>Live carrier tracking: needs each carrier's API access (carrier updates are simulated in the demo)</li><li>Online billing: not connected yet</li><li>Cendoor Shield only gets strong with many sellers: the demo uses fictional data from other sellers</li></ul></div>
+  </div>
+</div></section>
+
+<section id="investor"><div class="wrap">
+  <h2>Investor walkthrough: 6 minutes</h2><p class="sub">Everything below runs on fictional demo data. Anything you create can be wiped with one click (Settings, Demo tools).</p>
+  <div class="grid3" style="grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+    <div class="card"><div class="num">1</div><h3>Be the customer</h3><p>Open the <a href="/s/amina-boutique">demo shop</a>, tap "Chat to order" and write <i>bghit robe zerqa M</i>. Answer the questions and confirm. Try the microphone (Chrome or Edge).</p></div>
+    <div class="card"><div class="num">2</div><h3>Be the seller</h3><p>Log in to the <a href="/app">dashboard</a> (demo@cendoor.com / demo1234). Your order is in Orders: print its label, mark it handed over, then press "simulate next carrier update" and watch the customer chat receive updates.</p></div>
+    <div class="card"><div class="num">3</div><h3>Trigger Cendoor Shield</h3><p>Place an order with the phone number <b>0670000099</b>. Other (fictional) sellers reported failed deliveries for it, so Cendoor flags it as risky and holds it for approval.</p></div>
+    <div class="card"><div class="num">4</div><h3>Talk to the shop</h3><p>Open Studio and type: <i>make my shop green</i>, then <i>announce: free delivery this weekend</i>, then <i>set the price of the caftan to 600</i>. The preview updates live. Say <i>undo</i>.</p></div>
+    <div class="card"><div class="num">5</div><h3>Read the Copilot</h3><p>Overview shows decisions from the seller's own data, the value Cendoor created this month, and the cash still held by carriers (Cash &amp; delivery).</p></div>
+    <div class="card"><div class="num">6</div><h3>Track as a customer</h3><p>Open <a href="/track">the tracking page</a> with order <b>CD-0102</b> and phone <b>0673141516</b>. Switch the dashboard to Arabic to see right-to-left support.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Questions</h2>
+  <details><summary>Do my customers need an app or an account?</summary><p>No. They tap your link, chat or fill a short form, and pay cash on delivery.</p></details>
+  <details><summary>Does it replace WhatsApp?</summary><p>No. Customers can start a WhatsApp chat from your links. Once Meta approves the connection, the same AI answers there too.</p></details>
+  <details><summary>Can the AI make mistakes?</summary><p>It only quotes prices and stock from your catalogue, asks the customer to confirm every order summary, and hands the chat to you when it is unsure or when a customer is unhappy. You can pause it on any conversation.</p></details>
+  <details><summary>Where is customer data stored?</summary><p>In your Cendoor account. Moroccan data protection rules (Law 09-08) apply to customer details; get legal advice before launching commercially.</p></details>
+</div></section>
+</main>
+<footer><div class="wrap">© Cendoor · Sell where your customers chat · Vendez là où vos clients discutent</div></footer>
+</body>
+</html>

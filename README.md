@@ -62,6 +62,10 @@ The full step-by-step guide (GitHub, Render, your own domain, what to check, wha
 
 Free plan: the service sleeps after about 15 minutes idle and the demo data is rebuilt after each restart (Settings has "Reset demo data" in demo mode). For real customers use a paid plan with a persistent disk at `/data`, `CENDOOR_DEMO=0` and a stable `CENDOOR_NETWORK_SECRET`.
 
+## Photos
+
+The demo shop and the starter pack for new shops use free Pexels photos (`public/demo/`, `public/stock/`; credits in each `CREDITS.md`). A new seller who accepts the sample products gets matching sample photos; their own uploads are never replaced.
+
 ## Documents
 
 - `docs/poster/` the seller journey as an A3 poster (English, French, Arabic; PDF and PNG)

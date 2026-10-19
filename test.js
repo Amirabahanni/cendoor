@@ -251,6 +251,21 @@ const stockOf = label => get("SELECT v.stock FROM variants v JOIN products p ON 
   const wa = convo.getOrCreate(shop.id, '212662999111', 'whatsapp'); await chat.handleCustomerMessage({ shop: get('SELECT * FROM shops WHERE id=?', shop.id), convoRow: convo.byId(wa.id), text: 'STOP' });
   ok(get('SELECT opted_out FROM customers WHERE shop_id=? AND phone=?', shop.id, '0662999111').opted_out === 1, 'STOP from a customer opts them out of announcements');
 
+  console.log('Starter photos for new shops');
+  const fsx = require('fs'), pathx = require('path');
+  const allPhotos = Object.values(D.CATEGORIES).flatMap(c => [c.hero, c.about, ...c.samples.map(x => x.image)]);
+  ok(allPhotos.length >= 20 && allPhotos.every(x => /^\/(demo|stock)\/[\w.-]+\.jpg$/.test(x) && fsx.existsSync(pathx.join(__dirname, 'public', x))), 'every starter photo exists on disk and is an allowed local path');
+  ok(D.normalize({ hero: { image: '/stock/hero-home.jpg' }, aboutImage: '/demo/boutique.jpg' }, get('SELECT * FROM shops WHERE id=?', shop.id)).hero.image === '/stock/hero-home.jpg' && D.normalize({ hero: { image: 'https://evil.example/x.jpg' } }, get('SELECT * FROM shops WHERE id=?', shop.id)).hero.image === '', 'design accepts local starter photos and rejects remote images');
+  run("INSERT INTO shops (slug, name, city, phone, lang, tone, plan, default_carrier, free_shipping_over, wa_number, tagline) VALUES ('starter-test','Starter Test','Rabat','0600000000','en','friendly','trial','Amana',600,'','')");
+  const nid = Number(get("SELECT id FROM shops WHERE slug='starter-test'").id); let st2 = {};
+  const S2 = async t => { const r = await assistant.handle(nid, t, { lang: 'en', state: st2 }); st2 = r.state || {}; return r; };
+  await S2('Build my website'); await S2('a warm website for home decor: candles, tea trays and rugs'); if (st2.wizard && st2.wizard.step === 'samples') await S2('yes');
+  const newProds = all('SELECT name, image FROM products WHERE shop_id=? AND active=1', nid);
+  ok(newProds.length >= 3 && newProds.every(p => /^\/stock\//.test(p.image)), 'a new seller who accepts the sample products gets sample photos');
+  ok(D.getDesign(nid).hero.image === '/stock/hero-home.jpg', 'and a starter hero photo for the shop category');
+  const seller = get("SELECT id FROM shops WHERE slug='starter-test'").id; run('UPDATE products SET image=? WHERE shop_id=?', '/uploads/mine.jpg', seller);
+  await S2('another version'); ok(all('SELECT image FROM products WHERE shop_id=?', seller).every(p => p.image === '/uploads/mine.jpg'), 'a seller’s own product photos are never replaced');
+
   console.log('Launching ads');
   const prodRow = get('SELECT * FROM products WHERE shop_id=? AND active=1 ORDER BY id LIMIT 1', shop.id); const shopRow = get('SELECT * FROM shops WHERE id=?', shop.id);
   const dr = ads.draft(shopRow, prodRow, 'en', 'free delivery this weekend');

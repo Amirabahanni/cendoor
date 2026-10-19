@@ -211,6 +211,11 @@
   // "reduce motion" the page is complete and fully visible.
   let revealObs = null;
   function enhance(root) {
+    // a grid with fewer products than columns uses only as many columns as it has products
+    root.querySelectorAll('.g-layout-grid').forEach(g => { const n = g.children.length; const cols = Number(g.dataset.cols) || 4; if (n && n < cols) g.style.setProperty('--cols', n); });
+    // collage hero: show product photos instead of emoji tiles
+    const photos = (DATA.products || []).filter(p => p.image).map(p => p.image);
+    if (photos.length) root.querySelectorAll('.g-hero-col .g-tile:not(.t0):not(.t1)').forEach((tile, i) => { const src = photos[(i + 1) % photos.length]; const em = tile.querySelector(':scope > span'); if (!em || tile.querySelector('.g-tileimg')) return; const img = document.createElement('img'); img.className = 'g-tileimg'; img.src = src; img.alt = ''; img.loading = 'lazy'; tile.prepend(img); em.style.display = 'none'; });
     // magazine layout: the last card widens so the grid never ends with a lonely card
     const mag = root.querySelector('.g-layout-magazine');
     if (mag) {

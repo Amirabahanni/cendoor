@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cendoor: the complete overview</title>
+<style>
+:root { --bg:#04070d; --fg:#eef6f7; --mut:#93a8ad; --teal:#2dd4bf; --cyan:#22d3ee; --vio:#8b5cf6; --org:#f28c28; --line:rgba(255,255,255,.12); --grad:linear-gradient(120deg,#2dd4bf,#22d3ee 45%,#8b5cf6); }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.55 "Segoe UI", system-ui, Roboto, "Noto Sans Arabic", sans-serif; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+@page { size: A4; margin: 11mm; }
+.wrap { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+.logo { font-weight: 800; letter-spacing: -.04em; color: var(--fg); } .logo b { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.grad { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+h1, h2, h3 { letter-spacing: -.03em; line-height: 1.1; margin: 0; }
+.cover { min-height: 250mm; display: flex; flex-direction: column; justify-content: center; position: relative; padding: 30px 0; }
+.cover .logo { font-size: 34px; margin-bottom: 70px; } .cover h1 { font-size: 60px; max-width: 780px; } .cover .sub { font-size: 20px; color: var(--mut); max-width: 640px; margin: 22px 0 36px; }
+.cover .meta { display: flex; gap: 14px 28px; flex-wrap: wrap; color: var(--mut); font-size: 14px; border-top: 1px solid var(--line); padding-top: 18px; margin-top: 30px; } .cover .meta b { color: var(--fg); }
+.cover::before { content: ""; position: absolute; inset: -40px -60px auto auto; width: 520px; height: 520px; background: radial-gradient(closest-side, rgba(34,211,238,.22), transparent); z-index: -1; } .cover::after { content: ""; position: absolute; inset: auto auto 40px -80px; width: 460px; height: 460px; background: radial-gradient(closest-side, rgba(139,92,246,.2), transparent); z-index: -1; }
+.pill { display: inline-block; padding: 5px 14px; border-radius: 99px; border: 1px solid var(--line); color: var(--teal); font-size: 12.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 22px; }
+section { padding: 34px 0 8px; break-before: page; }
+section.nb { break-before: auto; }
+h2 { font-size: 36px; margin-bottom: 8px; } h2 .k { display: inline-block; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--teal); margin-bottom: 8px; font-weight: 800; }
+h3 { font-size: 18px; margin: 0 0 6px; }
+.lead { font-size: 18px; color: var(--mut); max-width: 760px; margin: 6px 0 22px; }
+p { margin: 0 0 10px; } .mut { color: var(--mut); }
+.g2, .g3, .g4 { display: grid; gap: 14px; margin: 16px 0; } .g2 { grid-template-columns: 1fr 1fr; } .g3 { grid-template-columns: repeat(3, 1fr); } .g4 { grid-template-columns: repeat(4, 1fr); }
+@media screen and (max-width: 760px) { .g2, .g3, .g4 { grid-template-columns: 1fr; } .cover h1 { font-size: 40px; } }
+.card { background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03)); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; break-inside: avoid; } .card p, .card li { color: var(--mut); font-size: 14px; } .card ul { margin: 4px 0 0; padding-left: 18px; } .card li { margin-bottom: 4px; }
+.stat b { display: block; font-size: 30px; letter-spacing: -.04em; line-height: 1.05; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; } .stat span { color: var(--mut); font-size: 13px; display: block; margin-top: 4px; }
+.tag { display: inline-block; padding: 2px 10px; border-radius: 99px; font-size: 11.5px; font-weight: 700; white-space: nowrap; } .live { background: rgba(76,195,138,.16); color: #6fe0a8; } .sim { background: rgba(34,211,238,.14); color: #7ee6f7; } .wait { background: rgba(242,140,40,.16); color: #ffb067; } .plan { background: rgba(139,92,246,.2); color: #bfb2ff; }
+table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin: 14px 0; } th { text-align: left; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: #8aa0a5; padding: 8px 10px; border-bottom: 1px solid var(--line); } td { padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--mut); } td:first-child { color: var(--fg); font-weight: 600; } tr { break-inside: avoid; }
+.steps { counter-reset: s; display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 16px 0; } .steps .st { counter-increment: s; background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03)); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px 14px 58px; position: relative; break-inside: avoid; } .steps .st::before { content: counter(s); position: absolute; left: 14px; top: 14px; width: 32px; height: 32px; border-radius: 10px; background: var(--grad); color: #04121a; font-weight: 800; display: grid; place-items: center; } .steps b { display: block; } .steps span { color: var(--mut); font-size: 13.5px; }
+.shot { margin: 0; break-inside: avoid; } .shot img { width: 100%; display: block; border-radius: 12px; border: 1px solid var(--line); } .shot figcaption { font-size: 12.5px; color: var(--mut); margin-top: 6px; } .shot.ph img { max-width: 230px; margin: 0 auto; border-radius: 26px; border: 7px solid #141d2b; }
+.note { background: rgba(242,140,40,.1); border: 1px solid rgba(242,140,40,.3); border-radius: 14px; padding: 13px 17px; color: #ffc48a; font-size: 14px; margin: 14px 0; break-inside: avoid; } .note b { color: #ffd9b0; }
+.say { background: rgba(45,212,191,.08); border: 1px solid rgba(45,212,191,.25); border-radius: 14px; padding: 13px 17px; color: var(--mut); font-size: 14px; margin: 14px 0; break-inside: avoid; } .say b { color: var(--teal); }
+.fill { border-bottom: 1px dashed var(--mut); color: var(--org); padding: 0 6px; }
+footer { padding: 22px 0 6px; color: var(--mut); font-size: 12.5px; border-top: 1px solid var(--line); margin-top: 30px; }
+@media print { .g2 { grid-template-columns: 1fr 1fr !important; } .g3 { grid-template-columns: repeat(3, 1fr) !important; } .g4 { grid-template-columns: repeat(4, 1fr) !important; } .steps { grid-template-columns: 1fr 1fr !important; } section { padding-top: 10px; } .lead { font-size: 15px; margin-bottom: 12px; } .card { padding: 11px 14px; } .card p, .card li { font-size: 12.5px; } .stat b { font-size: 24px; } table { font-size: 12.5px; } td, th { padding: 6px 8px; } .note, .say { padding: 10px 14px; font-size: 12.5px; margin: 10px 0; } .shot.ph img { max-width: 170px; } .grad, .logo b, .stat b { background: none !important; -webkit-background-clip: border-box !important; background-clip: border-box !important; color: #2dd4bf !important; -webkit-text-fill-color: #2dd4bf !important; } .steps .st::before { background: #2dd4bf; } .wrap { max-width: none; padding: 0 4mm; } .cover { min-height: 255mm; } .cover::before, .cover::after { display: none; } h2 { font-size: 30px; } body { font-size: 13.5px; } }
+</style></head>
+<body><div class="wrap">
+
+<!-- COVER -->
+<div class="cover">
+  <div class="logo"><span>cen<b>door</b></span></div>
+  <span class="pill">The complete overview</span>
+  <h1>You post.<br><span class="grad">Cendoor does the rest.</span></h1>
+  <p class="sub">An AI shop builder and order-automation service for small Moroccan sellers who sell on Instagram, TikTok and WhatsApp. It builds the shop, answers customers, takes and confirms orders, tracks deliveries and cash, and sends targeted offers and ads.</p>
+  <div class="meta"><span><b>Status</b> working product, tested on demo data; no real sellers yet</span><span><b>Founder</b> <span class="fill">name</span></span><span><b>Contact</b> <span class="fill">email / WhatsApp</span></span><span><b>Version</b> October 2026</span></div>
+</div>
+
+<!-- 1 -->
+<section>
+  <span class="k">1 · In one page</span>
+  <h2>What Cendoor is, and where it stands</h2>
+  <p class="lead">A small seller in Morocco posts a reel, gets orders by DM, then loses evenings confirming them by phone, and loses money when cash-on-delivery parcels are refused. Cendoor takes over that work.</p>
+  <div class="g2">
+    <div class="card"><h3>The problem</h3><p>Sellers on Instagram, TikTok and WhatsApp take most orders by message and most payments in cash on delivery. They answer the same questions all day, phone customers to confirm, chase carriers, and have no simple shop. Orders that go silent or get refused cost them stock, shipping and time. (Published failure rates of 20% to over 50% come from vendors who sell confirmation tools, not from independent data.)</p></div>
+    <div class="card"><h3>The solution</h3><p>One link in the seller's bio opens a shop designed for them. A customer chat in Darija, French, Arabic or English takes the order. An AI agent confirms it with the customer before the seller ships. Delivery and cash are tracked, and the seller can send offers and launch ads from a button. <b style="color:var(--fg)">The seller makes content and ships the parcel; Cendoor does the rest.</b></p></div>
+  </div>
+  <div class="g4">
+    <div class="card stat"><b>3</b><span>languages for the site and dashboard: Arabic, French, English. The AI also understands Darija.</span></div>
+    <div class="card stat"><b>149 MAD</b><span>per month, Solo plan, after a 14-day free trial (Growth 299 MAD)</span></div>
+    <div class="card stat"><b>119</b><span>automated checks pass on the demo product</span></div>
+    <div class="card stat"><b>0</b><span>real sellers so far. The next step is a 30-day pilot.</span></div>
+  </div>
+  <div class="say"><b>Honest summary.</b> The product works end to end on demo data. Connecting WhatsApp, Instagram, TikTok, Meta ads, carriers and billing needs approvals or partners that are not in place yet. There are no customers and no revenue. This document says which parts are live, simulated, waiting for approval or only planned.</div>
+</section>
+
+<!-- 2 journey -->
+<section>
+  <span class="k">2 · The journey</span>
+  <h2>From a post to a delivered order</h2>
+  <p class="lead">Eight steps. The seller does the first and the last; the middle is automated.</p>
+  <div class="steps">
+    <div class="st"><b>The seller posts</b><span>A reel, story or status with the Cendoor link in the bio.</span></div>
+    <div class="st"><b>The customer opens the shop</b><span>A photo-led shop made for this seller, on any phone, in three languages.</span></div>
+    <div class="st"><b>The customer orders</b><span>By quick form or by chatting, in Darija, French, Arabic or English.</span></div>
+    <div class="st"><b>The AI confirms</b><span>It messages the customer to confirm; a risk check flags doubtful orders for the seller.</span></div>
+    <div class="st"><b>The seller approves and ships</b><span>Label, carrier suggestion and stock update. The seller sees one list of tasks.</span></div>
+    <div class="st"><b>The customer is kept informed</b><span>Status messages and a tracking page; failed deliveries trigger a recovery message.</span></div>
+    <div class="st"><b>Cash is tracked</b><span>Which carrier delivered, which cash has been paid back to the seller.</span></div>
+    <div class="st"><b>The seller sells again</b><span>Targeted offers to past customers and ads launched from a button, each with a tracked link.</span></div>
+  </div>
+  <div class="g2">
+    <figure class="shot"><img src="../../public/img/shop-desktop.jpg" alt=""><figcaption>The customer's shop (demo shop "Atlas Boutique"). Every shop is generated for its seller.</figcaption></figure>
+    <figure class="shot ph"><img src="../../public/img/shop-phone.jpg" alt=""><figcaption style="text-align:center">The same shop on a phone.</figcaption></figure>
+  </div>
+</section>
+
+<!-- 3 product -->
+<section>
+  <span class="k">3 · The product</span>
+  <h2>What each part does</h2>
+  <p class="lead">The dashboard has seven entries: Home, Studio, Orders, Inbox, Products, Customers, Settings. It is dark by default with an optional light mode.</p>
+  <div class="g2">
+    <div class="card"><h3>AI shop builder and Studio <span class="tag live">Live in demo</span></h3><ul><li>Each shop is generated from a description: layout, colours, fonts, photos, sections.</li><li>The Studio is a chat: "make it dark with gold", "add an About section", "price of oud perfume 250".</li><li>Undo for every change; photo upload for logo, hero, products.</li><li>New sellers get category starter photos and sample products.</li><li>Free-form Claude-written pages cost credits and have <b style="color:var(--fg)">not yet been run with a real key</b>. <span class="tag wait">Untested</span></li></ul></div>
+    <div class="card"><h3>Customer chat and orders <span class="tag live">Live in demo</span></h3><ul><li>Takes an order from start to finish: product, variant, name, phone, city, address.</li><li>Understands Darija, Arabizi, French, Arabic, English, Moroccan cities and phone formats.</li><li>Complaints are handed to the seller instead of answered by the bot.</li><li>The seller can take over any conversation.</li></ul></div>
+    <div class="card"><h3>Confirmation and risk <span class="tag live">Live in demo</span></h3><ul><li>Orders wait for the customer's "yes" before shipping.</li><li>A risk check (new customer, short address, past failures) marks orders green or red.</li><li>The seller approves the doubtful ones.</li><li>Cross-seller risk signal on hashed phone numbers: <span class="tag sim">needs many sellers</span></li></ul></div>
+    <div class="card"><h3>Shipping, tracking and cash <span class="tag sim">Simulated</span></h3><ul><li>Carrier suggestion by city and price (Amana, CTM, Aramex, CashPlus in the demo).</li><li>Customer tracking page with order number and phone.</li><li>Cash-on-delivery tracking and a carrier performance table.</li><li>Real carrier tracking needs carrier contracts.</li></ul></div>
+    <div class="card"><h3>Inbox <span class="tag wait">Needs approval for live channels</span></h3><ul><li>One list for web, WhatsApp, Instagram and TikTok conversations, with "needs you" flags.</li><li>Works in the demo; WhatsApp sending needs Meta business verification and approved templates; Instagram and TikTok inboxes need platform access.</li><li>Until then, messages are queued with a one-tap WhatsApp link.</li></ul></div>
+    <div class="card"><h3>Customers and campaigns <span class="tag live">Live in demo</span></h3><ul><li>Pick an audience by city, products, spend, orders, recency, channel; or use a quick audience (VIP, recent, win-back).</li><li>Write or generate the message; preview it for a real customer; confirm.</li><li>Safeguards: opt-out, 3 campaigns a day, 500 recipients, rate limit.</li><li>Each campaign has a tracked link with visits, orders and revenue.</li></ul></div>
+    <div class="card"><h3>Ads from a button <span class="tag wait">Dry run until approved</span></h3><ul><li>The seller connects their own Meta ad account, picks a product, gets ad copy and sets a budget (20 to 300 MAD a day, max 14 days).</li><li>Cendoor creates campaign, ad set, creative and ad; the seller pays Meta directly.</li><li>The report counts delivered orders against the money spent.</li><li>Other sellers' accounts need Meta app review and business verification; TikTok ads are not built.</li></ul></div>
+    <div class="card"><h3>Post links and advice <span class="tag live">Live in demo</span></h3><ul><li>One tracked link per reel or story with visits and revenue.</li><li>Caption generator.</li><li>Copilot: stock runway, best post, customers to win back, carrier problems, failure rate.</li><li>Roles for a small team: admin, manager, operator, viewer.</li></ul></div>
+  </div>
+</section>
+
+<!-- 4 screens -->
+<section>
+  <span class="k">4 · Screens</span>
+  <h2>The dashboard, as it looks today</h2>
+  <p class="lead">Real screenshots from the demo (fictional shop and customers).</p>
+  <div class="g2">
+    <figure class="shot"><img src="../../public/img/p-home.jpg" alt=""><figcaption>Home: what needs the seller today, the shop link, setup checklist.</figcaption></figure>
+    <figure class="shot"><img src="../../public/img/p-orders.jpg" alt=""><figcaption>Orders: status filters, risk dot, carrier.</figcaption></figure>
+    <figure class="shot"><img src="../../public/img/p-studio.jpg" alt=""><figcaption>Studio: change the shop by chatting.</figcaption></figure>
+    <figure class="shot"><img src="../../public/img/p-inbox.jpg" alt=""><figcaption>Inbox: the AI's conversation with a customer in Darija.</figcaption></figure>
+    <figure class="shot"><img src="../../public/img/p-campaigns.jpg" alt=""><figcaption>Campaigns: who gets the message, with a live count.</figcaption></figure>
+    <figure class="shot"><img src="../../public/img/p-ads.jpg" alt=""><figcaption>Ads: a launched demo ad and its report.</figcaption></figure>
+  </div>
+</section>
+
+<!-- 5 market -->
+<section>
+  <span class="k">5 · Market</span>
+  <h2>Who it is for, and how big that is</h2>
+  <p class="lead">The customer is a seller who takes orders by DM or link on Instagram, TikTok or WhatsApp, mostly cash on delivery, with 10 or more orders a month: fashion, beauty, perfume, food, home goods.</p>
+  <table><tr><th>Sourced anchor</th><th>Figure</th><th>Source</th></tr>
+    <tr><td>Internet users, Morocco</td><td>35.5 million (92%), end 2025</td><td>DataReportal, Digital 2026</td></tr>
+    <tr><td>Social media identities</td><td>22.8 million (Oct 2025)</td><td>DataReportal</td></tr>
+    <tr><td>Card payments 2024</td><td>215 M transactions; 44 M e-commerce</td><td>CMI, as reported</td></tr>
+    <tr><td>E-commerce revenue</td><td>about $1.6–1.7 billion</td><td>Statista projection, reported by Moroccan press</td></tr>
+    <tr><td>Auto-entrepreneurs registered</td><td>463,383 (end 2025)</td><td>DGI, via TelQuel</td></tr>
+    <tr><td>Cash on delivery share</td><td>70–90% of orders</td><td><b>Vendor claims</b>, not independent</td></tr>
+    <tr><td>Count of social-media sellers</td><td><b>not found</b></td><td>No official source exists that we could locate</td></tr></table>
+  <table><tr><th>Bottom-up estimate (assumptions)</th><th>Low</th><th>Base</th><th>High</th></tr>
+    <tr><td>TAM: social and messaging sellers in Morocco</td><td>50,000</td><td>100,000</td><td>150,000</td></tr>
+    <tr><td>SAM: regular, cash-on-delivery, would pay (30%)</td><td>15,000</td><td>30,000</td><td>45,000</td></tr>
+    <tr><td>SOM in 3 years (3–5% of SAM)</td><td>450</td><td>1,200</td><td>2,250</td></tr>
+    <tr><td>Annual revenue at 149 MAD (MAD)</td><td>0.8 M</td><td>2.15 M</td><td>4.0 M</td></tr></table>
+  <div class="note"><b>Read this carefully.</b> The sizes above are assumptions to be replaced by a survey of 100 sellers. On these numbers Morocco alone supports a small, real business (about $400k a year in the high case), not a large one. A bigger outcome needs more revenue per seller (per-order fees, payment float, ad margin, carrier commissions), similar cash-on-delivery markets, or a larger seller base than assumed. Each of those still has to be shown.</div>
+</section>
+
+<!-- 6 business -->
+<section>
+  <span class="k">6 · Business model</span>
+  <h2>Pricing and the numbers</h2>
+  <div class="g3">
+    <div class="card"><h3>Free trial</h3><p><b style="color:var(--fg)">14 days</b>, no card. Basic shop customisation is free and unlimited. 10 AI credits for advanced pages.</p></div>
+    <div class="card"><h3>Solo</h3><p><b style="color:var(--fg)">149 MAD / month</b>. Shop, chat, confirmation, tracking, campaigns. Extra AI credits bought separately.</p></div>
+    <div class="card"><h3>Growth</h3><p><b style="color:var(--fg)">299 MAD / month</b>. Team seats and 100 AI credits.</p></div>
+  </div>
+  <p><b>Founding 50 offer (planned):</b> the first 50 sellers lock 99 MAD a month for 12 months, with a refund of the month if no real order is confirmed in 30 days. A pay-per-confirmed-order option (about 4 MAD) is under consideration and not yet modelled. Billing is not connected yet.</p>
+  <table><tr><th>Estimates (MAD, no founder pay included)</th><th></th></tr>
+    <tr><td>Contribution per paying seller</td><td>about 126 MAD / month (85%)</td></tr>
+    <tr><td>Break-even</td><td>24 paying sellers (39 at 99 MAD)</td></tr>
+    <tr><td>Year 1, 60 paying sellers by month 12</td><td>operating profit about +3,500</td></tr>
+    <tr><td>Startup spend</td><td>about 19,000 (company, legal, WhatsApp access, launch)</td></tr>
+    <tr><td>Cash needed before it pays for itself</td><td>about 29,800</td></tr>
+    <tr><td>Running costs</td><td>about 23 per seller (hosting, messages) plus about 940 a month fixed; about 2,000 a month marketing</td></tr></table>
+  <div class="note"><b>These are projections,</b> built in a spreadsheet with live formulas (<code>financial-model.xlsx</code>), with cost estimates that have no supplier quotes. The margin is narrow, which is why the first goal is a pilot with real sellers.</div>
+</section>
+
+<!-- 7 competition & evidence -->
+<section>
+  <span class="k">7 · Competition and evidence</span>
+  <h2>Who else is here, and what we know</h2>
+  <table><tr><th>Competitor (public pages)</th><th>What they offer</th></tr>
+    <tr><td>eGrow</td><td>Order confirmation for cash-on-delivery sellers, from about $59 a month; claims 200+ stores</td></tr>
+    <tr><td>YouCan (with YouCan Confirm)</td><td>A store builder with confirmation tools, popular in Morocco</td></tr>
+    <tr><td>Babliy</td><td>Darija AI on WhatsApp, launched June 2026</td></tr></table>
+  <p>Cendoor is priced below the priced competitors, and combines shop, chat, confirmation, tracking and campaigns for the seller who has <b style="color:var(--fg)">no store yet and sells through Instagram</b>. That open lane is our inference and needs testing; competitor information comes from vendors' own pages.</p>
+  <div class="g2">
+    <div class="card"><h3>Simulated sellers (not real customers)</h3><p>In a role-played panel of 20 sellers, 2 would buy the plain 149 MAD pitch and 5 the Founding 50 offer. 8 of 15 who declined cited trust. This is an upper bound and says nothing about real behaviour.</p></div>
+    <div class="card"><h3>Board review</h3><p>Three simulated reviewers averaged 4.7 out of 10 and asked for 5 to 20 real sellers with measured results before more building. The roadmap follows that advice.</p></div>
+  </div>
+</section>
+
+<!-- 8 roadmap -->
+<section>
+  <span class="k">8 · Roadmap</span>
+  <h2>What happens next</h2>
+  <p class="lead">One sharp thing first: getting cash-on-delivery orders confirmed and delivered for small sellers. Dates are targets, and each stage ends with a check with real sellers.</p>
+  <table><tr><th>Stage</th><th>What</th><th>Done when</th></tr>
+    <tr><td>1 · Prove it<br><span class="mut">weeks 0–6</span></td><td>Approve-before-send mode, customer data export, per-shop kill switch, one real path (order, confirmation, delivery status), 3 to 10 pilot sellers, test the Claude pages with a real key, register the company, lawyer review, data-protection (CNDP) step</td><td>3+ sellers confirm 10+ real orders each and commit in writing to pay</td></tr>
+    <tr><td>2 · Reliable and billable<br><span class="mut">months 2–4</span></td><td>WhatsApp Business verification and message templates, billing, one or two carrier integrations, backups and monitoring, Founding 50 launch</td><td>Paying sellers on real WhatsApp</td></tr>
+    <tr><td>3 · Grow<br><span class="mut">months 4–8</span></td><td>Meta ads connection for other sellers, referral loop, Darija voice-note transcription, team seats</td><td>Referral-driven growth</td></tr>
+    <tr><td>4 · Widen<br><span class="mut">months 8–12</span></td><td>Instagram and TikTok inboxes if approved, support hire, per-order fees and other revenue, study a similar market</td><td>Evidence from Morocco first</td></tr></table>
+  <p class="mut">Deliberately not now: TikTok ads automation, a marketplace or buyer app, anything that adds a new product before Stage 1 is met.</p>
+</section>
+
+<!-- 9 status & risks -->
+<section>
+  <span class="k">9 · Honest status</span>
+  <h2>What works, what waits, what is missing</h2>
+  <table><tr><th>Area</th><th>Status</th><th>Detail</th></tr>
+    <tr><td>Shop builder, Studio, chat, orders, confirmation, risk, campaigns, post links, copilot, roles</td><td><span class="tag live">Live in demo</span></td><td>Built and tested on demo data (119 automated checks)</td></tr>
+    <tr><td>WhatsApp sending, Instagram and TikTok inboxes</td><td><span class="tag wait">Needs approval</span></td><td>Meta business verification, approved templates, platform access</td></tr>
+    <tr><td>Meta ads for other sellers</td><td><span class="tag wait">Needs approval</span></td><td>Dry run only; never run against Meta's live servers</td></tr>
+    <tr><td>Carrier tracking</td><td><span class="tag sim">Simulated</span></td><td>Needs carrier API contracts</td></tr>
+    <tr><td>Claude-written pages and free-form Studio</td><td><span class="tag wait">Untested live</span></td><td>Needs an API key and real-output review</td></tr>
+    <tr><td>Billing, credits purchase</td><td><span class="tag plan">Planned</span></td><td>Not connected</td></tr>
+    <tr><td>Approve-before-send, customer export, kill switch, per-order plan</td><td><span class="tag plan">Planned</span></td><td>Stage 1 of the roadmap</td></tr>
+    <tr><td>Darija voice notes to text</td><td><span class="tag plan">Planned</span></td><td>Evaluate before building</td></tr></table>
+  <div class="g2">
+    <div class="card"><h3>Security and data</h3><ul><li>Ad-account tokens stored encrypted (AES-256-GCM).</li><li>Shop pages are sanitised so generated code cannot run unsafe scripts.</li><li>Roles limit what team members can do; customers can opt out of messages with STOP.</li><li>Cross-seller risk signals use hashed phone numbers only.</li><li>No external security audit yet; self-description only.</li></ul></div>
+    <div class="card"><h3>Legal and company</h3><ul><li>Customer data and marketing messages fall under Moroccan Law 09-08 (CNDP). Terms, privacy policy and data-processing texts are <b style="color:var(--fg)">drafts that need a Moroccan lawyer</b>.</li><li>The company is not registered yet, so there is no cap table, bank account or contracts.</li><li>Product photos in the demo come from Pexels and from the founder; sellers upload their own.</li></ul></div>
+  </div>
+  <div class="note"><b>The five gaps an informed reader will notice:</b> no customers or revenue; no registered company; team page not written; key integrations not live; no external security review and legal texts in draft. We name them first.</div>
+</section>
+
+<!-- 10 ask -->
+<section>
+  <span class="k">10 · The next step</span>
+  <h2>What we are looking for</h2>
+  <div class="g2">
+    <div class="card"><h3>Introductions</h3><p>Ten Moroccan sellers who confirm cash-on-delivery orders by hand today, willing to run Cendoor for 30 days alongside their usual process.</p></div>
+    <div class="card"><h3>Runway</h3><p>About 29,800 MAD plus a living income for the founder to run the pilot (3 to 10 sellers), then a written commitment to pay 99 MAD a month from at least 3 of them. <span class="fill">Founder to confirm amount and terms</span></p></div>
+  </div>
+  <h3 style="margin-top:22px">See it yourself</h3>
+  <table><tr><th>Where</th><th>What you see</th></tr>
+    <tr><td>Demo link <span class="fill">add link</span></td><td>Landing page, demo shop, dashboard (press "Try the demo"), and the page "How it works" with every feature and its status</td></tr>
+    <tr><td>Pitch deck (PDF)</td><td>18 slides</td></tr>
+    <tr><td>Financial model (Excel)</td><td>36 months, scenarios, live formulas</td></tr>
+    <tr><td>Market sizing, roadmap, metrics, security overview, FAQ</td><td>Longer versions of the sections in this document</td></tr></table>
+  <div class="say"><b>Contact.</b> <span class="fill">Founder name</span> · <span class="fill">email</span> · <span class="fill">WhatsApp</span> · cendoor.com</div>
+  <footer>Cendoor · October 2026. Simulated buyers, projections and estimates in this document are not customers or results. Nothing here is financial, legal or tax advice.</footer>
+</section>
+
+</div></body></html>

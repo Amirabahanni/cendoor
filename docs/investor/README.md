@@ -6,6 +6,7 @@ Everything an investor, a bank or a partner is likely to ask for, with an honest
 
 | Item | Status | File |
 |---|---|---|
+| **The complete overview: one document to send to anyone** (12-page PDF: what it is, product, market, numbers, status, roadmap, ask) | **Draft:** founder name, contact, demo link are blanks to fill | `cendoor-overview.pdf` (source: `../overview/cendoor-overview.html`) |
 | Pitch deck (18 slides, PDF) | **Draft:** founder name, team, ask amount and contact are blanks to fill | `cendoor-pitch-deck.pdf` (source: `deck/pitch-deck.html`) |
 | The full description of the platform (19-page PDF, also the page `/how-it-works`) | Ready | `cendoor-how-it-works.pdf` |
 | One-page summary | Ready | `research/one-pager.md` |

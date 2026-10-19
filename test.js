@@ -50,10 +50,10 @@ const stockOf = label => get("SELECT v.stock FROM variants v JOIN products p ON 
   ok(v.name === 'Robe' && v.price === 200 && v.stock === 50 && v.color === 'Blue', 'voice-to-product parse (Darija)');
 
   console.log('Darija order, step by step');
-  const before = stockOf('Blue / M');
-  let r = await talk('t-dar-1', ['salam', 'bghit robe zerqa M', 'iyeh', 'Salma Test', '0661999888', 'Casa', '12 Rue des Fleurs, Maarif', 'iyeh']);
+  const before = stockOf('Brown');
+  let r = await talk('t-dar-1', ['salam', 'bghit pochette cuir brown', 'iyeh', 'Salma Test', '0661999888', 'Casa', '12 Rue des Fleurs, Maarif', 'iyeh']);
   ok(!!r.last.orderId, 'order created from chat');
-  ok(stockOf('Blue / M') === before - 1, 'stock decreased by 1');
+  ok(stockOf('Brown') === before - 1, 'stock decreased by 1');
   const o1 = orders.getOrder(r.last.orderId);
   ok(o1 && o1.city === 'Casablanca' && o1.phone === '0661999888' && o1.subtotal === 220 && o1.total === o1.subtotal + o1.shipping_fee, `order totals right (${o1 && o1.total}, carrier ${o1 && o1.carrier} chosen automatically)`);
 

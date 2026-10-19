@@ -159,7 +159,7 @@
     futuristic: { a: '#22d3ee', b: '#8b5cf6', bg: '#070b14', fg: '#e6f6ff', font: 'system-ui, sans-serif', r: '16px', cls: 'fut' },
     natural: { a: '#1e8e5a', b: '#c9a46a', bg: '#f6f3ec', fg: '#2a3a2e', font: 'ui-rounded, system-ui, sans-serif', r: '18px', cls: '' },
   };
-  const CARDS = [['', 'Abaya', '340', '/demo/abaya.jpg'], ['', 'Dress', '220', '/demo/dress.jpg'], ['', 'Caftan', '650', '/demo/caftan.jpg'], ['', 'Perfume', '180', '/demo/perfume.jpg']];
+  const CARDS = [['', 'Abaya', '340', '/demo/abaya.jpg'], ['', 'Leather bag', '390', '/demo/bag.jpg'], ['', 'Caftan', '650', '/demo/caftan.jpg'], ['', 'Perfume', '180', '/demo/perfume.jpg']];
   const setStyle = (el, p) => { el.style.setProperty('--a', p.a); el.style.setProperty('--b', p.b); el.style.setProperty('--bg', p.bg); el.style.setProperty('--fg', p.fg); el.style.setProperty('--font', p.font); el.style.setProperty('--r', p.r); el.classList.toggle('fut', p.cls === 'fut'); };
   const cardHtml = (c, cls = 'in') => `<div class="m-card ${cls}"><div class="im" style="background-image:url(${c[3]})"></div><div class="tx">${c[1]}<i>${c[2]} MAD</i></div></div>`;
 

@@ -16,7 +16,7 @@ const [maj, min] = process.versions.node.split('.').map(Number);
 (maj > 22 || (maj === 22 && min >= 13)) ? ok(`Node ${process.versions.node} (needs 22.13 or newer)`) : no(`Node ${process.versions.node} is too old: 22.13 or newer is needed for the built-in database`);
 
 console.log('Files the host needs');
-for (const f of ['Dockerfile', 'render.yaml', 'package.json', 'package-lock.json', 'server.js', 'public/demo/caftan.jpg', 'public/demo/dress.jpg', 'DEPLOY.md']) fs.existsSync(path.join(ROOT, f)) ? ok(f) : no(`missing ${f}`);
+for (const f of ['Dockerfile', 'render.yaml', 'package.json', 'package-lock.json', 'server.js', 'public/demo/caftan.jpg', 'public/demo/bag.jpg', 'DEPLOY.md']) fs.existsSync(path.join(ROOT, f)) ? ok(f) : no(`missing ${f}`);
 
 console.log('Git');
 const inRepo = sh('git', ['rev-parse', '--is-inside-work-tree']) === 'true';

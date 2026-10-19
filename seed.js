@@ -19,7 +19,7 @@ function seedDemo() {
   const rand = rng(20261012);
   tx(() => {
     run(`INSERT INTO shops (slug, name, city, phone, lang, tone, plan, default_carrier, free_shipping_over, wa_number, tagline) VALUES (?,?,?,?,?,?,?,?,?,?,?)`,
-      'atlas-boutique', 'Atlas Boutique', 'Marrakech', '0661234567', 'en', 'friendly', 'solo', 'Amana', 600, '', 'Dresses, caftans & accessories, delivered all over Morocco');
+      'atlas-boutique', 'Atlas Boutique', 'Marrakech', '0661234567', 'en', 'friendly', 'solo', 'Amana', 600, '', 'Abayas, caftans & accessories, delivered all over Morocco');
     const shopId = Number(get('SELECT id FROM shops WHERE slug=?', 'atlas-boutique').id);
     run("UPDATE shops SET plan='trial', trial_ends_at=datetime('now','+11 days'), lang='en' WHERE id=?", shopId);
     addUser(shopId, 'demo@cendoor.com', 'Demo Owner', 'admin');
@@ -36,7 +36,7 @@ function seedDemo() {
     for (const [n, b, e, c] of carriers) run('INSERT INTO carriers (shop_id, name, base_price, eta_days, city_prices) VALUES (?,?,?,?,?)', shopId, n, b, e, JSON.stringify(c));
 
     const prods = [
-      ['Satin Dress', 'Flowing satin dress, perfect for evenings and weddings.', 220, 'Dresses', '👗', 'robe, dress, fostan, فستان, satin, soiree', [['Blue', 'M', 20], ['Blue', 'L', 15], ['Red', 'M', 8], ['Black', 'M', 2]]],
+      ['Leather Clutch', 'Hand-stitched leather clutch for evenings and weddings.', 220, 'Accessories', '👝', 'pochette, clutch, cuir, leather, شنطة, chanta', [['Brown', '', 20], ['Black', '', 15], ['Beige', '', 8], ['Navy', '', 2]]],
       ['Embroidered Caftan', 'Hand-embroidered caftan in a light, elegant fabric.', 650, 'Caftans', '🥻', 'caftan, kaftan, قفطان, takchita, brode', [['Gold', '', 6], ['Green', '', 4]]],
       ['Classic Abaya', 'Elegant black abaya in a breathable fabric.', 340, 'Abayas', '🧥', 'abaya, عباية, jilbab', [['Black', 'S', 10], ['Black', 'M', 12], ['Black', 'L', 9]]],
       ['Urban Sneakers', 'Comfortable sneakers for every day.', 420, 'Shoes', '👟', 'sneakers, baskets, chaussures, sabbat, صباط, shoes', [['White', '38', 5], ['White', '39', 7], ['White', '40', 6], ['White', '41', 3]]],
@@ -44,7 +44,7 @@ function seedDemo() {
       ['Leather Bag', 'Handbag in genuine leather.', 390, 'Bags', '👜', 'sac, bag, cuir, leather, شنطة, chanta', [['Brown', '', 7], ['Black', '', 0]]],
     ];
     // free stock photos (Pexels licence), saved in public/demo; sellers upload their own
-    const PHOTO = { 'Satin Dress': '/demo/dress.jpg', 'Embroidered Caftan': '/demo/caftan.jpg', 'Classic Abaya': '/demo/abaya.jpg', 'Urban Sneakers': '/demo/sneakers.jpg', 'Oud Perfume': '/demo/perfume.jpg', 'Leather Bag': '/demo/bag.jpg' };
+    const PHOTO = { 'Leather Clutch': '/stock/clutch.jpg', 'Embroidered Caftan': '/demo/caftan.jpg', 'Classic Abaya': '/demo/abaya.jpg', 'Urban Sneakers': '/demo/sneakers.jpg', 'Oud Perfume': '/demo/perfume.jpg', 'Leather Bag': '/demo/bag.jpg' };
     const pid = [];
     for (const [name, desc, price, cat, emoji, kw, vs] of prods) {
       run('INSERT INTO products (shop_id, name, description, price, category, emoji, image, keywords) VALUES (?,?,?,?,?,?,?,?)', shopId, name, desc, price, cat, emoji, PHOTO[name] || '', kw);
@@ -68,7 +68,7 @@ function seedDemo() {
       run('UPDATE shops SET ai_credits=10 WHERE id=?', shopId);
       siteLib.build(shopId, { category: 'fashion', mood: 'warm', colors: [], variants: { hero: 'split', products: 'magazine' } }, { seed: 7 });
     }
-    run("INSERT INTO post_links (shop_id, code, label, channel, product_id, visits) VALUES (?,?,?,?,?,?)", shopId, 'ig-satin', 'Reel: Blue Satin Dress', 'instagram', pid[0], 540);
+    run("INSERT INTO post_links (shop_id, code, label, channel, product_id, visits) VALUES (?,?,?,?,?,?)", shopId, 'ig-clutch', 'Reel: Brown Leather Clutch', 'instagram', pid[0], 540);
     run("INSERT INTO post_links (shop_id, code, label, channel, product_id, visits) VALUES (?,?,?,?,?,?)", shopId, 'tt-caftan', 'TikTok: Embroidered Caftan', 'tiktok', pid[1], 1350);
     run("INSERT INTO post_links (shop_id, code, label, channel, product_id, visits) VALUES (?,?,?,?,?,?)", shopId, 'ig-bio', 'Link in bio', 'instagram', null, 980);
     run("INSERT INTO post_links (shop_id, code, label, channel, product_id, visits) VALUES (?,?,?,?,?,?)", shopId, 'wa-status', 'WhatsApp status', 'whatsapp', null, 520);
@@ -159,13 +159,13 @@ function seedDemo() {
       msgs.forEach(([role, text], i) => run('INSERT INTO messages (conversation_id, role, text, created_at) VALUES (?,?,?,?)', cid, role, text, ts(extra.ago || 0, 13, i)));
     };
     mk('212661020304', 'whatsapp', 'dar', [
-      ['customer', 'Salam, bghit robe zerqa M'], ['bot', 'Salam! Satin Dress (Blue / M) taman dyalo 220 DH. Kayn f stock. Bghiti t-commandih?'],
+      ['customer', 'Salam, bghit pochette cuir'], ['bot', 'Salam! Leather Clutch (Brown) taman dyalo 220 DH. Kayn f stock. Bghiti t-commandih?'],
       ['customer', 'iyeh'], ['bot', 'Wakha! Smiytek l-kamla, 3afak?'], ['customer', 'Salma Idrissi'], ['bot', 'Ra9m t-telephone dyalek? (06… wla 07…)'],
-      ['customer', '0661020304 Casablanca 12 Rue des Orangers Maarif'], ['bot', 'Hak l-commande dyalek: 1 × Satin Dress (Blue / M) — 220 DH. N-confirmi?'], ['customer', 'iyeh'],
+      ['customer', '0661020304 Casablanca 12 Rue des Orangers Maarif'], ['bot', 'Hak l-commande dyalek: 1 × Leather Clutch (Brown) — 220 DH. N-confirmi?'], ['customer', 'iyeh'],
       ['bot', 'L-commande dyalek #CD-0001 t-confirmat ✅ Chokran!'],
     ], { name: 'Salma Idrissi', ago: 1 });
     mk('212672131415', 'whatsapp', 'fr', [
-      ['customer', 'Bonjour, j’ai reçu la robe mais la taille ne convient pas, trop petit'], ['bot', 'Je suis désolé pour ce souci. J’ai alerté le vendeur pour qu’il vous aide directement.'],
+      ['customer', 'Bonjour, j’ai reçu la pochette mais la couleur ne correspond pas à la photo'], ['bot', 'Je suis désolé pour ce souci. J’ai alerté le vendeur pour qu’il vous aide directement.'],
     ], { name: 'Lamia Filali', attn: true, reason: 'complaint', unread: 1, ago: 0 });
     mk('web-demo-seed', 'web', 'en', [
       ['customer', 'Do you have the caftan in green?'], ['bot', 'Embroidered Caftan (Green) costs 650 DH. Only 4 left! Would you like to order it?'],

@@ -43,9 +43,11 @@ function seedDemo() {
       ['Oud Perfume', "Oriental perfume, 50 ml, lasts up to 10 hours.", 180, 'Perfumes', '🧴', 'parfum, perfume, oud, عطر, 3titr', [['', '', 40]]],
       ['Leather Bag', 'Handbag in genuine leather.', 390, 'Bags', '👜', 'sac, bag, cuir, leather, شنطة, chanta', [['Brown', '', 7], ['Black', '', 0]]],
     ];
+    // free stock photos (Pexels licence), saved in public/demo; sellers upload their own
+    const PHOTO = { 'Satin Dress': '/demo/dress.jpg', 'Embroidered Caftan': '/demo/caftan.jpg', 'Classic Abaya': '/demo/abaya.jpg', 'Urban Sneakers': '/demo/sneakers.jpg', 'Oud Perfume': '/demo/perfume.jpg', 'Leather Bag': '/demo/bag.jpg' };
     const pid = [];
     for (const [name, desc, price, cat, emoji, kw, vs] of prods) {
-      run('INSERT INTO products (shop_id, name, description, price, category, emoji, keywords) VALUES (?,?,?,?,?,?,?)', shopId, name, desc, price, cat, emoji, kw);
+      run('INSERT INTO products (shop_id, name, description, price, category, emoji, image, keywords) VALUES (?,?,?,?,?,?,?,?)', shopId, name, desc, price, cat, emoji, PHOTO[name] || '', kw);
       const id = Number(get('SELECT MAX(id) m FROM products').m); pid.push(id);
       for (const [c, s, stock] of vs) {
         const label = [c, s].filter(Boolean).join(' / ') || 'Standard';
@@ -58,6 +60,8 @@ function seedDemo() {
       const shopRow = get('SELECT * FROM shops WHERE id=?', shopId);
       const built = designLib.buildFromWizard(shopRow, { category: 'fashion', style: 'natural', lang: 'en' });
       built.design.hero.title = '';
+      built.design.hero.image = '/demo/caftan.jpg';
+      built.design.aboutImage = '/demo/boutique.jpg';
       built.design.logo = { emoji: '', image: '', showName: true };
       built.design.social = { instagram: 'atlas.boutique', tiktok: 'atlas.boutique', whatsapp: '', phone: '0661234567', email: '' };
       designLib.saveDesign(shopId, built.design);

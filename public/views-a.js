@@ -19,60 +19,73 @@
   CD.copyText = copyText;
 
   // ======================= OVERVIEW =======================
+  Object.assign(I18N.en, {
+    themeBtn: 'Theme', overview: 'Home', caughtUp: 'You’re all caught up', caughtUpSub: 'Post on Instagram or TikTok and share your link. New orders show up here.', todayTitle: 'Today', btnReview: 'Review', btnShip: 'Ship', btnReply: 'Reply', btnFix: 'Fix', btnRecover: 'Recover',
+    setupTitle: 'Set up your shop', setupProgress: (d, n) => `${d} of ${n} done`, stepPhotos: 'Add a photo to each product', stepLink: 'Share your shop link', stepTestOrder: 'Place a test order', stepProductSub: 'What you sell, with price and stock', stepPhotosSub: 'Photos sell. Use your phone.', stepLinkSub: 'Put it in your Instagram or TikTok bio', stepTestSub: 'See how a customer orders',
+    yourLink: 'Your shop link', yourLinkSub: 'Put this link in your bio. Orders arrive here.', copyLink: 'Copy link', shareWa: 'Share on WhatsApp', askShort: 'Ask Cendoor anything: “make my shop darker”, “add a 20 MAD discount”…', moreInsights: 'Insights and advice', numbersTitle: 'Your numbers', trialShort: n => `Free trial · ${n} day(s) left`,
+  });
+  Object.assign(I18N.fr, {
+    themeBtn: 'Thème', overview: 'Accueil', caughtUp: 'Tout est à jour', caughtUpSub: 'Publiez sur Instagram ou TikTok et partagez votre lien. Les nouvelles commandes apparaissent ici.', todayTitle: "Aujourd'hui", btnReview: 'Voir', btnShip: 'Expédier', btnReply: 'Répondre', btnFix: 'Corriger', btnRecover: 'Relancer',
+    setupTitle: 'Configurez votre boutique', setupProgress: (d, n) => `${d} sur ${n} faits`, stepPhotos: 'Ajoutez une photo à chaque produit', stepLink: 'Partagez le lien de votre boutique', stepTestOrder: 'Passez une commande test', stepProductSub: 'Ce que vous vendez, avec prix et stock', stepPhotosSub: 'Les photos vendent. Utilisez votre téléphone.', stepLinkSub: 'Mettez-le dans votre bio Instagram ou TikTok', stepTestSub: 'Voyez comment un client commande',
+    yourLink: 'Le lien de votre boutique', yourLinkSub: 'Mettez ce lien dans votre bio. Les commandes arrivent ici.', copyLink: 'Copier le lien', shareWa: 'Partager sur WhatsApp', askShort: 'Demandez à Cendoor : « rends ma boutique plus sombre », « ajoute une remise de 20 MAD »…', moreInsights: 'Analyses et conseils', numbersTitle: 'Vos chiffres', trialShort: n => `Essai gratuit · ${n} jour(s) restant(s)`,
+  });
+  Object.assign(I18N.ar, {
+    themeBtn: 'المظهر', overview: 'الرئيسية', caughtUp: 'كل شيء على ما يرام', caughtUpSub: 'انشر على إنستغرام أو تيك توك وشارك رابطك. الطلبات الجديدة تظهر هنا.', todayTitle: 'اليوم', btnReview: 'راجع', btnShip: 'اشحن', btnReply: 'جاوب', btnFix: 'أصلح', btnRecover: 'استرجع',
+    setupTitle: 'جهّز متجرك', setupProgress: (d, n) => `${d} من ${n} تم`, stepPhotos: 'أضف صورة لكل منتج', stepLink: 'شارك رابط متجرك', stepTestOrder: 'جرّب طلبا تجريبيا', stepProductSub: 'ما تبيعه، مع الثمن والمخزون', stepPhotosSub: 'الصور تبيع. استعمل هاتفك.', stepLinkSub: 'ضعه في السيرة على إنستغرام أو تيك توك', stepTestSub: 'شاهد كيف يطلب الزبون',
+    yourLink: 'رابط متجرك', yourLinkSub: 'ضع هذا الرابط في سيرتك. الطلبات تصل هنا.', copyLink: 'انسخ الرابط', shareWa: 'شارك على واتساب', askShort: 'اسأل سندوور أي شيء: «اجعل متجري أغمق»، «أضف تخفيضا 20 درهم»…', moreInsights: 'تحليلات ونصائح', numbersTitle: 'أرقامك', trialShort: n => `تجربة مجانية · ${n} يوم متبقي`,
+  });
+
   views.overview = async main => {
     const [a, ords, prods, ins] = await Promise.all([api('/api/analytics?days=14'), api('/api/orders?limit=200'), api('/api/products'), api('/api/insights')]);
-    const v = ins.value;
-    const me = CD.state.me;
+    const v = ins.value; const me = CD.state.me;
     const toShip = ords.filter(o => o.status === 'confirmed').length;
     const toApprove = ords.filter(o => o.status === 'pending_confirmation').length;
-    const hours = Math.round(a.month.orders * 6 / 60 * 10) / 10;
     const max = Math.max(1, ...a.series.map(s => s.sales));
-    const alerts = [
-      toApprove && { n: toApprove, k: 'toConfirm', href: '#/orders', cls: 'amber' },
-      toShip && { n: toShip, k: 'toShip', href: '#/orders', cls: 'teal' },
-      a.attention && { n: a.attention, k: 'chatsFlag', href: '#/inbox', cls: 'red' },
-      a.lowStock.length && { n: a.lowStock.length, k: 'lowStockN', href: '#/products', cls: 'amber' },
-      a.failedOpen && { n: a.failedOpen, k: 'failedOpen', href: '#/orders', cls: 'red' },
-    ].filter(Boolean);
-    const showStart = !prods.length || (a.month.orders === 0 && !ords.length);
-    const chMax = Math.max(1, ...a.channels.map(c => c.n));
+    const url = shopUrl(); let shared = false; try { shared = localStorage.getItem('cd_shared') === '1'; } catch (_) {}
+    // what needs a person, most important first; at most three are shown
+    const tasks = [
+      toApprove && { n: toApprove, k: 'toConfirm', href: '#/orders', cls: 'amber', btn: 'btnReview', ic: 'alert' },
+      toShip && { n: toShip, k: 'toShip', href: '#/orders', cls: 'teal', btn: 'btnShip', ic: 'box' },
+      a.attention && { n: a.attention, k: 'chatsFlag', href: '#/inbox', cls: 'blue', btn: 'btnReply', ic: 'chat' },
+      a.failedOpen && { n: a.failedOpen, k: 'failedOpen', href: '#/orders', cls: 'amber', btn: 'btnRecover', ic: 'alert' },
+      a.lowStock.length && { n: a.lowStock.length, k: 'lowStockN', href: '#/products', cls: 'amber', btn: 'btnFix', ic: 'box' },
+    ].filter(Boolean).slice(0, 3);
+    const steps = [
+      { done: prods.length > 0, t: t('stepProduct'), sub: t('stepProductSub'), btn: html`<a class="btn sm" href="#/products">${t('add')}</a>` },
+      { done: prods.length > 0 && prods.every(p => p.image), t: t('stepPhotos'), sub: t('stepPhotosSub'), btn: html`<a class="btn sm" href="#/products">${t('add')}</a>` },
+      { done: shared, t: t('stepLink'), sub: t('stepLinkSub'), btn: html`<button class="btn sm" data-act="copyShop">${icon('copy')} ${t('copy')}</button>` },
+      { done: ords.length > 0, t: t('stepTestOrder'), sub: t('stepTestSub'), btn: html`<a class="btn sm" href="${url}" target="_blank" rel="noopener">${icon('ext')}</a>` },
+    ];
+    const doneN = steps.filter(s => s.done).length;
     main.innerHTML = html`
-      ${CD.topbar(html`${t('hello')}, ${(me.user.name || '').split(' ')[0] || me.shop.name}`, html`<a class="btn primary" href="${shopUrl()}" target="_blank" rel="noopener">${icon('ext')} ${t('viewStore')}</a>`)}
-      ${me.trial ? html`<div class="alert teal mb">${icon('zap')}<div class="grow"><b>${t('trialLeft', me.trial.daysLeft)}</b> · ${t('trialThen')}</div><a class="btn sm primary" href="#/settings">${t('choosePlan')}</a></div>` : ''}
-      <div class="card ask mb"><div class="row wrap"><div class="grow" style="min-width:240px"><b>${t('askTitle')}</b><input class="inp" id="askInput" placeholder="${t('askPlaceholder')}" style="margin-top:8px"></div><button class="btn primary" data-act="askGo">${icon('send')} ${t('askBtn')}</button></div>
-        <div class="chips" style="margin-top:10px">${[t('askChip1'), t('askChip2'), t('askChip3')].map(c => html`<button class="chip" data-act="askChip" data-v="${c}">${c}</button>`)}</div></div>
-      ${showStart ? html`<div class="card mb"><h3>${t('getStarted')}</h3>
-        <div class="check ${prods.length ? 'done' : ''}"><span class="box">${prods.length ? icon('check') : ''}</span><span class="t grow">${t('stepProduct')}</span><a class="btn sm" href="#/products">${t('add')}</a></div>
-        <div class="check"><span class="box"></span><span class="t grow">${t('stepShipping')}</span><a class="btn sm" href="#/settings">${t('settings')}</a></div>
-        <div class="check"><span class="box"></span><span class="t grow">${t('stepShare')}</span><button class="btn sm" data-act="copyShop">${icon('copy')} ${t('copy')}</button></div>
-        <div class="check"><span class="box"></span><span class="t grow">${t('stepTest')}</span><a class="btn sm" href="${shopUrl()}" target="_blank" rel="noopener">${icon('ext')}</a></div></div>` : ''}
-      <div class="grid k4 mb">
-        <div class="card stat"><div class="lbl">${t('salesToday')}</div><div class="val">${money(a.today.sales)}</div><div class="sub">${a.today.orders} ${t('ordersWord')}</div></div>
-        <div class="card stat"><div class="lbl">${t('salesMonth')}</div><div class="val">${money(a.month.sales)}</div><div class="sub">${a.month.orders} ${t('ordersWord')}</div></div>
-        <div class="card stat"><div class="lbl">${t('successRate')}</div><div class="val">${a.successRate == null ? '—' : a.successRate + '%'}</div><div class="sub">${a.delivered} ✓ · ${a.failed} ✗ · ${a.recovered} ↺</div></div>
-        <div class="card stat"><div class="lbl">${t('rating')}</div><div class="val">${a.rating.avg == null ? '—' : '★ ' + a.rating.avg}</div><div class="sub">${a.rating.count} ${t('reviewsWord')}</div></div>
+      ${CD.topbar(html`${t('hello')}, ${(me.user.name || '').split(' ')[0] || me.shop.name}`, html`${me.trial ? html`<a class="pill amber" href="#/settings" style="text-decoration:none">${t('trialShort', me.trial.daysLeft)}</a>` : ''}<a class="btn primary" href="${url}" target="_blank" rel="noopener">${icon('ext')} ${t('viewStore')}</a>`)}
+      <div class="askline mb"><span class="ico">${icon('zap')}</span><input class="inp" id="askInput" placeholder="${t('askShort')}" aria-label="${t('askTitle')}"><button class="btn primary" data-act="askGo">${icon('send')}<span class="hide-sm"> ${t('askBtn')}</span></button></div>
+      <div class="card today mb"><h3>${t('todayTitle')}</h3>
+        ${tasks.length ? html`<div class="tasks">${tasks.map(x => html`<a class="task ${x.cls}" href="${x.href}"><span class="tic">${icon(x.ic)}</span><span class="tn">${x.n}</span><span class="tl">${t(x.k)}</span><span class="btn sm primary">${t(x.btn)}</span></a>`)}</div>`
+        : html`<div class="caught"><span class="tic ok">${icon('check')}</span><div><b>${t('caughtUp')}</b><div class="muted small">${t('caughtUpSub')}</div></div></div>`}
       </div>
       <div class="grid k2 mb">
-        <div class="card"><h3>${t('needsAttention')}</h3>
-          ${alerts.length ? html`<div class="stack">${alerts.map(x => html`<a class="alert ${x.cls}" href="${x.href}" style="text-decoration:none;color:inherit">${icon(x.cls === 'teal' ? 'box' : 'alert')}<div class="grow"><b>${x.n}</b> ${t(x.k)}</div></a>`)}</div>` : html`<div class="alert teal">${icon('check')}<div>${t('allClear')}</div></div>`}
-        </div>
-        <div class="card"><h3>${icon('zap')} ${t('valueTitle')}</h3>
-          <div class="hbar" style="grid-template-columns:1fr auto"><span>${t('valueHours')}</span><b>${v.hours} ${t('hours')}</b></div>
-          <div class="hbar" style="grid-template-columns:1fr auto"><span>${t('valueChat')}</span><b>${v.viaChat}</b></div>
-          <div class="hbar" style="grid-template-columns:1fr auto"><span>${t('valueRecovered')}</span><b>${v.recovered.n} · ${money(v.recovered.amount)}</b></div>
-          <div class="hbar" style="grid-template-columns:1fr auto"><span>${t('valueHeld')}</span><b>${v.held.n} · ${money(v.held.amount)}</b></div>
-          <p class="tiny muted" style="margin-bottom:0">${t('valueNote')}</p>
-        </div>
+        <div class="card linkcard"><h3>${t('yourLink')}</h3><p class="muted small" style="margin:-4px 0 12px">${t('yourLinkSub')}</p>
+          <div class="linkbox"><code>${url.replace(/^https?:\/\//, '')}</code></div>
+          <div class="row wrap" style="margin-top:12px"><button class="btn primary" data-act="copyShop">${icon('copy')} ${t('copyLink')}</button><a class="btn" href="https://wa.me/?text=${encodeURIComponent(url)}" target="_blank" rel="noopener" data-act="markShared">${t('shareWa')}</a></div></div>
+        ${doneN < steps.length ? html`<div class="card setup"><div class="row between"><h3 style="margin:0">${t('setupTitle')}</h3><span class="pill">${t('setupProgress', doneN, steps.length)}</span></div><div class="meter"><i style="width:${doneN / steps.length * 100}%"></i></div>
+          ${steps.map(s => html`<div class="check ${s.done ? 'done' : ''}"><span class="box">${s.done ? icon('check') : ''}</span><span class="grow"><span class="t">${s.t}</span><span class="tiny muted" style="display:block">${s.sub}</span></span>${s.done ? '' : s.btn}</div>`)}</div>`
+        : html`<div class="card"><h3>${t('numbersTitle')}</h3><div class="grid k2"><div class="stat"><div class="lbl">${t('salesToday')}</div><div class="val">${money(a.today.sales)}</div><div class="sub">${a.today.orders} ${t('ordersWord')}</div></div><div class="stat"><div class="lbl">${t('salesMonth')}</div><div class="val">${money(a.month.sales)}</div><div class="sub">${a.month.orders} ${t('ordersWord')}</div></div></div></div>`}
       </div>
-      ${ins.insights.length ? html`<div class="card mb"><h3>${icon('zap')} ${t('copilot')}</h3><p class="small muted" style="margin-top:-6px">${t('copilotSub')}</p><div class="stack">${ins.insights.slice(0, 3).map(i => html`<a class="alert teal" href="${i.href}" style="text-decoration:none;color:inherit">${icon('zap')}<div class="grow">${t('ins_' + i.k, i)}</div></a>`)}</div></div>` : ''}
-      <div class="card mb"><h3>${t('salesChart')}</h3>
-        <div class="bars">${a.series.map(s => html`<div class="b" title="${fmtDay(s.date)}: ${money(s.sales)} · ${s.orders}"><div class="bar" style="height:${Math.max(2, s.sales / max * 100)}%"></div><div class="x">${s.date.slice(8)}</div></div>`)}</div>
-      </div>
-      <div class="grid k2">
+      ${doneN < steps.length ? html`<div class="grid k3 mb">
+        <div class="card stat"><div class="lbl">${t('salesToday')}</div><div class="val">${money(a.today.sales)}</div><div class="sub">${a.today.orders} ${t('ordersWord')}</div></div>
+        <div class="card stat"><div class="lbl">${t('salesMonth')}</div><div class="val">${money(a.month.sales)}</div><div class="sub">${a.month.orders} ${t('ordersWord')}</div></div>
+        <div class="card stat"><div class="lbl">${t('successRate')}</div><div class="val">${a.successRate == null ? '—' : a.successRate + '%'}</div><div class="sub">${a.delivered} ✓ · ${a.failed} ✗ · ${a.recovered} ↺</div></div></div>`
+      : html`<div class="grid k3 mb"><div class="card stat"><div class="lbl">${t('successRate')}</div><div class="val">${a.successRate == null ? '—' : a.successRate + '%'}</div><div class="sub">${a.delivered} ✓ · ${a.failed} ✗ · ${a.recovered} ↺</div></div><div class="card stat"><div class="lbl">${t('rating')}</div><div class="val">${a.rating.avg == null ? '—' : '★ ' + a.rating.avg}</div><div class="sub">${a.rating.count} ${t('reviewsWord')}</div></div><div class="card stat"><div class="lbl">${t('valueHours')}</div><div class="val">${v.hours} ${t('hours')}</div><div class="sub">${v.viaChat} ${t('valueChat').toLowerCase()}</div></div></div>`}
+      <details class="more"><summary>${t('moreInsights')}</summary>
+        ${ins.insights.length ? html`<div class="card mb"><h3>${icon('zap')} ${t('copilot')}</h3><p class="small muted" style="margin-top:-6px">${t('copilotSub')}</p><div class="stack">${ins.insights.slice(0, 3).map(i => html`<a class="alert teal" href="${i.href}" style="text-decoration:none;color:inherit">${icon('zap')}<div class="grow">${t('ins_' + i.k, i)}</div></a>`)}</div></div>` : ''}
+        <div class="card mb"><h3>${t('salesChart')}</h3><div class="bars">${a.series.map(s => html`<div class="b" title="${fmtDay(s.date)}: ${money(s.sales)} · ${s.orders}"><div class="bar" style="height:${Math.max(2, s.sales / max * 100)}%"></div><div class="x">${s.date.slice(8)}</div></div>`)}</div></div>
         <div class="card"><h3>${t('topProducts')}</h3>${a.top.length ? a.top.map(p => html`<div class="hbar"><span class="nowrap" style="overflow:hidden;text-overflow:ellipsis">${p.name}</span><span class="track"><span class="fill" style="width:${p.revenue / a.top[0].revenue * 100}%;display:block"></span></span><b class="small">${money(p.revenue)}</b></div>`) : html`<div class="empty">—</div>`}</div>
-      </div>`.s;
+      </details>`.s;
+    const inp = $('#askInput'); if (inp) inp.addEventListener('keydown', e => { if (e.key === 'Enter') act.askGo(); });
   };
-  act.copyShop = () => copyText(shopUrl());
+  act.markShared = () => { try { localStorage.setItem('cd_shared', '1'); } catch (_) {} };
+  act.copyShop = () => { try { localStorage.setItem('cd_shared', '1'); } catch (_) {} copyText(shopUrl()); };
   act.askGo = () => { const v = ($('#askInput').value || '').trim(); CD.pendingStudio = v || null; location.hash = '#/studio'; };
   act.askChip = el => { CD.pendingStudio = el.dataset.v; location.hash = '#/studio'; };
 

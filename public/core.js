@@ -146,6 +146,7 @@
         <div class="userbox">
           <div class="bold">${me.shop.name}</div><div class="small muted">${me.user.name || me.user.email}</div>
           <div class="row mt" style="margin-top:8px;justify-content:space-between"><span class="role">${t(me.user.role)}</span>${langPicker()}</div>
+          <button class="btn ghost sm block" style="margin-top:4px" data-act="theme">${document.documentElement.dataset.theme === 'dark' ? '☀' : '☾'} ${t('themeBtn')}</button>
           <button class="btn ghost sm block" style="margin-top:8px" data-act="logout">${t('logout')}</button>
         </div>
       </aside>
@@ -153,6 +154,7 @@
       <main class="main" id="main">${inner || ''}</main>
     </div>`;
   }
+  CD.act.theme = () => { const d = document.documentElement; const next = d.dataset.theme === 'dark' ? 'light' : 'dark'; d.dataset.theme = next; try { localStorage.setItem('cd_theme', next); } catch (_) {} CD.rerender ? (CD.state.me && render()) : 0; };
   CD.act.closeMenu = () => { document.getElementById('side')?.classList.remove('open'); document.getElementById('scrim')?.classList.add('hidden'); };
   CD.act.openMenu = () => { document.getElementById('side')?.classList.add('open'); document.getElementById('scrim')?.classList.remove('hidden'); };
   CD.act.logout = async () => { await CD.api('/api/auth/logout', { method: 'POST' }).catch(() => {}); CD.state.me = null; render(); };

@@ -125,3 +125,46 @@ body.cards-glass { background-image: radial-gradient(900px 400px at 10% -10%, co
 html { scroll-behavior: smooth; } #site { position: relative; z-index: 1; min-height: 100vh; } #site .g-empty { padding: 30px; color: var(--muted, #888); }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 body.site-mode { padding-bottom: 0; }
+
+/* ---- storefront polish: photos first, calm motion ---- */
+#site .g-pcard .g-pimg:has(img):not(:first-child) { aspect-ratio: 4 / 5; }
+#site .g-pcard .g-pimg img { transition: transform .9s cubic-bezier(.2, .7, .2, 1); }
+#site .g-pcard:hover .g-pimg img { transform: scale(1.07); }
+#site .g-products.g-layout-magazine { grid-template-columns: repeat(3, 1fr); }
+#site .g-layout-magazine .g-pcard:last-child.g-wide-d { grid-column: span var(--span-d, 1); flex-direction: row; align-items: stretch; }
+#site .g-layout-magazine .g-pcard:last-child.g-wide-d .g-pimg, #site .g-layout-magazine .g-pcard:last-child.g-wide-m .g-pimg { flex: 0 0 min(44%, 340px); aspect-ratio: 4 / 5; }
+#site .g-layout-magazine .g-pcard:last-child:is(.g-wide-d, .g-wide-m) .g-pbody { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 26px 30px; }
+#site .g-layout-magazine .g-pcard:last-child:is(.g-wide-d, .g-wide-m) .g-pname { font-size: 22px; }
+@media (max-width: 900px) {
+  #site .g-products.g-layout-magazine { grid-template-columns: repeat(2, 1fr); }
+  #site .g-layout-magazine .g-pcard:last-child.g-wide-d:not(.g-wide-m) { grid-column: auto; flex-direction: column; }
+  #site .g-layout-magazine .g-pcard:last-child.g-wide-d:not(.g-wide-m) .g-pimg { flex: none; width: 100%; }
+  #site .g-layout-magazine .g-pcard:last-child.g-wide-m { grid-column: span var(--span-m, 1); flex-direction: row; align-items: stretch; }
+  #site .g-layout-magazine .g-pcard:first-child .g-pimg { min-height: 260px; }
+}
+@media (max-width: 560px) { #site .g-layout-magazine .g-pcard:last-child.g-wide-m { flex-direction: column; } #site .g-layout-magazine .g-pcard:last-child.g-wide-m .g-pimg { flex: none; width: 100%; } }
+#site .g-layout-magazine.g-mag-s .g-pcard:first-child { grid-column: auto; grid-row: auto; }
+#site .g-layout-magazine.g-mag-s { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+/* hero photo: framed, no blob */
+#site .g-hero-art:has(.g-photo img) { aspect-ratio: 4 / 5; max-width: 460px; }
+#site .g-hero-art:has(.g-photo img) > svg { display: none; }
+#site .g-hero-art:has(.g-photo img)::before { content: ""; position: absolute; inset: 7% -5% -5% 7%; border: 2px solid var(--a); border-radius: calc(var(--r) * 1.8); z-index: 1; opacity: .55; }
+#site .g-hero-art:has(.g-photo img) .g-photo { inset: 0; border-radius: calc(var(--r) * 1.8); }
+#site .g-rbadge { display: none; }
+#site .g-hero-art:has(.g-photo img) .g-rbadge { display: flex; flex-direction: column; position: absolute; z-index: 3; inset-inline-start: -20px; bottom: 34px; background: var(--sf); color: var(--tx); border: 1px solid var(--ln); border-radius: 16px; padding: 11px 16px; box-shadow: 0 18px 44px rgba(0, 0, 0, .2); font-size: 13px; line-height: 1.25; animation: g-bob 5.5s ease-in-out infinite; }
+#site .g-rbadge b { font-size: 16px; color: var(--a); }
+@keyframes g-bob { 50% { transform: translateY(-9px); } }
+#site .g-head { transition: box-shadow .3s, background-color .3s; }
+#site .g-head.g-scrolled { box-shadow: 0 8px 30px rgba(0, 0, 0, .09); }
+#site .g-btn { transition: transform .2s, box-shadow .2s, background-color .2s; }
+#site .g-btn:hover { transform: translateY(-2px); } #site .g-btn:active { transform: translateY(0) scale(.98); }
+@media (prefers-reduced-motion: no-preference) {
+  #site .rv.rv { opacity: 0; translate: 0 26px; transition: opacity .8s cubic-bezier(.2, .7, .2, 1) var(--d, 0s), translate .8s cubic-bezier(.2, .7, .2, 1) var(--d, 0s), transform .3s, box-shadow .3s, background-color .3s; }
+  #site .rv.rv.in { opacity: 1; translate: 0 0; }
+  #site .g-in { animation: g-up .9s cubic-bezier(.2, .7, .2, 1) both; animation-delay: var(--d, 0s); }
+  @keyframes g-up { from { opacity: 0; translate: 0 30px; } to { opacity: 1; translate: 0 0; } }
+  #site .g-photo img { animation: g-kb 22s ease-in-out infinite alternate; }
+  @keyframes g-kb { from { transform: scale(1); } to { transform: scale(1.06); } }
+}
+@media (prefers-reduced-motion: reduce) { #site .g-rbadge { animation: none !important; } }
+@media (max-width: 560px) { #site .g-layout-magazine .g-pcard:last-child.g-wide-m .g-pimg:has(img) { aspect-ratio: 16 / 10; } }

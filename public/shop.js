@@ -154,7 +154,7 @@
     about: () => !!((DATA.design.sections.find(s => s.type === 'about') || {}).body) && (DATA.design.sections.find(s => s.type === 'about') || {}).enabled !== false,
     faq: () => { const s = DATA.design.sections.find(x => x.type === 'faq'); return !!(s && s.enabled && s.items.length); },
     reviews: () => { const s = DATA.design.sections.find(x => x.type === 'reviews'); return (!s || s.enabled !== false) && ((DATA.reviews || []).length > 0 || !!(s && s.items.some(i => i.text))); },
-    featured: () => { const s = DATA.design.sections.find(x => x.type === 'featured'); return !!(s && s.enabled) && (DATA.featured || []).length > 0; },
+    featured: () => { const s = DATA.design.sections.find(x => x.type === 'featured'); return !!(s && s.enabled) && (DATA.featured || []).length > 0 && DATA.products.length > 8; },
     rating: () => !!DATA.rating.avg, city: () => !!DATA.shop.city,
   };
   function pcardHtml(p) {
@@ -202,10 +202,39 @@
     $('#app').innerHTML = `<div id="site" style="${esc(vars)}">${html}</div>${shop.ai_enabled !== false ? `<button class="fab ${chatOpen ? 'hidden' : ''}" data-chat="open">${ic('chat')} ${t.chat}${chat.unread ? '<span class="dot"></span>' : ''}</button>` : ''}<div id="chatHost"></div>`;
     const root = $('#site');
     root.querySelectorAll('[data-if]').forEach(el => { const f = blockHas[el.dataset.if]; if (f && !f()) el.remove(); });
-    hydrateBlocks(root);
+    hydrateBlocks(root); enhance(root);
     if (chatOpen) paintChat();
   }
-  function rehydrateProducts() { const root = $('#site'); if (!root) return; hydrateBlocks(root); }
+  function rehydrateProducts() { const root = $('#site'); if (!root) return; hydrateBlocks(root); enhance(root); }
+
+  // Motion and layout polish applied after the page is painted. Everything here is cosmetic: with no JS or with
+  // "reduce motion" the page is complete and fully visible.
+  let revealObs = null;
+  function enhance(root) {
+    // magazine layout: the last card widens so the grid never ends with a lonely card
+    const mag = root.querySelector('.g-layout-magazine');
+    if (mag) {
+      const cs = [...mag.children]; const n = cs.length;
+      if (n < 4) mag.classList.add('g-mag-s');
+      else {
+        const last = cs[n - 1]; let spanD = 1; const r = (n - 3) % 3; // three columns: the big card, two beside it, then rows of three
+        if (r) spanD = 4 - r;
+        const spanM = (n - 1) % 2 ? 2 : 1;
+        last.style.setProperty('--span-d', spanD); last.style.setProperty('--span-m', spanM);
+        if (spanD > 1) last.classList.add('g-wide-d'); if (spanM > 1) last.classList.add('g-wide-m');
+      }
+    }
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (!('IntersectionObserver' in window)) return;
+    if (revealObs) revealObs.disconnect();
+    revealObs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); revealObs.unobserve(e.target); } }), { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+    const items = root.querySelectorAll('.g-sechead, .g-lead, .g-pcard, .g-review, .g-qa, .g-ab-art, .g-values > *, .g-dline, .g-contact, .g-stats > *');
+    let i = 0, lastTop = -1;
+    items.forEach(el => { const top = Math.round(el.getBoundingClientRect().top + window.scrollY); if (top !== lastTop) { i = 0; lastTop = top; } el.style.setProperty('--d', (Math.min(i++, 5) * 0.08) + 's'); el.classList.add('rv'); revealObs.observe(el); });
+    // the hero enters on load
+    root.querySelectorAll('.g-hero .g-wrap > div > *, .g-hero-c > *, .g-hero-art').forEach((el, k) => { el.style.setProperty('--d', (0.05 + k * 0.09) + 's'); el.classList.add('g-in'); });
+    const head = root.querySelector('.g-head'); if (head && !window.__cdScroll) { window.__cdScroll = true; addEventListener('scroll', () => { const h = document.querySelector('#site .g-head'); if (h) h.classList.toggle('g-scrolled', scrollY > 12); }, { passive: true }); }
+  }
 
   function paint() {
     if (DATA.site) return paintSite();

@@ -41,6 +41,7 @@ npm start
 Demo logins (password `demo1234`): `demo@cendoor.com` (owner), `manager@`, `operator@`, `viewer@cendoor.com`. First start seeds a fictional boutique with a generated site.
 
 ```bash
+npm run preflight   # before pushing/deploying: Node version, secrets scan, files, server smoke test
 npm test      # 114 checks: chat engine, orders, generated sites, sanitiser security, photos, credits, campaigns, confirmation agent
 ```
 
@@ -48,7 +49,7 @@ See `DEPLOY.md` for the full step-by-step guide (GitHub, then Render, and why Ve
 
 ## Put it online
 
-You need a GitHub account and a free Render account. The code is committed locally in this folder.
+The full step-by-step guide (GitHub, Render, your own domain, what to check, what to do if something fails) is in **[DEPLOY.md](DEPLOY.md)**. Run `npm run preflight` first. In short: you need a GitHub account and a free Render account; the code is committed locally in this folder.
 
 1. Create an empty GitHub repository, then in this folder:
    ```bash
@@ -60,6 +61,11 @@ You need a GitHub account and a free Render account. The code is committed local
 4. Share the URL; the landing page links to `/platform`.
 
 Free plan: the service sleeps after about 15 minutes idle and the demo data is rebuilt after each restart (Settings has "Reset demo data" in demo mode). For real customers use a paid plan with a persistent disk at `/data`, `CENDOOR_DEMO=0` and a stable `CENDOOR_NETWORK_SECRET`.
+
+## Documents
+
+- `docs/poster/` the seller journey as an A3 poster (English, French, Arabic; PDF and PNG)
+- `docs/investor/` the investor pack and data room: pitch deck, financial model, market sizing, FAQ, demo script, roadmap, metrics, use of funds, cap-table template, security overview and legal drafts (see its `README.md` for the status of each item)
 
 ## Configuration
 

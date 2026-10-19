@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Cendoor: the seller journey</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  @page { size: 420mm 297mm; margin: 0; }
+  :root { --teal: #0F5C5C; --teal2: #43B0AC; --teal-50: #EAF4F2; --orange: #F28C28; --orange-50: #FFF0DD; --ink: #17302F; --mut: #5E7573; --bg: #F6F3EE; --line: #E2DCCF; --violet: #5B4BB5; --violet-50: #ECE8FA; }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { background: var(--bg); }
+  body { font-family: "Segoe UI", system-ui, -apple-system, "Noto Sans Arabic", Roboto, sans-serif; color: var(--ink); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .poster { width: 1587px; height: 1123px; background: var(--bg); position: relative; overflow: hidden; margin: 0 auto; padding: 54px 64px 40px; display: flex; flex-direction: column; }
+  .poster::before { content: ""; position: absolute; width: 900px; height: 900px; right: -260px; top: -420px; border-radius: 50%; background: radial-gradient(circle, rgba(67,176,172,.28), transparent 68%); }
+  .poster::after { content: ""; position: absolute; width: 700px; height: 700px; left: -260px; bottom: -380px; border-radius: 50%; background: radial-gradient(circle, rgba(242,140,40,.2), transparent 68%); }
+  header { display: flex; align-items: flex-end; justify-content: space-between; position: relative; z-index: 1; }
+  .logo { font-weight: 800; font-size: 40px; letter-spacing: -.04em; color: var(--teal); }
+  h1 { font-size: 58px; line-height: 1.02; letter-spacing: -.035em; margin: 12px 0 8px; max-width: 980px; }
+  h1 em { font-style: normal; color: var(--orange); }
+  .sub { font-size: 21px; color: var(--mut); }
+  .legend { display: flex; gap: 14px; font-size: 14.5px; font-weight: 600; align-items: center; flex-wrap: wrap; justify-content: flex-end; max-width: 430px; }
+  .tag { display: inline-flex; align-items: center; gap: 7px; padding: 6px 13px; border-radius: 99px; font-size: 13.5px; font-weight: 700; }
+  .t-you { background: var(--teal); color: #fff; } .t-cus { background: var(--orange-50); color: #A85A0A; border: 1.5px solid var(--orange); } .t-ai { background: var(--violet-50); color: var(--violet); border: 1.5px solid #B9AEF0; }
+  .phase { position: relative; z-index: 1; margin-top: 26px; display: flex; align-items: center; gap: 14px; font-size: 15px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--teal); }
+  .phase i { flex: 1; height: 2px; background: linear-gradient(90deg, var(--teal2), transparent); } [dir=rtl] .phase i { background: linear-gradient(270deg, var(--teal2), transparent); }
+  .row { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 34px; margin-top: 14px; }
+  .step { background: #fff; border-radius: 26px; padding: 24px 24px 22px; box-shadow: 0 14px 40px rgba(23,48,47,.09); position: relative; min-height: 232px; display: flex; flex-direction: column; }
+  .step:not(:last-child)::after { content: ""; position: absolute; top: 50%; inset-inline-end: -29px; width: 24px; height: 24px; margin-top: -12px; background: var(--teal2); clip-path: polygon(0 20%, 55% 20%, 55% 0, 100% 50%, 55% 100%, 55% 80%, 0 80%); opacity: .85; }
+  [dir=rtl] .step:not(:last-child)::after { transform: scaleX(-1); }
+  .top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .num { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; background: var(--teal); color: #fff; font-size: 22px; font-weight: 800; }
+  .ic { width: 52px; height: 52px; border-radius: 16px; background: var(--teal-50); display: grid; place-items: center; } .ic svg { width: 28px; height: 28px; stroke: var(--teal); fill: none; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+  h2 { font-size: 24px; letter-spacing: -.02em; line-height: 1.15; margin-bottom: 8px; }
+  .step p { font-size: 16.5px; color: var(--mut); line-height: 1.42; flex: 1; }
+  .foot { margin-top: 14px; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+  .note { font-size: 13px; font-weight: 700; color: var(--teal); } .note.wait { color: #A85A0A; }
+  .grow { position: relative; z-index: 1; margin-top: 12px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 34px; }
+  .g { display: flex; align-items: center; gap: 14px; background: rgba(255,255,255,.72); border: 1.5px dashed #BFD6D3; border-radius: 20px; padding: 16px 18px; }
+  .g .ic { width: 46px; height: 46px; border-radius: 14px; background: var(--orange-50); flex: none; } .g .ic svg { stroke: #B25F0A; width: 25px; height: 25px; }
+  .g b { display: block; font-size: 18px; letter-spacing: -.01em; } .g span { font-size: 14.5px; color: var(--mut); }
+  footer { position: relative; z-index: 1; margin-top: auto; display: flex; align-items: center; justify-content: space-between; padding-top: 18px; gap: 30px; }
+  .slogan { font-size: 26px; font-weight: 800; letter-spacing: -.03em; } .slogan em { font-style: normal; color: var(--orange); }
+  .fine { font-size: 13.5px; color: var(--mut); max-width: 700px; line-height: 1.4; }
+  .url { font-weight: 800; font-size: 20px; color: var(--teal); }
+  .shot { position: absolute; inset-inline-end: 14px; bottom: 12px; display: flex; }
+  .shot img { width: 62px; height: 78px; object-fit: cover; border-radius: 10px; border: 2.5px solid #fff; box-shadow: 0 8px 18px rgba(0,0,0,.2); margin-inline-start: -16px; } .shot img:first-child { margin-inline-start: 0; }
+  @media screen { body { padding: 0; } }
+</style>
+</head>
+<body>
+<div class="poster" id="p">
+  <header>
+    <div><div class="logo">cendoor</div><h1 id="title"></h1><div class="sub" id="sub"></div></div>
+    <div class="legend" id="legend"></div>
+  </header>
+  <div class="phase"><span id="ph1"></span><i></i></div>
+  <div class="row" id="row1"></div>
+  <div class="phase" style="margin-top:22px"><span id="ph2"></span><i></i></div>
+  <div class="row" id="row2"></div>
+  <div class="phase" style="margin-top:22px"><span id="ph3"></span><i></i></div>
+  <div class="grow" id="grow"></div>
+  <footer><div><div class="slogan" id="slogan"></div><div class="fine" id="fine"></div></div><div class="url">cendoor.com</div></footer>
+</div>
+<script>
+const ICON = {
+  user: '<path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>',
+  chat: '<path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.5 8.5 0 0 1-3.8-.9L3 20l1.1-4.9A8.4 8.4 0 0 1 3 11.5 8.5 8.5 0 0 1 12 3a8.4 8.4 0 0 1 9 8.5z"/>',
+  spark: '<path d="M12 3l1.9 5.1L19 10l-5.1 1.9L12 17l-1.9-5.1L5 10l5.1-1.9z"/><path d="M19 3v4M17 5h4M5 17v4M3 19h4"/>',
+  link: '<path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/>',
+  bag: '<path d="M6 7h12l1 13H5z"/><path d="M9 7a3 3 0 0 1 6 0"/>',
+  check: '<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.7 2.7L16 9.5"/>',
+  box: '<path d="M21 8l-9-5-9 5v8l9 5 9-5zM3 8l9 5 9-5M12 13v8"/>',
+  truck: '<path d="M2 7h12v9H2zM14 10h4l3 3v3h-7z"/><circle cx="6.5" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/>',
+  star: '<path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/>',
+  mega: '<path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1zM15 9a4 4 0 0 1 0 6M18 6a8 8 0 0 1 0 12"/>',
+  ad: '<rect x="3" y="4" width="18" height="14" rx="2"/><path d="M7 15l3-4 3 3 2-2 3 3M8 8h.01"/>',
+  graph: '<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/>'
+};
+const D = {
+  en: { dir: 'ltr', title: 'From one post to a <em>delivered order</em>', sub: 'The seller journey, step by step: what you do, what the customer does, what Cendoor does.',
+    you: 'You', cus: 'Customer', ai: 'Cendoor (AI)', ph1: 'Set up  ·  about 10 minutes, once', ph2: 'Sell and deliver  ·  every day', ph3: 'Grow  ·  when you are ready',
+    steps: [
+      ['user', 'you', 'Create your account', 'Free for 14 days. No card. Arabic, French or English.', '30 seconds'],
+      ['chat', 'you', 'Tell the AI what you sell', 'Type or speak, add photos and prices. Say how you want it to look.', 'In your own words'],
+      ['spark', 'ai', 'Your shop appears', 'A website made for you, with your photos, products, delivery and stock. Change anything by chatting.', 'Not a template'],
+      ['link', 'you', 'Share one link', 'Put it in your bio, stories and WhatsApp status. One tracked link per post shows what sells.', 'You keep posting']
+    ],
+    steps2: [
+      ['bag', 'cus', 'A customer orders', 'From your link or by chatting on WhatsApp. Cendoor answers in Darija, French or Arabic, day and night.', 'No missed messages', ''],
+      ['check', 'ai', 'The order is confirmed', 'The AI asks the customer to confirm. You approve it with one tap. Fake or risky orders are flagged.', 'Fewer refused parcels', 'wait|WhatsApp sending needs Meta approval; until then one-tap links'],
+      ['box', 'you', 'You pack and ship', 'The label is ready and the best carrier is suggested. Stock is updated on every channel.', 'You only pack', ''],
+      ['truck', 'ai', 'Delivered and paid', 'The customer gets tracking updates. Cash on delivery is tracked. Failed deliveries are chased.', 'Know what carriers owe you', 'wait|Live carrier data needs carrier access']
+    ],
+    grow: [['star', 'Reviews', 'Happy customers leave a rating'], ['mega', 'Offers to past customers', 'Pick who gets it, see the result'], ['ad', 'Ads in one click', 'Launch from your own ad account'], ['graph', 'Advice from your sales', 'What to restock, what to post']],
+    slogan: 'You post. <em>Cendoor does the rest.</em>', fine: 'Working today in the demo. Sending through WhatsApp, Instagram and ads needs approval from Meta; real carrier tracking needs carrier access. Journey steps marked with a clock depend on that.' },
+  fr: { dir: 'ltr', title: 'D’un post à une <em>commande livrée</em>', sub: 'Le parcours du vendeur, étape par étape : ce que vous faites, ce que fait le client, ce que fait Cendoor.',
+    you: 'Vous', cus: 'Client', ai: 'Cendoor (IA)', ph1: 'Mise en place  ·  environ 10 minutes, une fois', ph2: 'Vendre et livrer  ·  chaque jour', ph3: 'Grandir  ·  quand vous êtes prêt',
+    steps: [
+      ['user', 'you', 'Créez votre compte', 'Gratuit 14 jours. Sans carte. Arabe, français ou anglais.', '30 secondes'],
+      ['chat', 'you', 'Dites à l’IA ce que vous vendez', 'Écrivez ou parlez, ajoutez photos et prix. Dites le style voulu.', 'Avec vos mots'],
+      ['spark', 'ai', 'Votre boutique apparaît', 'Un site fait pour vous, avec vos photos, produits, livraison et stock. Tout se change en discutant.', 'Pas un modèle'],
+      ['link', 'you', 'Partagez un seul lien', 'Dans votre bio, vos stories et votre statut WhatsApp. Un lien suivi par post montre ce qui vend.', 'Vous continuez à publier']
+    ],
+    steps2: [
+      ['bag', 'cus', 'Un client commande', 'Depuis votre lien ou en discutant sur WhatsApp. Cendoor répond en darija, français ou arabe, jour et nuit.', 'Aucun message perdu', ''],
+      ['check', 'ai', 'La commande est confirmée', 'L’IA demande au client de confirmer. Vous validez d’un geste. Les commandes risquées sont signalées.', 'Moins de colis refusés', 'wait|L’envoi WhatsApp demande l’accord de Meta ; d’ici là, liens en un clic'],
+      ['box', 'you', 'Vous préparez et expédiez', 'L’étiquette est prête et le meilleur livreur est proposé. Le stock se met à jour partout.', 'Vous n’avez qu’à emballer', ''],
+      ['truck', 'ai', 'Livré et payé', 'Le client reçoit le suivi. Le paiement à la livraison est suivi. Les échecs sont relancés.', 'Sachez ce que les livreurs vous doivent', 'wait|Le suivi réel demande l’accès aux livreurs']
+    ],
+    grow: [['star', 'Avis', 'Les clients satisfaits notent'], ['mega', 'Offres aux anciens clients', 'Choisissez qui, voyez le résultat'], ['ad', 'Pubs en un clic', 'Depuis votre compte publicitaire'], ['graph', 'Conseils tirés de vos ventes', 'Quoi réapprovisionner, quoi publier']],
+    slogan: 'Vous postez. <em>Cendoor fait le reste.</em>', fine: 'Fonctionne aujourd’hui dans la démo. L’envoi via WhatsApp, Instagram et les pubs demande l’accord de Meta ; le suivi réel demande l’accès aux livreurs. Les étapes avec une horloge en dépendent.' },
+  ar: { dir: 'rtl', title: 'من منشور واحد إلى <em>طلب مُسلَّم</em>', sub: 'رحلة البائع خطوة بخطوة: ما تفعله أنت، وما يفعله الزبون، وما تفعله سندوور.',
+    you: 'أنت', cus: 'الزبون', ai: 'سندوور (ذكاء اصطناعي)', ph1: 'الإعداد  ·  حوالي 10 دقائق، مرة واحدة', ph2: 'البيع والتوصيل  ·  كل يوم', ph3: 'النمو  ·  عندما تكون جاهزا',
+    steps: [
+      ['user', 'you', 'أنشئ حسابك', 'مجاني 14 يوما. بدون بطاقة. بالعربية أو الفرنسية أو الإنجليزية.', '30 ثانية'],
+      ['chat', 'you', 'قل للذكاء الاصطناعي ماذا تبيع', 'اكتب أو تكلّم، أضف الصور والأثمنة. قل كيف تريد الشكل.', 'بكلماتك أنت'],
+      ['spark', 'ai', 'يظهر متجرك', 'موقع مصنوع لك بصورك ومنتجاتك وتوصيلك ومخزونك. غيّر أي شيء بالمحادثة.', 'ليس قالبا جاهزا'],
+      ['link', 'you', 'شارك رابطا واحدا', 'في السيرة والقصص وحالة واتساب. رابط متتبَّع لكل منشور يُظهر ما يُباع.', 'واصل النشر']
+    ],
+    steps2: [
+      ['bag', 'cus', 'زبون يطلب', 'من رابطك أو بالمحادثة على واتساب. سندوور تجيب بالدارجة أو الفرنسية أو العربية ليلا ونهارا.', 'لا رسالة ضائعة', ''],
+      ['check', 'ai', 'يتم تأكيد الطلب', 'يطلب الذكاء الاصطناعي من الزبون التأكيد. توافق بنقرة. تُنبَّه إلى الطلبات المشبوهة.', 'طرود مرفوضة أقل', 'wait|الإرسال عبر واتساب يحتاج موافقة Meta؛ وإلى ذلك روابط بنقرة'],
+      ['box', 'you', 'تجهّز وتشحن', 'الملصق جاهز ويُقترح أفضل ناقل. يتحدث المخزون في كل القنوات.', 'عليك فقط التغليف', ''],
+      ['truck', 'ai', 'التسليم والدفع', 'يتوصل الزبون بتحديثات التتبع. يُتتبع الدفع عند الاستلام. تُلاحق التسليمات الفاشلة.', 'اعرف ما يدين به الناقلون لك', 'wait|التتبع الحقيقي يحتاج الوصول إلى الناقلين']
+    ],
+    grow: [['star', 'التقييمات', 'الزبناء الراضون يقيّمون'], ['mega', 'عروض للزبناء السابقين', 'اختر من يتوصل وشاهد النتيجة'], ['ad', 'إعلانات بنقرة', 'من حسابك الإعلاني'], ['graph', 'نصائح من مبيعاتك', 'ماذا تعيد تخزينه وماذا تنشر']],
+    slogan: 'أنت تنشر. <em>وسندوور تتكفل بالباقي.</em>', fine: 'يعمل اليوم في العرض التجريبي. الإرسال عبر واتساب وإنستغرام والإعلانات يحتاج موافقة Meta؛ والتتبع الحقيقي يحتاج الوصول إلى الناقلين. الخطوات التي عليها ساعة تعتمد على ذلك.' }
+};
+const q = new URLSearchParams(location.search); const L = D[q.get('lang')] ? q.get('lang') : 'en'; const d = D[L];
+document.documentElement.lang = L; document.documentElement.dir = d.dir;
+const svg = k => `<svg viewBox="0 0 24 24">${ICON[k]}</svg>`;
+const tag = a => `<span class="tag t-${a === 'cus' ? 'cus' : a === 'ai' ? 'ai' : 'you'}">${d[a]}</span>`;
+const card = (s, i, off) => { const w = s[5] && s[5].startsWith('wait|'); return `<div class="step"><div class="top"><div class="num">${i + off}</div>${tag(s[1])}<div class="ic">${svg(s[0])}</div></div><h2>${s[2]}</h2><p>${s[3]}</p><div class="foot"><span class="note">${s[4]}</span>${w ? `<span class="note wait" title="${s[5].slice(5)}">🕑 ${s[5].slice(5)}</span>` : ''}</div></div>`; };
+document.getElementById('title').innerHTML = d.title; document.getElementById('sub').textContent = d.sub;
+document.getElementById('legend').innerHTML = `${tag('you')}${tag('cus')}${tag('ai')}`;
+document.getElementById('ph1').textContent = d.ph1; document.getElementById('ph2').textContent = d.ph2; document.getElementById('ph3').textContent = d.ph3;
+document.getElementById('row1').innerHTML = d.steps.map((s, i) => card(s, i, 1)).join('');
+document.getElementById('row2').innerHTML = d.steps2.map((s, i) => card(s, i, 5)).join('');
+document.getElementById('grow').innerHTML = d.grow.map(g => `<div class="g"><div class="ic">${svg(g[0])}</div><div><b>${g[1]}</b><span>${g[2]}</span></div></div>`).join('');
+document.getElementById('slogan').innerHTML = d.slogan; document.getElementById('fine').textContent = d.fine;
+</script>
+</body>
+</html>

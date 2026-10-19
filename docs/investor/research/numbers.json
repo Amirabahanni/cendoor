@@ -1,0 +1,83 @@
+{
+  "business": "Cendoor (all money in MAD; the tool prints a $ sign but the numbers are dirhams)",
+  "unit": "seller-day",
+  "price": 4.97,
+  "variable": [
+    {
+      "label": "WhatsApp messages (about 12 MAD per seller-month, estimate)",
+      "cost": 0.4
+    },
+    {
+      "label": "Claude API / AI credits (about 5 MAD per seller-month, estimate)",
+      "cost": 0.17
+    },
+    {
+      "label": "Payment processing (about 2.5% of 149 MAD, estimate)",
+      "cost": 0.12
+    },
+    {
+      "label": "Storage and bandwidth per seller (estimate)",
+      "cost": 0.07
+    }
+  ],
+  "fixed_monthly": [
+    {
+      "label": "Hosting with headroom (Render Starter + disk is about 95 MAD; 150 budgeted)",
+      "cost": 150
+    },
+    {
+      "label": "Domain, email, tools (estimate)",
+      "cost": 100
+    },
+    {
+      "label": "Accountant and data-protection (CNDP) reserve (estimate)",
+      "cost": 400
+    },
+    {
+      "label": "WhatsApp provider platform fee (one provider lists about 290 MAD/month for its entry plan; vendor source, unverified)",
+      "cost": 290
+    },
+    {
+      "label": "Marketing: ads and creators (estimate)",
+      "cost": 2000
+    }
+  ],
+  "startup": [
+    {
+      "label": "Company registration and first accounting (estimate)",
+      "cost": 6000
+    },
+    {
+      "label": "Legal advice incl. CNDP 09-08 (estimate)",
+      "cost": 5000
+    },
+    {
+      "label": "Brand, domain, setup (estimate)",
+      "cost": 1000
+    },
+    {
+      "label": "Launch marketing and pilot incentives (estimate)",
+      "cost": 5000
+    },
+    {
+      "label": "WhatsApp provider onboarding (estimate, unknown)",
+      "cost": 2000
+    }
+  ],
+  "days_per_month": 30,
+  "plan_per_day": 100,
+  "ramp_per_day": [
+    0,
+    3,
+    6,
+    10,
+    15,
+    20,
+    26,
+    32,
+    38,
+    45,
+    52,
+    60
+  ]
+}

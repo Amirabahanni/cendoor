@@ -64,7 +64,7 @@ Open these (replace the address):
 | `/` | the landing page |
 | `/s/atlas-boutique` | the demo shop with photos |
 | `/app` | the dashboard. Press **Try the demo** |
-| `/platform` | the full description of the platform |
+| `/how-it-works` | the full description of the platform, with screenshots |
 | `/s/atlas-boutique` on your phone | the same shop, laid out for a phone |
 
 Demo logins (password `demo1234` for all): `demo@cendoor.com` (owner), `manager@`, `operator@`, `viewer@cendoor.com`.

@@ -1,18 +1,22 @@
+/* Cendoor brand: the landing page palette. Deep navy, teal to cyan to violet gradient, orange for attention. */
+/* Cendoor brand: the landing page palette. Deep navy, teal to cyan to violet gradient, orange for attention. */
 :root {
-  --teal: #0F5C5C; --teal-700: #0B4545; --teal-100: #D9ECEA; --teal-50: #EEF6F5;
-  --orange: #F28C28; --orange-600: #D9751A; --orange-100: #FDE9D0;
-  --bg: #F6F3EE; --surface: #FFFFFF; --surface-2: #FAF8F4; --text: #1B2A2A; --muted: #62767A; --border: #E4DFD5;
+  --teal: #2dd4bf; --teal-700: #14b8a6; --teal-100: rgba(45,212,191,.16); --teal-50: rgba(45,212,191,.09);
+  --cyan: #22d3ee; --violet: #8b5cf6; --grad: linear-gradient(120deg, #2dd4bf, #22d3ee 45%, #8b5cf6);
+  --orange: #f28c28; --orange-600: #d9751a; --orange-100: rgba(242,140,40,.16);
+  --bg: #04070d; --surface: #0b1220; --surface-2: #0e1727; --text: #eef6f7; --muted: #93a8ad; --border: rgba(255,255,255,.1);
+  --green: #4cc38a; --green-100: rgba(76,195,138,.16); --red: #f07167; --red-100: rgba(240,113,103,.16); --amber: #f2b24f; --amber-100: rgba(242,178,79,.16);
+  --blue: #7ab3ec; --blue-100: rgba(122,179,236,.16); --indigo: #a79bf0; --indigo-100: rgba(139,92,246,.2); --gray-100: rgba(255,255,255,.07);
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 14px 44px rgba(0,0,0,.38);
+  --radius: 14px; --side: 248px; color-scheme: dark;
+}
+/* optional light mode, chosen in the sidebar */
+:root[data-theme="light"] {
+  --teal: #0F5C5C; --teal-700: #0B4545; --teal-100: #D9ECEA; --teal-50: #EEF6F5; --grad: linear-gradient(120deg, #0F5C5C, #14a89a);
+  --orange-100: #FDE9D0; --bg: #F6F3EE; --surface: #FFFFFF; --surface-2: #FAF8F4; --text: #1B2A2A; --muted: #62767A; --border: #E4DFD5;
   --green: #1E8E5A; --green-100: #DDF3E8; --red: #C8382E; --red-100: #FBE2DF; --amber: #B7791F; --amber-100: #FBEFD2;
   --blue: #2563A8; --blue-100: #DEE9F7; --indigo: #5B4BB5; --indigo-100: #E8E4F8; --gray-100: #ECE9E2;
-  --shadow: 0 1px 2px rgba(20,40,40,.06), 0 4px 16px rgba(20,40,40,.06);
-  --radius: 14px; --side: 248px;
-}
-:root[data-theme="dark"] {
-    --teal: #43B0AC; --teal-700: #2E8C88; --teal-100: #18403F; --teal-50: #14302F;
-    --orange-100: #46301A; --bg: #0E1717; --surface: #152323; --surface-2: #112020; --text: #E8F0EE; --muted: #9DB1B0; --border: #254040;
-    --green: #4CC38A; --green-100: #173B2B; --red: #F07167; --red-100: #44201D; --amber: #E7B04F; --amber-100: #3F3116;
-    --blue: #7AB3EC; --blue-100: #1A3350; --indigo: #A79BF0; --indigo-100: #2B2750; --gray-100: #1E3030;
-    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 4px 16px rgba(0,0,0,.3);
+  --shadow: 0 1px 2px rgba(20,40,40,.04), 0 8px 28px rgba(20,40,40,.06); color-scheme: light;
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; height: 100%; }
@@ -287,3 +291,44 @@ details.more > summary::before { content: "▸"; transition: transform .2s; } de
 .stepn { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--teal); color: #fff; font-size: 13px; font-weight: 750; margin-inline-end: 6px; vertical-align: 1px; }
 .chips .chip { padding: 9px 16px; font-size: 14px; } 
 details.fine { margin: 14px 0 4px; background: var(--surface-2); border-radius: 14px; padding: 4px 16px 14px; } details.fine > summary { padding: 12px 0; }
+
+/* ====== brand theme (same as the landing page): glass cards, gradient accents, one wordmark ====== */
+body { background: var(--bg); position: relative; }
+:root:not([data-theme="light"]) body::before { content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none; background: radial-gradient(620px 440px at 14% 2%, rgba(45,212,191,.2), transparent 70%), radial-gradient(560px 440px at 92% 0%, rgba(139,92,246,.2), transparent 70%), radial-gradient(520px 420px at 62% 96%, rgba(242,140,40,.1), transparent 70%); }
+:root:not([data-theme="light"]) body::after { content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none; background-image: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px); background-size: 56px 56px; -webkit-mask-image: radial-gradient(ellipse 70% 55% at 50% 12%, #000 15%, transparent 75%); mask-image: radial-gradient(ellipse 70% 55% at 50% 12%, #000 15%, transparent 75%); opacity: .5; }
+#root { position: relative; z-index: 1; }
+/* the wordmark: identical on the landing page, the dashboard and the sign-in screen */
+.logo { color: var(--text); font-weight: 800; letter-spacing: -.04em; }
+.logo b { font-weight: 800; background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+:root:not([data-theme="light"]) .side { background: rgba(8,13,24,.72); backdrop-filter: blur(16px); border-inline-end-color: var(--border); }
+:root:not([data-theme="light"]) .card { background: linear-gradient(180deg, rgba(255,255,255,.065), rgba(255,255,255,.032)); border: 1px solid var(--border); backdrop-filter: blur(14px); }
+:root:not([data-theme="light"]) .auth-card { background: rgba(11,18,32,.82); backdrop-filter: blur(18px); border-color: var(--border); }
+:root:not([data-theme="light"]) .auth { background: transparent; }
+:root:not([data-theme="light"]) .nav a:hover { background: rgba(255,255,255,.06); }
+:root:not([data-theme="light"]) .nav a.on { background: linear-gradient(120deg, rgba(45,212,191,.2), rgba(139,92,246,.16)); color: #fff; box-shadow: inset 0 0 0 1px rgba(45,212,191,.35); } :root:not([data-theme="light"]) .nav a.on .icon { color: var(--teal); }
+:root:not([data-theme="light"]) .btn { background: rgba(255,255,255,.05); border-color: var(--border); color: var(--text); } :root:not([data-theme="light"]) .btn:hover { background: rgba(255,255,255,.1); border-color: rgba(45,212,191,.4); }
+:root:not([data-theme="light"]) .btn.primary { background: var(--grad); border: 0; color: #04121a; box-shadow: 0 8px 28px rgba(45,212,191,.28), inset 0 0 0 1px rgba(255,255,255,.15); } :root:not([data-theme="light"]) .btn.primary:hover { filter: brightness(1.08); box-shadow: 0 12px 36px rgba(34,211,238,.4); }
+:root:not([data-theme="light"]) .btn.accent { background: var(--orange); border-color: var(--orange); color: #1a0f00; }
+:root:not([data-theme="light"]) .btn.ghost { background: transparent; border-color: transparent; } :root:not([data-theme="light"]) .btn.ghost:hover { background: rgba(255,255,255,.07); }
+:root:not([data-theme="light"]) .btn.danger { background: var(--red-100); color: var(--red); border-color: transparent; }
+:root:not([data-theme="light"]) .inp, :root:not([data-theme="light"]) select.inp, :root:not([data-theme="light"]) textarea.inp { background: rgba(255,255,255,.045); border-color: var(--border); color: var(--text); }
+:root:not([data-theme="light"]) .inp:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(45,212,191,.2); }
+:root:not([data-theme="light"]) .inp::placeholder { color: #6f858a; }
+:root:not([data-theme="light"]) select option { background: #0b1220; color: var(--text); }
+:root:not([data-theme="light"]) .chip { background: rgba(255,255,255,.05); border-color: var(--border); color: var(--text); } :root:not([data-theme="light"]) .chip.on { background: var(--grad); border: 0; color: #04121a; }
+:root:not([data-theme="light"]) .stepn { background: var(--grad); color: #04121a; }
+:root:not([data-theme="light"]) .tabs button.on { background: rgba(255,255,255,.1); }
+:root:not([data-theme="light"]) .askline { background: rgba(255,255,255,.05); border: 1px solid var(--border); backdrop-filter: blur(14px); }
+:root:not([data-theme="light"]) .task { background: rgba(255,255,255,.04); } :root:not([data-theme="light"]) .task:hover { border-color: rgba(45,212,191,.5); box-shadow: 0 0 36px rgba(45,212,191,.12); }
+:root:not([data-theme="light"]) .tbl th { background: rgba(255,255,255,.03); }
+:root:not([data-theme="light"]) .tbl tr:hover td { background: rgba(255,255,255,.03); }
+:root:not([data-theme="light"]) .linkbox { background: rgba(255,255,255,.04); border-color: rgba(45,212,191,.35); } :root:not([data-theme="light"]) .linkbox code { color: var(--teal); }
+:root:not([data-theme="light"]) .toast { background: #0e1727; color: var(--text); border: 1px solid var(--border); }
+:root:not([data-theme="light"]) .bar { background: var(--grad); }
+:root:not([data-theme="light"]) .meter i { background: var(--grad); }
+:root:not([data-theme="light"]) .nav .badge { color: #1a0f00; }
+:root:not([data-theme="light"]) .adprev, :root:not([data-theme="light"]) details.fine, :root:not([data-theme="light"]) .pickbox { background: rgba(255,255,255,.04); border-color: var(--border); }
+:root:not([data-theme="light"]) .cbx { background: rgba(255,255,255,.04); border-color: var(--border); } :root:not([data-theme="light"]) .cbx:has(input:checked) { background: rgba(45,212,191,.14); border-color: var(--teal); }
+:root:not([data-theme="light"]) .audbox { background: rgba(45,212,191,.09); border-color: rgba(45,212,191,.3); }
+:root:not([data-theme="light"]) ::-webkit-scrollbar { width: 10px; height: 10px; } :root:not([data-theme="light"]) ::-webkit-scrollbar-thumb { background: rgba(255,255,255,.14); border-radius: 8px; }
+:root:not([data-theme="light"]) .demo-box { background: rgba(45,212,191,.08); border-color: rgba(45,212,191,.5); }

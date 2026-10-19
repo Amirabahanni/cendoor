@@ -17,7 +17,7 @@ Founder context: a solo founder; the company is not registered yet (someone else
 - **Pricing:** no 0 MAD plan. **Free trial 14 days**, then **Solo 149 MAD/month** and **Growth 299 MAD/month**. Basic customization is unlimited and free. **Advanced AI (Claude-written bespoke pages) costs credits:** trial 10, Solo 0 (must buy more), Growth 100.
 - **Simple dashboard, 7 menu entries:** Home, Studio, Orders, Messages, Products, Customers, Settings. Sub-tabs: Orders > Cash & delivery, Products > Post links, Customers > Campaigns, Settings > Team.
 - **Automation scope:** reply to customers, take orders, AI confirmation agent, WhatsApp tracking updates, announcements and targeted mass messages.
-- Telegram dropped. Public description page is `/platform` (the word "investor" must not appear anywhere). Landing page has an animated demo in EN/FR/AR.
+- Telegram dropped. Public description page is `/how-it-works` (`/platform` redirects to it) (the word "investor" must not appear anywhere). Landing page has an animated demo in EN/FR/AR.
 - Demo must be neutral: shop **Atlas Boutique** (slug `atlas-boutique`), owner "Demo Owner", no personal names. Git author is "Cendoor Demo".
 
 ## 3. What is built (all in `cendoor-mvp/`)

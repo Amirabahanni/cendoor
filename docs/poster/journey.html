@@ -45,12 +45,35 @@
   .shot { position: absolute; inset-inline-end: 14px; bottom: 12px; display: flex; }
   .shot img { width: 62px; height: 78px; object-fit: cover; border-radius: 10px; border: 2.5px solid #fff; box-shadow: 0 8px 18px rgba(0,0,0,.2); margin-inline-start: -16px; } .shot img:first-child { margin-inline-start: 0; }
   @media screen { body { padding: 0; } }
+
+  /* brand theme: same as the landing page, the dashboard and the deck */
+  :root { --ink: #eef6f7; --mut: #93a8ad; --bg: #04070d; --line: rgba(255,255,255,.1); --grad: linear-gradient(120deg, #2dd4bf, #22d3ee 45%, #8b5cf6); }
+  html, body { background: #04070d; }
+  .poster { background: #04070d; color: #eef6f7; }
+  .poster::before { background: radial-gradient(circle, rgba(45,212,191,.26), transparent 68%); }
+  .poster::after { background: radial-gradient(circle, rgba(139,92,246,.24), transparent 68%); }
+  .logo { color: #eef6f7; } .logo b { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  h1 { color: #fff; } h1 em { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .sub { color: var(--mut); }
+  .t-you { background: rgba(45,212,191,.2); color: #5eead4; border: 1.5px solid rgba(45,212,191,.5); } .t-cus { background: rgba(242,140,40,.16); color: #ffb067; border: 1.5px solid rgba(242,140,40,.55); } .t-ai { background: rgba(139,92,246,.2); color: #c4b8ff; border: 1.5px solid rgba(139,92,246,.55); }
+  .phase { color: #5eead4; } .phase i { background: linear-gradient(90deg, rgba(45,212,191,.6), transparent); } [dir=rtl] .phase i { background: linear-gradient(270deg, rgba(45,212,191,.6), transparent); }
+  .step { background: linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.035)); border: 1px solid var(--line); box-shadow: 0 20px 50px rgba(0,0,0,.4); }
+  .step:not(:last-child)::after { background: #2dd4bf; opacity: .9; }
+  .num { background: var(--grad); color: #04121a; }
+  .ic { background: rgba(45,212,191,.14); } .ic svg { stroke: #2dd4bf; }
+  h2 { color: #fff; } .step p { color: var(--mut); }
+  .note { color: #5eead4; } .note.wait { color: #ffb067; }
+  .g { background: rgba(255,255,255,.05); border: 1.5px dashed rgba(45,212,191,.4); }
+  .g .ic { background: rgba(242,140,40,.16); } .g .ic svg { stroke: #ffb067; }
+  .g b { color: #fff; } .g span { color: var(--mut); }
+  .slogan { color: #fff; } .slogan em { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .fine { color: #7c9297; } .url { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
 </style>
 </head>
 <body>
 <div class="poster" id="p">
   <header>
-    <div><div class="logo">cendoor</div><h1 id="title"></h1><div class="sub" id="sub"></div></div>
+    <div><div class="logo"><span>cen<b>door</b></span></div><h1 id="title"></h1><div class="sub" id="sub"></div></div>
     <div class="legend" id="legend"></div>
   </header>
   <div class="phase"><span id="ph1"></span><i></i></div>

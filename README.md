@@ -34,7 +34,7 @@ npm start
 | What | URL |
 |---|---|
 | Landing page | http://localhost:3000/ |
-| Platform description | http://localhost:3000/platform |
+| How it works (the full description) | http://localhost:3000/how-it-works |
 | Demo shop + AI chat | http://localhost:3000/s/atlas-boutique |
 | Seller dashboard | http://localhost:3000/app |
 
@@ -58,7 +58,7 @@ The full step-by-step guide (GitHub, Render, your own domain, what to check, wha
    ```
 2. On render.com: **New > Blueprint**, pick the repository (`render.yaml` configures the Docker build, health check and demo mode).
 3. Copy the service URL into `PUBLIC_URL` and redeploy (HTTPS is required for the microphone).
-4. Share the URL; the landing page links to `/platform`.
+4. Share the URL; the landing page links to `/how-it-works`.
 
 Free plan: the service sleeps after about 15 minutes idle and the demo data is rebuilt after each restart (Settings has "Reset demo data" in demo mode). For real customers use a paid plan with a persistent disk at `/data`, `CENDOOR_DEMO=0` and a stable `CENDOOR_NETWORK_SECRET`.
 
@@ -102,6 +102,6 @@ lib/design.js          content document (hero, About, FAQ, social, photos) + con
 lib/assistant.js       Studio: interpreter, safe actions, undo log, credits, optional Claude tools
 lib/broadcast.js       announcements / campaigns    lib/chat.js  customer conversation engine (+ confirmation agent)
 lib/orders.js, network.js, insights.js, whatsapp.js, db.js, nlp.js
-public/                landing, platform page, storefront (shop.js), dashboard (core.js, views-a..d.js, i18n*.js)
+public/                landing, how-it-works page, storefront (shop.js), dashboard (core.js, views-a..d.js, i18n*.js)
 seed.js, test.js, Dockerfile, render.yaml
 ```

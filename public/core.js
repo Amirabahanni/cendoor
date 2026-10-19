@@ -106,7 +106,7 @@
   let authTab = 'login';
   function authView() {
     return html`<div class="auth"><div class="auth-card">
-      <div class="row between"><div class="logo">cendoor</div>${langPicker()}</div>
+      <div class="row between"><div class="logo"><span>cen<b>door</b></span></div>${langPicker()}</div>
       <p class="muted small" style="margin:10px 0 0">${t('slogan')}</p>
       <div class="tabs"><button class="${authTab === 'login' ? 'on' : ''}" data-act="authTab" data-v="login">${t('login')}</button><button class="${authTab === 'signup' ? 'on' : ''}" data-act="authTab" data-v="signup">${t('signup')}</button></div>
       <form id="authForm" autocomplete="on">
@@ -139,14 +139,14 @@
     const b = { orders: badges.toApprove, inbox: badges.attention };
     return html`<div class="shell">
       <aside class="side" id="side">
-        <div class="logo">cendoor</div>
+        <div class="logo"><span>cen<b>door</b></span></div>
         <nav class="nav">${NAV.filter(([k]) => k !== 'team' || me.can.team || true).map(([k, ic]) => html`<a href="#/${k}" class="${groupOf(r) === k ? 'on' : ''}" data-act="closeMenu">${icon(ic)}<span>${t(k)}</span>${b[k] ? html`<span class="badge">${b[k]}</span>` : ''}</a>`)}</nav>
         <div class="spacer"></div>
         <a class="btn sm" href="/s/${me.shop.slug}" target="_blank" rel="noopener">${icon('ext')} ${t('viewStore')}</a>
         <div class="userbox">
           <div class="bold">${me.shop.name}</div><div class="small muted">${me.user.name || me.user.email}</div>
           <div class="row mt" style="margin-top:8px;justify-content:space-between"><span class="role">${t(me.user.role)}</span>${langPicker()}</div>
-          <button class="btn ghost sm block" style="margin-top:4px" data-act="theme">${document.documentElement.dataset.theme === 'dark' ? '☀' : '☾'} ${t('themeBtn')}</button>
+          <button class="btn ghost sm block" style="margin-top:4px" data-act="theme">${document.documentElement.dataset.theme === 'light' ? '☾' : '☀'} ${t('themeBtn')}</button>
           <button class="btn ghost sm block" style="margin-top:8px" data-act="logout">${t('logout')}</button>
         </div>
       </aside>
@@ -154,7 +154,7 @@
       <main class="main" id="main">${inner || ''}</main>
     </div>`;
   }
-  CD.act.theme = () => { const d = document.documentElement; const next = d.dataset.theme === 'dark' ? 'light' : 'dark'; d.dataset.theme = next; try { localStorage.setItem('cd_theme', next); } catch (_) {} CD.rerender ? (CD.state.me && render()) : 0; };
+  CD.act.theme = () => { const d = document.documentElement; const next = d.dataset.theme === 'light' ? 'dark' : 'light'; d.dataset.theme = next; try { localStorage.setItem('cd_theme', next); } catch (_) {} CD.rerender ? (CD.state.me && render()) : 0; };
   CD.act.closeMenu = () => { document.getElementById('side')?.classList.remove('open'); document.getElementById('scrim')?.classList.add('hidden'); };
   CD.act.openMenu = () => { document.getElementById('side')?.classList.add('open'); document.getElementById('scrim')?.classList.remove('hidden'); };
   CD.act.logout = async () => { await CD.api('/api/auth/logout', { method: 'POST' }).catch(() => {}); CD.state.me = null; render(); };

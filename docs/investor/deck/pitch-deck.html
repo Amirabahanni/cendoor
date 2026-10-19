@@ -46,13 +46,40 @@
   .tl h3 { color: var(--teal); } ul.t { list-style: none; padding: 0; } ul.t li { font-size: 21px; margin-bottom: 9px; padding-inline-start: 22px; position: relative; } ul.t li::before { content: ""; position: absolute; inset-inline-start: 0; top: 11px; width: 9px; height: 9px; border-radius: 50%; background: var(--teal2); }
   .grid.big .card p { font-size: 26px; } .grid.big .card h3 { font-size: 30px; margin-bottom: 12px; } .grid.big { align-items: start; } .tl.big .card { min-height: 420px; } .tl.big ul.t li { font-size: 24px; margin-bottom: 14px; } .tl.big ul.t li::before { top: 13px; }
   table.big td { font-size: 25px; padding: 24px 16px; } table.big th { font-size: 17px; }
+
+  /* brand theme: same as the landing page, the dashboard and the poster */
+  :root { --ink: #eef6f7; --mut: #93a8ad; --bg: #04070d; --line: rgba(255,255,255,.1); --teal: #2dd4bf; --teal2: #22d3ee; --teal-50: rgba(45,212,191,.12); --orange-50: rgba(242,140,40,.16); --grad: linear-gradient(120deg, #2dd4bf, #22d3ee 45%, #8b5cf6); }
+  html, body { background: #04070d; } @media print { html, body { background: #04070d; } }
+  .slide, .slide.dark { background: #04070d; color: #eef6f7; }
+  .slide::before { content: ""; position: absolute; width: 820px; height: 820px; right: -280px; top: -400px; border-radius: 50%; background: radial-gradient(circle, rgba(45,212,191,.2), transparent 68%); z-index: 0; }
+  .slide::after { content: ""; position: absolute; width: 700px; height: 700px; left: -300px; bottom: -420px; border-radius: 50%; background: radial-gradient(circle, rgba(139,92,246,.2), transparent 68%); z-index: 0; }
+  .slide > * { position: relative; z-index: 1; } .pg, .brand { position: absolute !important; z-index: 2 !important; }
+  .slide.dark .mut, .slide.dark p { color: var(--mut); }
+  h1, h2, h3 { color: #fff; } p, li, .lead { color: var(--mut); }
+  em { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .kicker, .dark .kicker { color: #5eead4; }
+  .logo, .dark .logo { color: #eef6f7; } .logo b, .brand b { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .brand, .dark .brand { color: #eef6f7; } .pg, .dark .pg { color: #7c9297; }
+  .card, .dark .card { background: linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.035)); border: 1px solid var(--line); box-shadow: none; }
+  .card p, .dark .card p { color: var(--mut); } .dark h3 { color: #fff; }
+  .stat, .dark .stat { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; } .stat.o, .dark .stat.o { background: none; -webkit-background-clip: initial; background-clip: initial; color: var(--orange); }
+  .src, .dark .src { color: #7c9297; }
+  .tag { background: rgba(45,212,191,.16); color: #5eead4; } .tag.o { background: rgba(242,140,40,.16); color: #ffb067; } .tag.r { background: rgba(240,113,103,.16); color: #f07167; }
+  .ic, .dark .ic { background: rgba(45,212,191,.14); } .ic svg, .dark .ic svg { stroke: #2dd4bf; }
+  .shot { border: 1px solid var(--line); box-shadow: 0 30px 70px rgba(0,0,0,.55); } .phone { border-color: #141d2b; box-shadow: 0 30px 70px rgba(0,0,0,.55); }
+  th { color: #8aa0a5; } td { color: #eef6f7; border-top-color: var(--line); } tr.me td { background: rgba(45,212,191,.12); }
+  .ok { color: #6fe0a8; } .no { color: #7c9297; } .part { color: #ffb067; }
+  .blank { background: rgba(255,255,255,.04); border-color: rgba(45,212,191,.45); }
+  .step b.n { background: var(--grad); color: #04121a; } .step strong { color: #fff; }
+  ul.t li::before { background: #2dd4bf; } ul.t li { color: var(--mut); }
+  .tl h3 { color: #5eead4; }
 </style>
 </head>
 <body>
 
 <!-- 1 cover -->
 <section class="slide dark" style="justify-content:space-between">
-  <div class="logo">cendoor</div>
+  <div class="logo"><span>cen<b>door</b></span></div>
   <div><h1>You post.<br><em>Cendoor does the rest.</em></h1><p class="lead" style="margin-top:30px;color:#B9CFCD">AI that confirms cash-on-delivery orders for small Moroccan sellers on Instagram, TikTok and WhatsApp, and builds their shop from a chat.</p></div>
   <div style="display:flex;justify-content:space-between;align-items:flex-end"><div style="font-size:20px;color:#7FA3A0">Pre-seed deck &middot; [date] &middot; [founder name]<br>cendoor.com</div><div style="font-size:16px;color:#7FA3A0;max-width:520px;text-align:right">Working demo with fictional data. No customers yet: this deck says what is built, what is proven and what is not.</div></div>
 </section>
@@ -67,7 +94,7 @@
     <div class="card" style="display:flex;flex-direction:column"><div class="stat">70&ndash;90%</div><h3 style="margin-top:14px">of online orders are paid on delivery</h3><p>Cash on delivery is how Moroccan customers trust a seller they do not know.</p><div class="src">Vendor claims (eGrow), not independent data.</div></div>
     <div class="card" style="display:flex;flex-direction:column"><div class="stat">22.8M</div><h3 style="margin-top:14px">social media users in Morocco</h3><p>Where these sellers find their customers, and where the orders arrive.</p><div class="src">DataReportal, Digital 2026: Morocco (October 2025).</div></div>
   </div>
-  <div class="brand">cendoor</div><div class="pg">2</div>
+  <div class="brand"><span>cen<b>door</b></span></div><div class="pg">2</div>
 </section>
 
 <!-- 3 solution -->
@@ -80,7 +107,7 @@
     <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M2 7h12v9H2zM14 10h4l3 3v3h-7z"/><circle cx="6.5" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/></svg></div><h3>3. Deliver and grow</h3><p>Labels, tracking updates, cash on delivery tracked, failed deliveries chased. Offers to past customers and ads from one button.</p></div>
   </div>
   <p style="margin-top:24px;font-size:20px"><span class="tag o">Honest status</span>&nbsp; Built and tested in the demo. Sending through WhatsApp, Instagram and ads needs approval from Meta; carrier tracking is simulated.</p>
-  <div class="brand">cendoor</div><div class="pg">3</div>
+  <div class="brand"><span>cen<b>door</b></span></div><div class="pg">3</div>
 </section>
 
 <!-- 4 product -->
@@ -92,7 +119,7 @@
     <img class="shot" src="../assets/shop-desktop.png" alt="" style="height:430px;width:auto;margin-inline-start:6px">
     <div class="grow" style="padding-inline-start:20px"><h3>A shop made for each seller</h3><p style="font-size:22px">Real photos, cash on delivery, chat to order. Not a template: every shop is generated from the seller&rsquo;s description.</p><br><h3>A calm dashboard</h3><p style="font-size:22px">Today&rsquo;s tasks first: what to approve, ship and answer.</p></div>
   </div>
-  <div class="brand">cendoor</div><div class="pg">4</div>
+  <div class="brand"><span>cen<b>door</b></span></div><div class="pg">4</div>
 </section>
 
 <!-- 5 dashboard -->
@@ -107,7 +134,7 @@
       <div class="step"><b class="n">3</b><p><strong>Ask Cendoor</strong>&ldquo;Make my shop darker&rdquo;, &ldquo;send an offer to customers in Rabat&rdquo;.</p></div>
     </div>
   </div>
-  <div class="brand">cendoor</div><div class="pg">5</div>
+  <div class="brand"><span>cen<b>door</b></span></div><div class="pg">5</div>
 </section>
 
 <!-- 6 journey -->
@@ -115,7 +142,7 @@
   <div class="kicker">How it works</div>
   <h2>From one post to a delivered order</h2>
   <img class="shot" src="../../poster/cendoor-journey-en.png" alt="" style="height:610px;width:auto;margin:6px auto 0;border-radius:24px">
-  <div class="brand">cendoor</div><div class="pg">6</div>
+  <div class="brand"><span>cen<b>door</b></span></div><div class="pg">6</div>
 </section>
 
 <!-- 7 why now -->
@@ -127,7 +154,7 @@
     <div class="card"><h3>WhatsApp is the order desk</h3><p>Orders start in a DM and end on a doorstep with cash. Confirmation is the step that decides whether the parcel is accepted.</p></div>
     <div class="card"><h3>AI can now do Darija conversations at low cost</h3><p>Rule-based understanding today, language models for the hard cases. Competitors have started: Babliy launched in June 2026.</p></div>
   </div>
-  <div class="brand">cendoor</div><div class="pg">7</div>
+  <div class="brand"><span>cen<b>door</b></span></div><div class="pg">7</div>
 </section>
 
 <!-- 8 market -->
@@ -145,7 +172,7 @@
     </div>
     <div class="card" style="flex:.8;display:flex;flex-direction:column;justify-content:center"><h3>What this means</h3><p>Morocco alone supports a real small business. Investor scale needs <b>higher revenue per seller</b> (per-order fees, payments, partners) or <b>expansion</b> to similar cash-on-delivery markets, shown with Moroccan evidence first.</p></div>
   </div>
-  <div class="brand">cendoor</div><div class="pg">8</div>
+  <div class="brand"><span>cen<b>door</b></span></div><div class="pg">8</div>
 </section>
 
 <!-- 9 business model -->
@@ -161,7 +188,7 @@
     <div class="card grow"><h3>Unit economics (estimates, no quotes)</h3><p>Each paying seller leaves about <b>126 MAD a month</b> after messages, AI usage and payment fees (22.8 MAD). Fixed costs about 2,940 MAD a month. <b>Break-even: 24 paying sellers</b> (71 with a 6,000 MAD founder salary).</p></div>
     <div class="card grow"><h3>To be tested with real sellers</h3><p>99 vs 149 MAD, and a per-confirmed-order plan (4 MAD, no monthly fee), the option simulated sellers asked for most.</p></div>
   </div>
-  <div class="brand">cendoor</div><div class="pg">9</div>
+  <div class="brand"><span>cen<b>door</b></span></div><div class="pg">9</div>
 </section>
 
 <!-- 10 competition -->
@@ -176,7 +203,7 @@
     <tr><td class="k">Babliy (June 2026)</td><td class="no">no (WhatsApp agent)</td><td class="ok">yes</td><td class="ok">yes (claimed)</td><td>not found</td></tr>
     <tr><td class="k">YouCan / Storeino / Shopify</td><td class="ok">yes</td><td class="no">apps or none</td><td class="no">no</td><td>$17&ndash;32 (~170&ndash;320 MAD)</td></tr></table>
   <p style="font-size:18px;margin-top:22px">From public pages read on 2026-10-19; vendor claims are self-reported. &ldquo;No competitor was seen to generate the shop for a seller who only has an Instagram or TikTok account&rdquo; is an inference to confirm with sellers. The fastest copy risk: eGrow or Babliy adding a shop builder.</p>
-  <div class="brand">cendoor</div><div class="pg">10</div>
+  <div class="brand"><span>cen<b>door</b></span></div><div class="pg">10</div>
 </section>
 
 <!-- 11 traction -->
@@ -189,7 +216,7 @@
     <div class="card"><div class="stat" style="font-size:72px">0</div><h3 style="margin-top:10px">real sellers or paying customers</h3><p>The honest answer. The next 30 days are a free pilot with 3 to 10 real sellers.</p></div>
   </div>
   <p style="margin-top:22px;font-size:21px"><span class="tag o">Pilot success line</span>&nbsp; 10 of 40 sellers contacted agree to talk &middot; 5 start &middot; 3 confirm 10+ real orders &middot; 3 written commitments at 99 MAD &middot; no serious incident.</p>
-  <div class="brand">cendoor</div><div class="pg">11</div>
+  <div class="brand"><span>cen<b>door</b></span></div><div class="pg">11</div>
 </section>
 
 <!-- 12 go to market -->
@@ -203,7 +230,7 @@
     <div class="card"><h3>4. Spread</h3><p>Every shop link says &ldquo;powered by Cendoor&rdquo;; sellers refer sellers; short Darija videos on Reels and TikTok.</p></div>
   </div>
   <p style="margin-top:20px;font-size:21px">Budget about 2,000 MAD a month. Most a seller is worth paying to win: about 228 MAD at 99 MAD (3-month payback).</p>
-  <div class="brand">cendoor</div><div class="pg">12</div>
+  <div class="brand"><span>cen<b>door</b></span></div><div class="pg">12</div>
 </section>
 
 <!-- 13 financials -->
@@ -213,20 +240,20 @@
   <div class="row" style="margin-top:20px;flex:1;align-items:stretch">
     <div class="card" style="flex:1.25">
       <svg viewBox="0 0 700 380" width="100%" height="100%" style="font-family:Segoe UI,Arial,sans-serif">
-        <g font-size="16" fill="#5E7573"><text x="0" y="40">MAD</text></g>
-        <line x1="40" y1="330" x2="680" y2="330" stroke="#E2DCCF"/>
+        <g font-size="16" fill="#93a8ad"><text x="0" y="40">MAD</text></g>
+        <line x1="40" y1="330" x2="680" y2="330" stroke="rgba(255,255,255,.18)"/>
         <!-- scale: 306k = 250px -->
         <g>
-          <rect x="70" y="285.4" width="64" height="44.6" rx="6" fill="#43B0AC"/><text x="102" y="276" text-anchor="middle" font-size="16" font-weight="700" fill="#0B2F2F">45.7k</text>
-          <rect x="146" y="327" width="64" height="3" rx="2" fill="#F28C28"/><text x="178" y="318" text-anchor="middle" font-size="16" font-weight="700" fill="#A85A0A">3.5k</text>
-          <rect x="290" y="156.6" width="64" height="173.4" rx="6" fill="#43B0AC"/><text x="322" y="147" text-anchor="middle" font-size="16" font-weight="700" fill="#0B2F2F">177k</text>
-          <rect x="366" y="217.8" width="64" height="112.2" rx="6" fill="#F28C28"/><text x="398" y="208" text-anchor="middle" font-size="16" font-weight="700" fill="#A85A0A">115k</text>
-          <rect x="510" y="30.6" width="64" height="299.4" rx="6" fill="#43B0AC"/><text x="542" y="22" text-anchor="middle" font-size="16" font-weight="700" fill="#0B2F2F">306k</text>
-          <rect x="586" y="110.8" width="64" height="219.2" rx="6" fill="#F28C28"/><text x="618" y="101" text-anchor="middle" font-size="16" font-weight="700" fill="#A85A0A">224k</text>
+          <rect x="70" y="285.4" width="64" height="44.6" rx="6" fill="#2dd4bf"/><text x="102" y="276" text-anchor="middle" font-size="16" font-weight="700" fill="#eef6f7">45.7k</text>
+          <rect x="146" y="327" width="64" height="3" rx="2" fill="#F28C28"/><text x="178" y="318" text-anchor="middle" font-size="16" font-weight="700" fill="#ffb067">3.5k</text>
+          <rect x="290" y="156.6" width="64" height="173.4" rx="6" fill="#2dd4bf"/><text x="322" y="147" text-anchor="middle" font-size="16" font-weight="700" fill="#eef6f7">177k</text>
+          <rect x="366" y="217.8" width="64" height="112.2" rx="6" fill="#F28C28"/><text x="398" y="208" text-anchor="middle" font-size="16" font-weight="700" fill="#ffb067">115k</text>
+          <rect x="510" y="30.6" width="64" height="299.4" rx="6" fill="#2dd4bf"/><text x="542" y="22" text-anchor="middle" font-size="16" font-weight="700" fill="#eef6f7">306k</text>
+          <rect x="586" y="110.8" width="64" height="219.2" rx="6" fill="#F28C28"/><text x="618" y="101" text-anchor="middle" font-size="16" font-weight="700" fill="#ffb067">224k</text>
         </g>
-        <g font-size="18" font-weight="700" fill="#0B2F2F" text-anchor="middle"><text x="140" y="356">Year 1</text><text x="360" y="356">Year 2</text><text x="580" y="356">Year 3</text></g>
+        <g font-size="18" font-weight="700" fill="#eef6f7" text-anchor="middle"><text x="140" y="356">Year 1</text><text x="360" y="356">Year 2</text><text x="580" y="356">Year 3</text></g>
       </svg>
-      <div style="display:flex;gap:22px;font-size:17px;color:#5E7573;margin-top:4px"><span><b style="color:#43B0AC">&#9632;</b> Revenue</span><span><b style="color:#F28C28">&#9632;</b> Operating profit (no founder pay)</span></div>
+      <div style="display:flex;gap:22px;font-size:17px;color:#93a8ad;margin-top:4px"><span><b style="color:#2dd4bf">&#9632;</b> Revenue</span><span><b style="color:#F28C28">&#9632;</b> Operating profit (no founder pay)</span></div>
     </div>
     <div style="flex:1;display:flex;flex-direction:column;gap:20px">
       <div class="card"><h3>Reads as</h3><p style="font-size:21px">60 paying sellers at month 12 (assumed), then +6 a month. Revenue 45.7k, 177k, 306k MAD. Break-even at month 7. Cash needed before it pays for itself: about <b>29,800 MAD</b>.</p></div>
@@ -234,7 +261,7 @@
       <p style="font-size:16px">Source: <b>financial-model.xlsx</b> (live formulas) built from the CFO tool. Costs are estimates without quotes; the ramp is not a forecast.</p>
     </div>
   </div>
-  <div class="brand">cendoor</div><div class="pg">13</div>
+  <div class="brand"><span>cen<b>door</b></span></div><div class="pg">13</div>
 </section>
 
 <!-- 14 roadmap -->
@@ -247,7 +274,7 @@
     <div class="card"><h3>Months 4&ndash;8<br>Grow</h3><ul class="t"><li>Ads for other sellers (Meta approval)</li><li>Referral loop</li><li>Darija voice notes</li></ul></div>
     <div class="card"><h3>Months 8&ndash;12<br>Widen</h3><ul class="t"><li>Instagram and TikTok messages if approved</li><li>Support hire</li><li>Per-order and partner revenue</li></ul></div>
   </div>
-  <div class="brand">cendoor</div><div class="pg">14</div>
+  <div class="brand"><span>cen<b>door</b></span></div><div class="pg">14</div>
 </section>
 
 <!-- 15 risks -->
@@ -261,7 +288,7 @@
     <tr><td class="k">A competitor adds a shop builder</td><td>Focus on proven results for one seller type; lock Founding sellers for 12 months</td></tr>
     <tr><td class="k">Data-protection (CNDP, Law 09-08) problems</td><td>Lawyer review of terms and privacy before real customers; consent and STOP built in</td></tr>
     <tr><td class="k">The founder cannot fund a living while building</td><td>Set a minimum income; break-even is 71 sellers with a 6,000 MAD salary; raise or cut marketing first</td></tr></table>
-  <div class="brand">cendoor</div><div class="pg">15</div>
+  <div class="brand"><span>cen<b>door</b></span></div><div class="pg">15</div>
 </section>
 
 <!-- 16 team -->
@@ -273,7 +300,7 @@
     <div class="card grow"><h3>What is true today</h3><p style="font-size:21px">The product was designed and built by the founder with AI assistance, including the shop generator, chat engine, order flow and this demo. The company is not registered yet.</p></div>
     <div class="card grow"><h3>Skills to add</h3><p style="font-size:21px">A native Darija reviewer, sales and onboarding help, and accounting and legal support in Morocco.</p></div>
   </div>
-  <div class="brand">cendoor</div><div class="pg">16</div>
+  <div class="brand"><span>cen<b>door</b></span></div><div class="pg">16</div>
 </section>
 
 <!-- 17 ask -->
@@ -285,12 +312,12 @@
       <table style="font-size:20px;margin-top:8px"><tr><td style="color:#fff">Founder income (6,000 &times; 12)</td><td style="color:#fff;text-align:right">72,000</td></tr><tr><td style="color:#fff">Fixed costs (hosting, tools, accountant, WhatsApp provider, marketing)</td><td style="color:#fff;text-align:right">35,280</td></tr><tr><td style="color:#fff">Ad test budget</td><td style="color:#fff;text-align:right">30,000</td></tr><tr><td style="color:#fff">Part-time Darija support (6 months)</td><td style="color:#fff;text-align:right">24,000</td></tr><tr><td style="color:#fff">Legal, trademark, CNDP</td><td style="color:#fff;text-align:right">20,000</td></tr><tr><td style="color:#fff">Startup spend</td><td style="color:#fff;text-align:right">19,000</td></tr><tr><td style="color:#fff">Buffer (25%)</td><td style="color:#fff;text-align:right">50,070</td></tr></table></div>
     <div class="card grow"><h3>Milestones the money should reach</h3><ul class="t" style="margin-top:6px"><li style="color:#B9CFCD">10 pilot sellers with before/after numbers</li><li style="color:#B9CFCD">3 written commitments to pay</li><li style="color:#B9CFCD">Company registered, legal basics done</li><li style="color:#B9CFCD">WhatsApp approved</li><li style="color:#B9CFCD">25 paying sellers</li></ul><p style="font-size:18px;margin-top:14px">Bootstrap alternative: about 30,000 MAD if the founder takes no income.</p></div>
   </div>
-  <div class="brand">cendoor</div><div class="pg">17</div>
+  <div class="brand"><span>cen<b>door</b></span></div><div class="pg">17</div>
 </section>
 
 <!-- 18 close -->
 <section class="slide dark" style="justify-content:space-between">
-  <div class="logo">cendoor</div>
+  <div class="logo"><span>cen<b>door</b></span></div>
   <div><h1 style="font-size:84px">See it. Then meet <em>the first sellers</em>.</h1><p class="lead" style="margin-top:26px;color:#B9CFCD">Try the live demo, read the plan, and join us for the first 30 days with real sellers.</p></div>
   <div style="display:flex;justify-content:space-between;align-items:flex-end;font-size:20px;color:#7FA3A0"><div>Demo: [your link] &middot; owner login demo@cendoor.com / demo1234<br>[founder name] &middot; [email] &middot; [phone]</div><div style="text-align:right">You post. Cendoor does the rest.</div></div>
 </section>

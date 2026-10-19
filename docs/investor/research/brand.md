@@ -1,5 +1,8 @@
 # Brand: Cendoor
 
+> **Update (final brand):** the colours, wordmark and look below were a first proposal (teal on cream). The brand that is actually used everywhere is the landing page's dark navy with the teal-to-violet gradient and one wordmark. See `../../brand.md`. The naming, voice and promise sections below still apply.
+
+
 Reads `idea.md`, [marketing.md](marketing.md) (positioning: the order-confirmation assistant), [competitors.md](competitors.md) and the panel's reasons ([panel/results.md](panel/results.md)). The panel's biggest blocker is **trust** (8 of 15 who passed), so the brand has to feel like a **reliable, accountable person**, not a futuristic bot. The built landing page leans "futuristic"; that is fine for attracting attention, but the voice and promise below should lead with reliability.
 
 ## 1. The name (already chosen: Cendoor, cendoor.com)

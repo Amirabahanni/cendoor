@@ -12,10 +12,11 @@
     CD.timers.push(setInterval(async () => { if (CD.state.route !== 'inbox' || $('#composer:focus')) return; await refreshList(); if (iActive) await loadThread(iActive, true); }, 5000));
   };
   function listHtml(list) {
-    return list.length ? list.map(c => html`<div class="cv ${c.id === iActive ? 'on' : ''}" data-act="openConv" data-id="${c.id}"><div class="avatar">${initial(c.name)}</div>
+    // always an html object, so both the first paint and the 5-second refresh (which reads .s) work
+    return html`${list.length ? list.map(c => html`<div class="cv ${c.id === iActive ? 'on' : ''}" data-act="openConv" data-id="${c.id}"><div class="avatar">${initial(c.name)}</div>
       <div class="grow"><div class="row between"><b class="t">${c.name}</b><span class="tiny muted">${CD.ago(c.updated_at)}</span></div>
       <div class="small muted t">${c.last_role === 'customer' ? '' : '↩ '}${c.last_text || ''}</div>
-      <div class="row wrap" style="gap:6px;margin-top:4px"><span class="pill gray">${CD.chanLabel(c.channel)}</span>${c.needs_attention ? html`<span class="pill red">${t('needsYou')}</span>` : ''}${c.bot_paused ? html`<span class="pill amber">${t('aiPaused')}</span>` : ''}${c.unread ? html`<span class="pill blue">${c.unread}</span>` : ''}</div></div></div>`) : html`<div class="empty">${t('noConvos')}</div>`;
+      <div class="row wrap" style="gap:6px;margin-top:4px"><span class="pill gray">${CD.chanLabel(c.channel)}</span>${c.needs_attention ? html`<span class="pill red">${t('needsYou')}</span>` : ''}${c.bot_paused ? html`<span class="pill amber">${t('aiPaused')}</span>` : ''}${c.unread ? html`<span class="pill blue">${c.unread}</span>` : ''}</div></div></div>`) : html`<div class="empty">${t('noConvos')}</div>`}`;
   }
   async function refreshList() { const list = await api('/api/conversations' + (iFilter === 'attention' ? '?filter=attention' : ''), { quiet: true }); const el = $('#ilist'); if (el) el.innerHTML = listHtml(list).s; CD.refreshBadges(); }
   async function paintInbox(main) {

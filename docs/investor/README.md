@@ -7,10 +7,12 @@ Everything an investor, a bank or a partner is likely to ask for, with an honest
 | Item | Status | File |
 |---|---|---|
 | Pitch deck (18 slides, PDF) | **Draft:** founder name, team, ask amount and contact are blanks to fill | `cendoor-pitch-deck.pdf` (source: `deck/pitch-deck.html`) |
+| The full description of the platform (19-page PDF, also the page `/how-it-works`) | Ready | `cendoor-how-it-works.pdf` |
 | One-page summary | Ready | `research/one-pager.md` |
 | Business plan (computed verdict, all sections) | Ready | `research/business-plan.md` |
 | Live demo and how to present it | Ready | `demo-script.md` and the demo link (see `../../DEPLOY.md`) |
 | The seller journey poster (A3, EN / FR / AR) | Ready | `../poster/` |
+| Brand (one wordmark, one palette, used everywhere) | Ready | `../brand.md` |
 
 ## Business and market
 

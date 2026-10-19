@@ -44,6 +44,7 @@ app.use(express.json({ limit: '4mb', verify: (req, res, buf) => { req.rawBody = 
 const UPLOADS = path.join(DATA_DIR, 'uploads');
 fs.mkdirSync(UPLOADS, { recursive: true });
 app.use('/uploads', express.static(UPLOADS, { maxAge: '7d', setHeaders: res => res.setHeader('X-Content-Type-Options', 'nosniff') }));
+app.get('/platform', (req, res) => res.redirect(301, '/how-it-works')); // the old address of the platform page
 app.use(express.static(path.join(__dirname, 'public'), { extensions: ['html'] }));
 
 const wrap = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);

@@ -20,6 +20,7 @@ const designLib = require('./lib/design');
 const siteLib = require('./lib/site');
 const fontsLib = require('./lib/fonts');
 const broadcast = require('./lib/broadcast');
+const ads = require('./lib/ads');
 // advanced (AI-written) design uses real AI usage, so it is metered; basic customisation is always free
 const PLAN_CREDITS = { trial: 10, solo: 0, growth: 100 };
 const { seedDemo } = require('./seed');
@@ -550,6 +551,42 @@ app.delete('/api/campaigns/audiences/:id', auth.auth('studio'), (req, res) => { 
 app.get('/api/campaigns/:id/queue', auth.auth(), (req, res) => res.json(broadcast.queue(req.shopId, num(req.params.id))));
 app.post('/api/campaigns/recipients/:id/done', auth.auth('studio'), (req, res) => { broadcast.markDone(req.shopId, num(req.params.id)); res.json({ ok: true }); });
 
+// Ads: connect the seller's own Meta ad account, review an ad, launch it with one confirmed click
+const baseUrl = req => process.env.PUBLIC_URL || `${req.protocol}://${req.get('host')}`;
+app.get('/api/ads', auth.auth(), (req, res) => {
+  res.json({ connection: ads.connection(req.shopId), oauth: ads.configured(), limits: ads.LIMITS, ads: ads.list(req.shopId), products: all('SELECT id, name, price, image FROM products WHERE shop_id=? AND active=1 ORDER BY name', req.shopId) });
+});
+app.post('/api/ads/draft', auth.auth('studio'), (req, res) => {
+  const shop = get('SELECT * FROM shops WHERE id=?', req.shopId); const p = get('SELECT * FROM products WHERE id=? AND shop_id=? AND active=1', num(req.body.product_id), req.shopId);
+  if (!p) return res.status(404).json({ error: 'product_not_found' });
+  const lang = ['en', 'fr', 'ar'].includes(req.body.lang) ? req.body.lang : (shop.lang === 'dar' ? 'fr' : shop.lang);
+  res.json(ads.draft(shop, p, lang, str(req.body.offer, 60)));
+});
+app.post('/api/ads/launch', auth.auth('studio'), async (req, res) => {
+  if (limited('adlaunch:' + req.shopId, 6, 3600000)) return res.status(429).json({ error: 'slow_down' });
+  const r = await ads.launch(req.shopId, { productId: num(req.body.product_id), headline: str(req.body.headline, 60), text: str(req.body.text, 320), daily: num(req.body.daily), days: num(req.body.days), createdBy: req.user.id, baseUrl: baseUrl(req), confirmed: req.body.confirmed === true });
+  if (r.error) return res.status(r.error === 'meta_error' ? 502 : r.error === 'daily_limit' ? 429 : 400).json(r);
+  res.json(r);
+});
+app.post('/api/ads/:id/pause', auth.auth('studio'), async (req, res) => { const r = await ads.pause(req.shopId, num(req.params.id)); res.status(r.error ? (r.error === 'not_found' ? 404 : 502) : 200).json(r); });
+app.post('/api/ads/connect', auth.auth('studio'), async (req, res) => {
+  if (req.body.mode === 'demo') { ads.connectDemo(req.shopId); return res.json({ ok: true }); }
+  const r = await ads.connectManual(req.shopId, { token: str(req.body.token, 600), adAccountId: str(req.body.ad_account_id, 40), pageId: str(req.body.page_id, 30) });
+  res.status(r.error ? 400 : 200).json(r);
+});
+app.delete('/api/ads/connect', auth.auth('studio'), (req, res) => { ads.disconnect(req.shopId); res.json({ ok: true }); });
+app.get('/api/ads/connect/meta', auth.auth('studio'), (req, res) => {
+  if (!ads.configured()) return res.status(400).json({ error: 'meta_app_not_configured' });
+  res.redirect(ads.oauthUrl(req.shopId, `${baseUrl(req)}/api/ads/connect/callback`));
+});
+app.get('/api/ads/connect/callback', auth.auth('studio'), async (req, res) => {
+  try {
+    if (!ads.checkState(req.shopId, req.query.state) || !req.query.code) return res.redirect('/app#/ads?connect=denied');
+    const r = await ads.finishOauth(req.shopId, String(req.query.code), `${baseUrl(req)}/api/ads/connect/callback`);
+    res.redirect(`/app#/ads?connect=${r.ok ? 'ok' : r.error}`);
+  } catch (e) { console.error('[ads oauth]', e.message); res.redirect('/app#/ads?connect=error'); }
+});
+
 // Public order tracking: needs the order number AND the phone used on the order
 app.get('/api/track', (req, res) => {
   if (limited('track:' + req.ip, 20)) return res.status(429).json({ error: 'slow_down' });
@@ -567,7 +604,7 @@ app.get(['/track', '/t/:slug/:num'], (req, res) => res.sendFile(path.join(__dirn
 // Demo mode: put the demo shop back to its original state (only when CENDOOR_DEMO=1)
 app.post('/api/demo/reset', auth.auth(), (req, res) => {
   if (process.env.CENDOOR_DEMO !== '1' || req.user.email !== 'demo@cendoor.com') return res.status(403).json({ error: 'forbidden' });
-  tx(() => { for (const t of ['broadcast_recipients', 'broadcasts', 'audiences', 'assistant_log', 'phone_rep', 'wa_sessions', 'shipment_events', 'order_items', 'reviews', 'orders', 'messages', 'conversations', 'customers', 'post_links', 'carriers', 'variants', 'products', 'sessions', 'users', 'shops']) run(`DELETE FROM ${t}`); });
+  tx(() => { for (const t of ['ads', 'ad_accounts', 'broadcast_recipients', 'broadcasts', 'audiences', 'assistant_log', 'phone_rep', 'wa_sessions', 'shipment_events', 'order_items', 'reviews', 'orders', 'messages', 'conversations', 'customers', 'post_links', 'carriers', 'variants', 'products', 'sessions', 'users', 'shops']) run(`DELETE FROM ${t}`); });
   seedDemo();
   const u = get("SELECT id FROM users WHERE email='demo@cendoor.com'");
   auth.setCookie(res, auth.createSession(u.id), req);

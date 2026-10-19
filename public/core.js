@@ -132,7 +132,7 @@
   // ---------- shell ----------
   const NAV = [['overview', 'home'], ['studio', 'zap'], ['orders', 'box'], ['inbox', 'chat'], ['products', 'tag'], ['customers', 'users'], ['settings', 'sliders']];
   // pages that live under another menu entry, shown as tabs at the top of the page
-  const GROUPS = { orders: ['orders', 'money'], products: ['products', 'links'], customers: ['customers', 'campaigns'], settings: ['settings', 'team'] };
+  const GROUPS = { orders: ['orders', 'money'], products: ['products', 'links', 'ads'], customers: ['customers', 'campaigns'], settings: ['settings', 'team'] };
   const groupOf = r => Object.keys(GROUPS).find(g => GROUPS[g].includes(r)) || r;
   function shell(inner) {
     const { me, badges } = CD.state; const r = CD.state.route;
@@ -161,7 +161,7 @@
   CD.can = k => !!(CD.state.me && CD.state.me.can[k]);
 
   // ---------- routing ----------
-  function currentRoute() { const r = (location.hash.replace(/^#\/?/, '') || 'overview').split('/')[0]; return CD.views[r] ? r : 'overview'; }
+  function currentRoute() { const r = (location.hash.replace(/^#\/?/, '') || 'overview').split(/[/?]/)[0]; return CD.views[r] ? r : 'overview'; }
   async function render() {
     applyDir();
     const root = document.getElementById('root');

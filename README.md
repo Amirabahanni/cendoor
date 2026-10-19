@@ -15,6 +15,7 @@ Brand: the wordmark `cendoor` (no icon next to it); `public/logo.svg` (a chat bu
 | **Edit text and photos by hand** | Studio > *Edit text & photos*: name, tagline, announcement bar, hero text, About, footer, contact links and three photo slots. Free. |
 | **Advanced AI design (paid tier)** | With `ANTHROPIC_API_KEY`, requests the generator cannot express are handled by Claude, which can write a bespoke page (HTML + CSS + palette + fonts) through a sanitising contract. This uses AI credits: 10 on the trial, 0 on Solo, 100 a month on Growth. Basic customisation above never uses credits. |
 | **Automation** | Customer chat in Arabic/French/English/Darija with voice; order creation; **AI confirmation agent** (quick-form orders wait for the customer to reply YES to the AI's WhatsApp message); delivery updates with tracking link; failed-delivery recovery; reviews; cash reconciliation. |
+| **Ads** | Products > Ads. Connect your own Meta ad account, pick a product, get the ad written in your language, see the exact budget (20 to 300 MAD a day, up to 14 days, 2,000 MAD total, 3 running ads), confirm, and Cendoor creates the campaign, ad set, creative and ad in *your* account (created paused, switched on only when all four exist; you pay Meta directly). Each ad gets a tracked link; the report counts **delivered** orders against the budget that has run. Runs as a dry run on a demo account. **Not yet tested against Meta's live servers** (see below). |
 | **Announcements** | Studio ("send a message to customers who haven't ordered in 2 months") or Customers > Campaigns. **Targeting**: combine city, product or category bought, total spent, number of orders, last order date, order channel and delivery reliability; save audiences; personalise with {name}, {city}, {last_product}; every campaign gets a tracked link and a results line (visits, orders, revenue). Drafts in 3 languages, preview, explicit confirmation, STOP opt-out, daily limit. Without a WhatsApp connection every message is queued with a one-tap link. |
 | **Cendoor Shield / Copilot** | Cross-seller delivery signal (anonymous counters) and advice from the seller's own orders (best carrier per city, stock run-out, best post). |
 | **Free trial** | New shops get 14 days; paid plans are Solo (149 MAD/month) and Growth (299 MAD/month). |
@@ -40,7 +41,7 @@ npm start
 Demo logins (password `demo1234`): `demo@cendoor.com` (owner), `manager@`, `operator@`, `viewer@cendoor.com`. First start seeds a fictional boutique with a generated site.
 
 ```bash
-npm test      # 96 checks: chat engine, orders, generated sites, sanitiser security, photos, credits, campaigns, confirmation agent
+npm test      # 114 checks: chat engine, orders, generated sites, sanitiser security, photos, credits, campaigns, confirmation agent
 ```
 
 See `DEPLOY.md` for the full step-by-step guide (GitHub, then Render, and why Vercel does not fit).
@@ -73,6 +74,7 @@ Whatever produced a page (the generator or Claude), it passes `lib/sanitize.js` 
 Working and tested: everything in the table, with the rule-based AI and the procedural generator.
 
 Not real yet:
+- **Launching ads** follows Meta's documented Marketing API (campaign, ad set, creative, ad) and the Facebook Login flow, but has never run against Meta's live servers. Connecting other people's ad accounts needs a Meta app with Advanced Access (app review and business verification); before that only people with a role on the app can connect, which is enough for a pilot. Ad accounts in MAD, USD and EUR are supported (conversion rates are settings); Click-to-WhatsApp ads and TikTok ads are not built. Set `META_APP_ID`, `META_APP_SECRET` and `CENDOOR_TOKEN_KEY` (encrypts stored tokens) in production.
 - **Claude modes** (customer chat, free-form Studio requests, bespoke `write_site` pages) were written against the Messages API tool-calling format but could not be run without an API key. Generated sites do not need it.
 - **WhatsApp two-way** follows Meta's documented format but never ran against Meta; it needs a verified Meta business. Until then confirmations and campaigns are recorded and queued with one-tap WhatsApp links, not sent automatically. Meta also requires approved templates for business-started messages and opt-in for marketing messages.
 - **Instagram DMs / TikTok messages** are not connected (links work). **Carrier tracking** is simulated by a button. **Billing** stores the plan and credits; nothing is charged, and the trial does not lock the account.

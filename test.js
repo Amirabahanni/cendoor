@@ -17,6 +17,7 @@ const nlp = require('./lib/nlp');
 const assistant = require('./lib/assistant');
 const insights = require('./lib/insights');
 const network = require('./lib/network');
+const ads = require('./lib/ads');
 
 seedDemo();
 const shop = get("SELECT * FROM shops WHERE slug='atlas-boutique'");
@@ -249,6 +250,59 @@ const stockOf = label => get("SELECT v.stock FROM variants v JOIN products p ON 
   ok(orders.getOrder(co.id).status === 'confirmed', 'the customer’s YES confirms the order automatically');
   const wa = convo.getOrCreate(shop.id, '212662999111', 'whatsapp'); await chat.handleCustomerMessage({ shop: get('SELECT * FROM shops WHERE id=?', shop.id), convoRow: convo.byId(wa.id), text: 'STOP' });
   ok(get('SELECT opted_out FROM customers WHERE shop_id=? AND phone=?', shop.id, '0662999111').opted_out === 1, 'STOP from a customer opts them out of announcements');
+
+  console.log('Launching ads');
+  const prodRow = get('SELECT * FROM products WHERE shop_id=? AND active=1 ORDER BY id LIMIT 1', shop.id); const shopRow = get('SELECT * FROM shops WHERE id=?', shop.id);
+  const dr = ads.draft(shopRow, prodRow, 'en', 'free delivery this weekend');
+  ok(dr.headline.length <= 40 && dr.text.length <= 125 && dr.text.includes('free delivery this weekend'), 'the ad copy is generated within Meta-friendly lengths and uses only the offer the seller wrote');
+  let calls = []; const realFetch2 = global.fetch;
+  global.fetch = async (url) => { throw new Error('network must not be used in dry run: ' + url); };
+  const base = { productId: prodRow.id, headline: dr.headline, text: dr.text, daily: 100, days: 3, baseUrl: 'https://x.test' };
+  ok((await ads.launch(shop.id, { ...base })).error === 'confirm_required', 'nothing is created without an explicit confirmation');
+  ok((await ads.launch(shop.id, { ...base, confirmed: true })).error === 'not_connected', 'an ad cannot be launched before an ad account is connected');
+  ads.connectDemo(shop.id);
+  ok((await ads.launch(shop.id, { ...base, daily: 5, confirmed: true })).error === 'budget_range' && (await ads.launch(shop.id, { ...base, daily: 999, confirmed: true })).error === 'budget_range', 'the daily budget has a minimum and a maximum');
+  ok((await ads.launch(shop.id, { ...base, daily: 300, days: 14, confirmed: true })).error === 'total_cap' && (await ads.launch(shop.id, { ...base, days: 99, confirmed: true })).error === 'days_range', 'the total spend and the number of days are capped');
+  ok((await ads.launch(shop.id, { ...base, headline: 'x', confirmed: true })).error === 'copy_too_short', 'an empty ad is refused');
+  const dry = await ads.launch(shop.id, { ...base, confirmed: true });
+  const dryRow = get('SELECT * FROM ads WHERE id=?', dry.id);
+  ok(dry.ok && dry.mode === 'dry_run' && dryRow.status === 'dry_run' && get('SELECT 1 FROM post_links WHERE code=?', dryRow.link_code), 'a demo account runs the whole flow as a dry run and records a tracked link, sending nothing');
+  await ads.launch(shop.id, { ...base, confirmed: true }); await ads.launch(shop.id, { ...base, confirmed: true });
+  ok((await ads.launch(shop.id, { ...base, confirmed: true })).error === 'too_many_active', 'at most 3 ads can run at once');
+  run("UPDATE ads SET status='paused' WHERE shop_id=?", shop.id);
+
+  // live path with Meta mocked: order of calls, everything created paused first, switched on only at the end
+  global.fetch = async (url, init) => { const u = new URL(url); const body = init && init.body ? Object.fromEntries(new URLSearchParams(init.body)) : {}; calls.push({ path: u.pathname.replace('/v21.0/', ''), method: init.method, body, q: Object.fromEntries(u.searchParams) }); return { ok: true, json: async () => ({ id: 'id' + calls.length, account_status: 1, currency: 'USD', name: 'Real Ads' }) }; };
+  const man = await ads.connectManual(shop.id, { token: 'SECRET-TOKEN-123', adAccountId: '123456789', pageId: '99999999' });
+  const acctRow = get('SELECT token_enc, currency, mode FROM ad_accounts WHERE shop_id=?', shop.id);
+  ok(man.ok && acctRow.mode === 'live' && acctRow.currency === 'USD' && !acctRow.token_enc.includes('SECRET-TOKEN'), 'a pasted token is verified with Meta and stored encrypted, never in plain text');
+  calls = [];
+  const live = await ads.launch(shop.id, { ...base, daily: 100, confirmed: true });
+  const seq = calls.map(c => c.path.replace(/^id\d+$/, 'ID'));
+  ok(live.ok && live.mode === 'live' && seq.slice(0, 4).join() === 'act_123456789/campaigns,act_123456789/adsets,act_123456789/adcreatives,act_123456789/ads' && seq.slice(4).every(x => x === 'ID') && seq.length === 7, 'a live launch creates campaign, ad set, creative and ad, then switches them on');
+  ok(calls.filter(c => c.path.endsWith('campaigns') || c.path.endsWith('adsets') || c.path.endsWith('/ads')).every(c => c.body.status === 'PAUSED') && calls.slice(4).every(c => c.body.status === 'ACTIVE'), 'everything is created paused and only activated at the end');
+  ok(calls[1].body.daily_budget === '1000' && JSON.parse(calls[1].body.targeting).geo_locations.countries[0] === 'MA', 'the budget is converted to the account currency (100 MAD = 10 USD = 1000 cents) and targets Morocco');
+  ok(JSON.parse(calls[2].body.object_story_spec).link_data.link.startsWith('https://x.test/s/') && calls.every(c => c.body.access_token === 'SECRET-TOKEN-123'), 'the ad points to the tracked shop link and uses the seller’s own token');
+  const adId = live.id;
+  calls = []; await ads.pause(shop.id, adId);
+  ok(calls.length === 3 && calls.every(c => c.body.status === 'PAUSED') && get('SELECT status FROM ads WHERE id=?', adId).status === 'paused', 'pausing pauses the ad, ad set and campaign at Meta');
+  // failure halfway: nothing is left running
+  run("UPDATE ads SET status='paused' WHERE shop_id=?", shop.id); calls = [];
+  global.fetch = async (url) => { calls.push(String(url)); if (String(url).includes('/adsets')) return { ok: false, status: 400, json: async () => ({ error: { message: 'Invalid parameter' } }) }; return { ok: true, json: async () => ({ id: 'x' + calls.length }) }; };
+  const bad = await ads.launch(shop.id, { ...base, confirmed: true }); const badRow = get('SELECT status, error, campaign_id FROM ads WHERE id=?', bad.id);
+  ok(bad.error === 'meta_error' && badRow.status === 'failed' && /Invalid parameter/.test(badRow.error) && badRow.campaign_id && calls.length === 2, 'if Meta refuses halfway, the ad is marked failed with the reason and nothing is switched on');
+  global.fetch = async () => ({ ok: true, json: async () => ({ account_status: 2, currency: 'MAD', name: 'x' }) });
+  ok((await ads.connectManual(shop.id, { token: 't', adAccountId: '5', pageId: '12345678' })).error === 'account_not_active', 'a disabled ad account is refused');
+  global.fetch = realFetch2;
+  // results are counted on delivered orders
+  const sq = get('SELECT link_code FROM ads WHERE id=?', adId).link_code;
+  run("UPDATE ads SET mode='live', status='active', daily_budget=100, days=3, start_date=? WHERE id=?", new Date(Date.now() - 86400000 * 0.5).toISOString(), adId);
+  run("INSERT INTO orders (shop_id, number, status, total, source_code) VALUES (?, 'AD-T1', 'delivered', 300, ?), (?, 'AD-T2', 'failed', 500, ?), (?, 'AD-T3', 'confirmed', 200, ?)", shop.id, sq, shop.id, sq, shop.id, sq);
+  const res = ads.list(shop.id).find(a => a.id === adId);
+  ok(res.orders === 3 && res.delivered === 1 && res.delivered_revenue === 300 && res.budget_so_far === 100 && res.real_return === 3, 'the report counts only delivered orders against the budget that has run (failed deliveries do not count as revenue)');
+  process.env.META_APP_ID = 'app1'; process.env.META_APP_SECRET = 'sec'; const oUrl = ads.oauthUrl(shop.id, 'https://x.test/cb'); const oState = new URL(oUrl).searchParams.get('state');
+  ok(ads.configured() && oUrl.includes('ads_management') && ads.checkState(shop.id, oState) && !ads.checkState(shop.id + 1, oState) && !ads.checkState(shop.id, `${shop.id}.1.${oState.split('.')[2]}`), 'the Facebook login link is signed per shop and expires, so it cannot be replayed for another shop');
+  delete process.env.META_APP_ID; delete process.env.META_APP_SECRET;
 
   console.log('Cendoor Shield + Copilot');
   const risky = orders.createOrder({ shopId: shop.id, customer: { name: 'Test Net', phone: '0670000099', city: 'Casablanca', address: '12 Rue des Tests, Maarif' }, items: [{ variantId: get("SELECT v.id FROM variants v JOIN products p ON p.id=v.product_id WHERE p.name='Oud Perfume'").id, qty: 1 }] });
